@@ -1,0 +1,33 @@
+# IndustrialRobotics-A2-2023
+Repository for 41013 Industrial Robotics Lab Assignment 2.
+
+Students involved:
+- Blake Muchmore 13898198
+- Dominic Manno 13898186
+- Matthew Georgievski 13894023
+
+Two cobots will collaborate to enhance the efficiency of managing a blackjack tabletop card game, 
+thereby eliminating the trust issues associated with a human dealer. The code will be split into
+two figures, one depicting the simulation of the cobots, while the other will be the user GUI where
+users can emegency stop the simulation, continue the simulation, undergo robot movement through
+a "teach" functionality, as 
+
+
+
+
+
+
+
+% Figure 1 - Robot Environment
+    % Spawning the robots and environment
+    % Active collision avoidance
+    % Reacting to GUI
+    % Reacting to object entering unsafe zone
+    % Simulation of blackjack game
+
+% Figure 2 - GUI Environment
+    % E-stop button
+    % Continue/Start game button
+    % Teach Functionality
+    % End game button
+    % Hit/Stand Button
