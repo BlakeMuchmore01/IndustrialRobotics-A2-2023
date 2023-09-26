@@ -55,6 +55,15 @@ classdef AuboI5 < RobotBaseClass
             link(5) = Link([0   0.1025   0       -pi/2   0   0]);
             link(6) = Link([0   0.0940   0        0      0   0]);
 
+            % Qlims for each joint
+            % https://www.aubo-cobot.com/public/i5product3?CPID=i5
+            link(1).qlim = [-175  175]*pi/180;
+            link(2).qlim = [-175  175]*pi/180;
+            link(3).qlim = [-175  175]*pi/180;
+            link(4).qlim = [-175  175]*pi/180;
+            link(5).qlim = [-175  175]*pi/180;
+            link(6).qlim = [-360  360]*pi/180;
+
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
         end
