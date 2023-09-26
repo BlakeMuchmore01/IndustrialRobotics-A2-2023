@@ -1,0 +1,59 @@
+%% Aubo i5 Robot
+classdef AuboI5 < RobotBaseClass
+    %% Robot Class Properties
+    % Constant Properties
+    properties (Access = public, Constant)
+        plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
+        initialJointAngles = [0 0 0 0 0 0]; % Default starting pose for Aubo i5
+    end
+
+    %% ...structors
+    methods
+        % Constructor for Aubo i5 Robot
+        function self = AuboI5(baseTr,L)
+            % Setting the default base transform if not set within
+            % constructor inputs
+            if nargin < 1
+                % Logging that the default base transform has been used
+                L.mlog = {L.DEBUG,'LinearUR3','Base transform not set. Default base transform used'};
+                baseTr = eye(4); % Setting base transform as default
+            end
+
+            % Orientating the Aubo i5 within the workspace and creating the model
+            self.model.base = self.model
+
+
+            self.CreateModel(); % Creating the Aubo i5 D&H parameter model
+
+
+
+
+
+
+
+
+
+
+
+
+
+        end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    end
+end

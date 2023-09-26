@@ -12,9 +12,11 @@ function LabAssessment2()
     % Spawning the robots and surrounding environment
    
 
-
     figure 2; % Creating figure for GUI
     % Creating the app GUI object
+
+
+
 
 
 
