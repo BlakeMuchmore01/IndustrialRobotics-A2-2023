@@ -14,7 +14,7 @@ function LabAssessment2()
     auboI5.model.teach();
    
 
-    figure(2); % Creating figure for GUI
+    % figure(2); % Creating figure for GUI
     % Creating the app GUI object
 
     pause;
