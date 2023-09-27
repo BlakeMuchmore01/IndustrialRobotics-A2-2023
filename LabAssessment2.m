@@ -10,9 +10,9 @@ function LabAssessment2()
 
     figure(1); % Creating figure to simulate robots
     % Spawning the robots and surrounding environment
-    auboI5 = AuboI5(eye(4),L);
-    auboI5.model.teach();
-   
+    %auboI5 = AuboI5(eye(4),L);
+    dobotMagician = DobotMagician(eye(4),L);
+    dobotMagician.model.teach();
 
     % figure(2); % Creating figure for GUI
     % Creating the app GUI object
