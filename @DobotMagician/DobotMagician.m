@@ -3,7 +3,7 @@ classdef DobotMagician < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 0 0 0]; % Default starting pose for Aubo i5
+        initialJointAngles = [0 pi/4 -pi/4 0]; % Default starting pose for Aubo i5
     end
 
     % Non-constant Properties
