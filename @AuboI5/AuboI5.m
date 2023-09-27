@@ -19,15 +19,16 @@ classdef AuboI5 < RobotBaseClass
             % Setting the default base transform if not set within
             % constructor inputs
             if nargin < 2
+                % Creating log file if not supplied (indicates it hasn't
+                % been created yet)
+                L = log4matlab('logFile.log');
+                L.SetCommandWindowLevel(L.DEBUG);
+
                 if nargin < 1
                     % Logging that the default base transform has been used
                     L.mlog = {L.DEBUG,'AuboI5','Base transform not set. Default base transform used'};
                     baseTr = eye(4); % Setting base transform as default
                 end
-                % Creating log file if not supplied (indicates it hasn't
-                % been created yet)
-                L = log4matlab('logFile.log');
-                L.SetCommandWindowLevel(L.DEBUG);
             end
 
             self.CreateModel(); % Creating the Aubo i5 D&H parameter model
