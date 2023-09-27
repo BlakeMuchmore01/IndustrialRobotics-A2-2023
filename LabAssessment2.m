@@ -23,6 +23,4 @@ function LabAssessment2()
 
 
 
-
-
 end
