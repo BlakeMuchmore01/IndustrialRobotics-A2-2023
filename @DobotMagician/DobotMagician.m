@@ -38,7 +38,7 @@ classdef DobotMagician < RobotBaseClass
             self.homeQ = self.initialJointAngles; % Setting initial pose of Aubo i5
 
             % Plotting the Dobot Magician and associated ply models
-            self.model.plot(self.initialJointAngles);
+            self.model.plot(self.initialJointAngles,'noname','noshadow');
 
             % Logging the creation of the Dobot Magician
             L.mlog = {L.DEBUG,'DobotMagician','Dobot Magician object created within the workspace'};

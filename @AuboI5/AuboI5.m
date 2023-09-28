@@ -1,4 +1,4 @@
-%% Aubo i5 Robot
+    %% Aubo i5 Robot
 classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
@@ -38,7 +38,7 @@ classdef AuboI5 < RobotBaseClass
             self.homeQ = self.initialJointAngles; % Setting initial pose of Aubo i5
 
             % Plotting the Aubo i5 and associated ply models
-            self.model.plot(self.initialJointAngles);
+            self.model.plot(self.initialJointAngles,'noname','noshadow');
 
             % Logging the creation of the Aubo i5
             L.mlog = {L.DEBUG,'AuboI5','Aubo i5 object created within the workspace'};
@@ -74,7 +74,7 @@ classdef AuboI5 < RobotBaseClass
             % Updating the toolTr property of the robot
             % Used to update the pose of the gripper to the end-effector
             self.currentJointAngles = self.model.getpos(); % Getting the current joint angles of Aubo i5
-            self.toolTr = self.model.fkine(self.currentJointAngles); % Updating toolTr property
+            self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
     end
