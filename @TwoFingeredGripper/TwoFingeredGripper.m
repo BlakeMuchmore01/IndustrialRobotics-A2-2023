@@ -4,12 +4,13 @@ classdef TwoFingeredGripper
     % Non-constant Properties
     properties (Access = public)
         isClosed = false; % Variable determining if gripper is currently in open/closed state
-        fingerModels = []; % Cell structure to store array of gripper fingers
+        plyFileNameStem = 'TwoFingeredGripper'; % Name stem used to find associated ply files when plotting
     end
 
     % Constant Properties
     properties (Access = public, Constant)
         numFingers = 2; % Number of Fingers to attach to the gripper
+        initialJointAngles = zeros(1,5); % Default starting pose for Gripper Finger
     end
 
     %% ...structors
@@ -31,23 +32,28 @@ classdef TwoFingeredGripper
                 end
             end
 
-            % Creating the two gripper finger objects
-            for i = 1:self.numFingers
-                % Creating the gripper finger object
-                gripperFinger = GripperFinger(baseTr);
-                self.fingerModels{i} = gripperFinger; % Storing object into models array
-
-                % Rotating the second finger by 180 deg in z-axis
-                if i == 2
-                    self.fingerModels{2}.model.base = self.fingerModels{2}.model.base.T * trotz(pi);
-                end
-
-                % Plotting the Gripper Finger and associated ply models
-                self.fingerModels{i}.model.plot(self.fingerModels{i}.initialJointAngles,'noname','noshadow','notiles','noarrows');
-            end
-
             % Logging the creation of the Aubo i5
             L.mlog = {L.DEBUG,'TwoFingeredGripper','TwoFingeredGripper object created within the workspace'};
+        end
+
+        %% D&H Parameter Serial Link Creation
+        function CreateModel(self)
+            % D&H parameters for the 2F-85 finger model
+            % DH = [THETA D A ALPHA SIGMA OFFSET]
+            % https://robotiq.com/products/2f85-140-adaptive-robot-gripper
+            link(1) = Link([0    0.04926     0         pi/2    0     0]);
+            link(2) = Link([0    0           0.059695  0       0     0]);
+            link(3) = Link([0    0           0.08174   0       0     50*pi/180]);
+            link(4) = Link([0    0           0.01445   0       0     50*pi/180]);
+            link(5) = Link([0    0           0.07006   0       0    -45*pi/180]);
+
+            % Incorporating joint limits 
+            % Both finger types have same limits
+            link(1).qlim = [0 0];
+            link(2).qlim = [0 25]*pi/180;
+            link(3).qlim = [10 25]*pi/180;
+            link(4).qlim = [14 15]*pi/180;
+            link(5).qlim = [-27 35]*pi/180;
         end
 
     end
