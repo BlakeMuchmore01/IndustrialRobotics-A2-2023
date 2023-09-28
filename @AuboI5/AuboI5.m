@@ -1,4 +1,4 @@
-    %% Aubo i5 Robot
+%% Aubo i5 Robot
 classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties

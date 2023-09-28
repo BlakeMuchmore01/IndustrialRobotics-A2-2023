@@ -3,7 +3,7 @@ classdef TwoFingeredGripper < RobotBaseClass
     %% Gripper Class Properties
     % Non-constant Properties
     properties (Access = public)
-        isClosed = false; % Variable determining if gripper finger is currently in open/closed state
+        isClosed = false; % Variable determining if gripper is currently in open/closed state
         plyFileNameStem = 'TwoFingeredGripper'; % Name stem used to find associated ply files when plotting
     end
 
@@ -49,8 +49,8 @@ classdef TwoFingeredGripper < RobotBaseClass
             % Plotting the Aubo i5 and associated ply models
             self.model.plot(self.initialJointAngles,'noname','noshadow','notiles');
 
-            % Logging the creation of the gripper finger
-            L.mlog = {L.DEBUG,'TwoFingeredGripper',['Gripper Finger ',num2str(fingerNum),' created within the workspace']};
+            % Logging the creation of the Aubo i5
+            L.mlog = {L.DEBUG,'TwoFingeredGripper','TwoFingeredGripper object created within the workspace'};
         end
 
         %% D&H Parameter Serial Link Creation
