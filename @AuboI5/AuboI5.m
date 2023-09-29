@@ -3,7 +3,7 @@ classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
+        initialJointAngles = [pi/2 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
     end
 
     % Non-constant Properties
