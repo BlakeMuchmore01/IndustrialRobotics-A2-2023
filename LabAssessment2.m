@@ -8,6 +8,10 @@ function LabAssessment2()
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
+    % Creating the GUI object
+    guiWindow = GUI;
+    L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
+
     %% Spawning the robots and surrounding environment
     figure(1); % Creating figure to simulate robots
     hold on; axis([-1 1 -1 1 -0.01 1]);
@@ -27,13 +31,5 @@ function LabAssessment2()
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(eye(4)*transl(0,0.3,0),L);
 
-    %% Creating the GUI Figure
-    % figure(2); % Creating figure for GUI
-    % Creating the app GUI object
-
     pause;
-
-
-
-
 end
