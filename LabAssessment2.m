@@ -29,7 +29,7 @@ function LabAssessment2()
     L.mlog = {L.DEBUG,'LabAssessment2','2F-85 gripper object created within the workspace'};
 
     % Spawning the Dobot Magician and associated suction gripper
-    dobotMagician = DobotMagician(eye(4)*transl(0,0.3,0),L);
+    
 
     pause;
 end
