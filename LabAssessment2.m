@@ -14,7 +14,7 @@ function LabAssessment2()
 
     %% Spawning the robots and surrounding environment
     figure(1); % Creating figure to simulate robots
-    hold on; axis([-1 1 -1 1 -0.01 1]);
+    hold on; axis([-1.25 1.25 -1.25 1.25 -1 1]);
 
     % Spawning the Aubo i5 and associated 2F-85 gripper
     auboI5 = AuboI5(eye(4),L);
@@ -28,6 +28,8 @@ function LabAssessment2()
 
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(eye(4)*transl(0,0.3,0));
+
+    table = PlaceObject('BlackjackTable.ply', [0,0,0]); %#ok<NASGU>
 
     pause;
 end
