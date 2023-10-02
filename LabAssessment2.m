@@ -9,8 +9,7 @@ function LabAssessment2()
     L.SetCommandWindowLevel(L.DEBUG);
 
     % Creating a struct of constants used within the demo
-    constants = struct( ...
-        'numFingers', 2);
+    constants = struct('numFingers', 2);
 
     % Creating the GUI object
     guiWindow = GUI;
@@ -18,7 +17,19 @@ function LabAssessment2()
 
     %% Spawning the robots and surrounding environment
     figure(1); % Creating figure to simulate robots
-    hold on; axis([-1.25 1.25 -1.25 1.25 -1 1]);
+    hold on; axis([-1.25 1.25 -1.25 1.25 -0.76 1]);
+
+    % Spawning environment components
+    table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
+    eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
+    fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
+    
+    % Plotting the concrete floor
+    concreteX = [-1.25,-1.25;1.25,1.25];
+    concreteY = [-1.25,1.25;-1.25,1.25];
+    concreteZ = [-0.76,-0.76;-0.76,-0.76];
+    surf(concreteX,concreteY,concreteZ, ...
+        'CData',imread('concrete.jpg'),'FaceColor','texturemap');
 
     % Spawning the Aubo i5 and associated 2F-85 gripper
     auboI5 = AuboI5(eye(4),L);
@@ -32,8 +43,6 @@ function LabAssessment2()
 
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(eye(4)*transl(0,0.3,0));
-
-    table = PlaceObject('BlackjackTable.ply', [0,0,0]); %#ok<NASGU>
 
     pause;
 end
