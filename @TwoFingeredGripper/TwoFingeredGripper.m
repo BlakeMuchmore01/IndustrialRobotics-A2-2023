@@ -49,7 +49,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             end
 
             % Plotting the 2F-140 and associated ply models
-            self.model.plot(self.initialJointAngles,'noname','noshadow','notiles');
+            self.model.plot(self.initialJointAngles,'noname','noshadow','notiles','nowrist','nobase');
 
             % Logging the creation of the gripper finger
             L.mlog = {L.DEBUG,'TwoFingeredGripper',['Gripper Finger ',num2str(fingerNum),' created within the workspace']};

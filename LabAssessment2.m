@@ -8,6 +8,10 @@ function LabAssessment2()
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
+    % Creating a struct of constants used within the demo
+    constants = struct( ...
+        'numFingers', 2);
+
     % Creating the GUI object
     guiWindow = GUI;
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
@@ -22,7 +26,7 @@ function LabAssessment2()
     
     % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
     twoFingeredGripper = []; % Creating cell structure to store gripper fingers
-    for i = 1:2
+    for i = 1:constants.numFingers
         twoFingeredGripper{i} = TwoFingeredGripper(auboI5.toolTr,i,L);
     end
 
@@ -32,4 +36,5 @@ function LabAssessment2()
     table = PlaceObject('BlackjackTable.ply', [0,0,0]); %#ok<NASGU>
 
     pause;
+    guiWindow.delete();
 end
