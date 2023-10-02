@@ -20,13 +20,11 @@ function LabAssessment2()
     auboI5 = AuboI5(eye(4),L);
     auboI5.UpdateToolTr; % Updating end-effector transform property
     
-    % Creating 2F-85 gripper
+    % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
     twoFingeredGripper = []; % Creating cell structure to store gripper fingers
     for i = 1:2
         twoFingeredGripper{i} = TwoFingeredGripper(auboI5.toolTr,i,L);
     end
-    % Logging the creation of the Gripper Model
-    L.mlog = {L.DEBUG,'LabAssessment2','2F-85 gripper object created within the workspace'};
 
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(eye(4)*transl(0,0.3,0));

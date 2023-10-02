@@ -1,5 +1,1 @@
-2023-10-01 13:24:40,083 DEBUG LabAssessment2 - GUI page generated
-2023-10-01 13:24:44,963 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-10-01 13:24:45,575 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-10-01 13:24:45,953 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-10-01 13:24:45,970 DEBUG LabAssessment2 - 2F-85 gripper object created within the workspace
+2023-10-02 13:55:19,271 DEBUG DobotMagician - Dobot Magician object created within the workspace

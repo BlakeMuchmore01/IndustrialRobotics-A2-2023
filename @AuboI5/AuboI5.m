@@ -1,4 +1,6 @@
 %% Aubo i5 Robot
+% https://www.aubo-cobot.com/public/i5product3?CPID=i5
+
 classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties

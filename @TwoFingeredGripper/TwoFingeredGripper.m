@@ -1,4 +1,6 @@
-% 2F-85 Robotiq Gripper for Aubo i5
+%% 2F-140 Robotiq Gripper for Aubo i5
+% https://robotiq.com/products/2f85-140-adaptive-robot-gripper
+
 classdef TwoFingeredGripper < RobotBaseClass
     %% Gripper Class Properties
     % Non-constant Properties
@@ -14,7 +16,7 @@ classdef TwoFingeredGripper < RobotBaseClass
 
     %% ...structors
     methods
-        %% Constructor for 2F-85
+        %% Constructor for 2F-140
         function self = TwoFingeredGripper(baseTr,fingerNum,L)
             % Setting the default base transform if not set within
             % constructor inputs
@@ -35,7 +37,7 @@ classdef TwoFingeredGripper < RobotBaseClass
                 end
             end
 
-            self.CreateModel(); % Creating the Aubo i5 D&H parameter model
+            self.CreateModel(); % Creating the 2F-140 D&H parameter model
 
             % Orientating the Aubo i5 within the workspace
             self.model.base = self.model.base.T * baseTr;
@@ -46,16 +48,21 @@ classdef TwoFingeredGripper < RobotBaseClass
                 self.model.base = self.model.base.T * trotz(pi);
             end
 
-            % Plotting the Aubo i5 and associated ply models
+            % Plotting the 2F-140 and associated ply models
             self.model.plot(self.initialJointAngles,'noname','noshadow','notiles');
 
             % Logging the creation of the gripper finger
             L.mlog = {L.DEBUG,'TwoFingeredGripper',['Gripper Finger ',num2str(fingerNum),' created within the workspace']};
+            
+            % Logging creation of 2F-140 gripper
+            if fingerNum == 2
+                L.mlog = {L.DEBUG,'TwoFingeredGripper','2F-85 gripper object created within the workspace'};
+            end
         end
 
         %% D&H Parameter Serial Link Creation
         function CreateModel(self)
-            % D&H parameters for the 2F-85 finger model
+            % D&H parameters for the 2F-140 finger model
             % DH = [THETA D A ALPHA SIGMA OFFSET]
             % https://robotiq.com/products/2f85-140-adaptive-robot-gripper
             link(1) = Link([0    0.04926     0         pi/2    0     0]);
