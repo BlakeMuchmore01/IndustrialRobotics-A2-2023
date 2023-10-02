@@ -15,7 +15,7 @@ function LabAssessment2()
     guiWindow = GUI;
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
-    %% Spawning the robots and surrounding environment
+    %% Creating the robots and surrounding environment
     figure(1); % Creating figure to simulate robots
     hold on; axis([-1.25 1.25 -1.25 1.25 -0.76 1]);
 
