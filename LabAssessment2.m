@@ -36,5 +36,4 @@ function LabAssessment2()
     table = PlaceObject('BlackjackTable.ply', [0,0,0]); %#ok<NASGU>
 
     pause;
-    guiWindow.delete();
 end
