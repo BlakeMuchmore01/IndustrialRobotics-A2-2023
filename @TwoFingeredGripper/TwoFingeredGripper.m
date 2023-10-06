@@ -50,6 +50,7 @@ classdef TwoFingeredGripper < RobotBaseClass
 
             % Plotting the 2F-140 and associated ply models
             self.model.plot(self.initialJointAngles,'noname','noshadow','notiles','nowrist','nobase');
+            self.PlotAndColourRobot();
 
             % Logging the creation of the gripper finger
             L.mlog = {L.DEBUG,'TwoFingeredGripper',['Gripper Finger ',num2str(fingerNum),' created within the workspace']};
@@ -75,7 +76,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             % Both finger types have same limits
             link(1).qlim = [0 0];
             link(2).qlim = [0 25]*pi/180;
-            link(3).qlim = [10 25]*pi/180;
+            link(3).qlim = [0 25]*pi/180;
             link(4).qlim = [14 15]*pi/180;
             link(5).qlim = [-27 35]*pi/180;
 

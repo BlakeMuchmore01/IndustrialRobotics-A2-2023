@@ -6,7 +6,7 @@ classdef PlayingCards < RobotBaseClass
 
     % Constant Properties
     properties (Access = public, Constant)
-        cardCount = 52; % Default number of playing cards to create/plot
+        cardCount = 10; % Default number of playing cards to create/plot
         WORKSPACE_DIMENSIONS = [-3 3 -3 3 -0.01 -0.01]; % Dimension of workspace
         defaultName = 'PlayingCard'; % Default name for playing cards
     end
