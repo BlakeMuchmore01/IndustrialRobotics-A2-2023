@@ -13,6 +13,7 @@ function LabAssessment2()
 
     % Creating the GUI object
     guiWindow = GUI;
+    pause;
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
     %% Creating the robots and surrounding environment
