@@ -23,29 +23,19 @@ function LabAssessment2()
     
     % Calculate the rotation matrix from auboOrigin
     rotationMatrix = constants.auboOrigin(1:3, 1:3);
-    
+   
+    % Spawning the environmental objects
+    table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
+    eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
+    fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
+
     % Define the original concrete coordinates
     concreteX = [-1.25,-1.25;1.25,1.25];
     concreteY = [-1.25,1.25;-1.25,1.25];
     concreteZ = [-0.76,-0.76;-0.76,-0.76];
     
-    % Apply the rotation to the concrete coordinates
-    rotatedConcreteX = rotationMatrix(1, 1) * concreteX + rotationMatrix(1, 2) * concreteY;
-    rotatedConcreteY = rotationMatrix(2, 1) * concreteX + rotationMatrix(2, 2) * concreteY;
-    rotatedConcreteZ = concreteZ;
-    
-    % Translate the rotated coordinates based on auboOrigin
-    concreteXTranslated = rotatedConcreteX + constants.auboOrigin(1, 4);
-    concreteYTranslated = rotatedConcreteY + constants.auboOrigin(2, 4);
-    concreteZTranslated = rotatedConcreteZ + constants.auboOrigin(3, 4);
-
-    % Spawning the environmental objects
-    table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
-    eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
-    fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
-    
     % Plot the concrete floor
-    surf(concreteXTranslated, concreteYTranslated, concreteZTranslated, ...
+    surf(concreteX, concreteY, concreteZ, ...
         'CData', imread('concrete.jpg'), 'FaceColor', 'texturemap');
     
     %% Spawning the Robots and Grippers
