@@ -9,12 +9,12 @@ function LabAssessment2()
     L.SetCommandWindowLevel(L.DEBUG);
 
     % Creating a struct of constants used within the demo
-    constants = struct('numFingers', 2, ...
-        'axis', [-1.25 1.25 -1.25 1.25 -0.76 1.5], ...
-        'auboOrigin', eye(4));
+    constants = struct('axis', [-1.25 1.25 -1.25 1.25 -0.76 1.5], ...
+        'numFingers', 2, 'auboOrigin', eye(4));
 
     % Creating the GUI object
     guiWindow = GUI;
+    guiWindow.LoadLogFile(L);
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
     %% Creating the robot's surrounding environment
@@ -28,11 +28,6 @@ function LabAssessment2()
     concreteX = [-1.25,-1.25;1.25,1.25];
     concreteY = [-1.25,1.25;-1.25,1.25];
     concreteZ = [-0.76,-0.76;-0.76,-0.76];
-
-    % Defining the environmental object coordiantes
-    tableCoordiantes = [0 0 0];
-    eStopCoordinates = [-0.17 -0.3 -0.2];
-    fireExtinguisherCoordinates = [-1.75 1.65 -1.3];
     
     % Apply the rotation to the concrete coordinates
     rotatedConcreteX = rotationMatrix(1, 1) * concreteX + rotationMatrix(1, 2) * concreteY;
@@ -44,11 +39,10 @@ function LabAssessment2()
     concreteYTranslated = rotatedConcreteY + constants.auboOrigin(2, 4);
     concreteZTranslated = rotatedConcreteZ + constants.auboOrigin(3, 4);
 
-    
     % Spawning the environmental objects
-    table = PlaceObject('BlackjackTable.ply', constants.auboOrigin * [0 0 0]); %#ok<NASGU>
-    eStop = PlaceObject('EStop.ply', constants.auboOrigin * [-0.17 -0.3 -0.2]); %#ok<NASGU>
-    fireExtinguisher = PlaceObject('FireExtinguisher.ply', constants.auboOrigin * [-1.75 1.65 -1.3]); %#ok<NASGU>
+    table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
+    eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
+    fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
     
     % Plot the concrete floor
     surf(concreteXTranslated, concreteYTranslated, concreteZTranslated, ...
@@ -67,6 +61,9 @@ function LabAssessment2()
 
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(constants.auboOrigin*transl(0,0.3,0));
+
+    %% Code functionality
+    while(guiWindow.GetChosenMode() )
 
     pause;
 end

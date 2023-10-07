@@ -9,14 +9,12 @@ function LabAssessment2()
     L.SetCommandWindowLevel(L.DEBUG);
 
     % Creating a struct of constants used within the demo
-    constants = struct('numFingers', 2, ...
-        'axis', [-1.25 1.25 -1.25 1.25 -0.76 1.5], ...
-        'auboOrigin', eye(4));
+    constants = struct('axis', [-1.25 1.25 -1.25 1.25 -0.76 1.5], ...
+        'numFingers', 2, 'auboOrigin', eye(4));
 
     % Creating the GUI object
     guiWindow = GUI;
     guiWindow.LoadLogFile(L);
-    pause;
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
     %% Creating the robot's surrounding environment
@@ -63,6 +61,8 @@ function LabAssessment2()
 
     % Spawning the Dobot Magician and associated suction gripper
     dobotMagician = DobotMagician(constants.auboOrigin*transl(0,0.3,0));
+
+    %% Code functionality
 
     pause;
 end
