@@ -16,6 +16,7 @@ function LabAssessment2()
     % Creating the GUI object
     guiWindow = GUI;
     guiWindow.LoadLogFile(L);
+    pause;
     L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
     %% Creating the robot's surrounding environment
