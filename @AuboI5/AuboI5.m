@@ -41,6 +41,7 @@ classdef AuboI5 < RobotBaseClass
 
             % Plotting the Aubo i5 and associated ply models
             self.model.plot(self.initialJointAngles,'noname','noshadow','nowrist','nobase','notiles');
+            self.PlotAndColourRobot();
 
             % Logging the creation of the Aubo i5
             L.mlog = {L.DEBUG,'AuboI5','Aubo i5 object created within the workspace'};
