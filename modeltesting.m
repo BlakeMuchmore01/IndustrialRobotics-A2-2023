@@ -1,6 +1,7 @@
 clf; clear; clc;
 model = 2;
 
+figure(1);
 
 if model == 1
     % Creating log file and setting command window level
