@@ -17,7 +17,7 @@ function LabAssessment2()
 
     %% Creating the robots and surrounding environment
     figure(1); % Creating figure to simulate robots
-    hold on; axis([-1.25 1.25 -1.25 1.25 -0.76 1]);
+    hold on; axis([-1.25 1.25 -1.25 1.25 -0.76 1.25]);
 
     % Spawning environment components
     table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
@@ -34,6 +34,8 @@ function LabAssessment2()
     % Spawning the Aubo i5 and associated 2F-85 gripper
     auboI5 = AuboI5(eye(4),L);
     auboI5.UpdateToolTr; % Updating end-effector transform property
+    auboI5.model.teach(auboI5.model.getpos());
+    pause;
     
     % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
     twoFingeredGripper = []; % Creating cell structure to store gripper fingers

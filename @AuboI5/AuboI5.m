@@ -5,7 +5,7 @@ classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 pi/2 0 pi/2 pi/2 0]; % Default starting pose for Aubo i5
+        initialJointAngles = [0 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
     end
 
     % Non-constant Properties
@@ -52,10 +52,10 @@ classdef AuboI5 < RobotBaseClass
             % DH = [THETA D A ALPHA SIGMA OFFSET]
             % https://www.aubo-cobot.com/public/i5product3?CPID=i5
             link(1) = Link([0    0.1215   0        pi/2   0   0]);
-            link(2) = Link([0    0        0.1405   0      0   0]);
+            link(2) = Link([0    0        0.4080   0      0   0]);
             link(3) = Link([0    0        0.3760   0      0   0]);
             link(4) = Link([0   -0.1025   0        pi/2   0   0]);
-            link(5) = Link([0    0.1025   0       -pi/2   0   0]);
+            link(5) = Link([0    0.1025   0        pi/2   0   0]);
             link(6) = Link([0    0.0940   0        0      0   0]);
 
             % Qlims for each joint
