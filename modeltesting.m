@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 1;
+model = 2;
 
 
 if model == 1
