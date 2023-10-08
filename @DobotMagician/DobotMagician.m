@@ -64,6 +64,23 @@ classdef DobotMagician < RobotBaseClass
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
         end   
+
+        %% Moving the Dobot Magician to a Desired Transform
+        function MoveToCartesian(self, coordinateTransform)
+            % Using inverse kinematics to get final joint angles
+            qFinal = self.model.ikcon(coordinateTransform);
+
+            % Calcualting the qmatrix to move from current to final joint angles
+            qMatrix = jtraj(self.model.getpos(), qFinal, 100);
+
+            % Looping through each of the joint states in the qMatrix and
+            % animating the movement of the dobot magician
+            for i = 1:size(qMatrix, 1)
+                % Animating the aubo i5 movement
+                self.model.animate(qMatrix(i,:)); % Animating the dobot magician
+                drawnow(); % Updating the figure plot
+            end
+        end
     end
     
     methods(Static)

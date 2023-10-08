@@ -33,6 +33,10 @@ classdef AuboI5 < RobotBaseClass
                 end
             end
 
+            % % Loading the data for the 2F-140 gripper object
+            % self.useTool = true; % Setting useTool property to true (indicates gripper in use)
+            % self.toolFilename = '@TwoFingeredGripper/TwoFingeredGripper'; 
+
             self.CreateModel(); % Creating the Aubo i5 D&H parameter model
 
             % Orientating the Aubo i5 within the workspace
@@ -78,6 +82,25 @@ classdef AuboI5 < RobotBaseClass
             % Used to update the pose of the gripper to the end-effector
             self.currentJointAngles = self.model.getpos(); % Getting the current joint angles of Aubo i5
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
+        end
+
+        %% Moving the Aubo i5 to a Desired Transform
+        function MoveToCartesian(self, coordinateTransform)
+            % Using inverse kinematics to get final joint angles
+            qFinal = self.model.ikcon(coordinateTransform);
+
+            % Calcualting the qmatrix to move from current to final joint angles
+            qMatrix = jtraj(self.model.getpos(), qFinal, 100);
+
+            % Looping through each of the joint states in the qMatrix and
+            % animating the movement of the aubo i5
+            for i = 1:size(qMatrix, 1)
+                % Animating the aubo i5 movement
+                self.model.animate(qMatrix(i,:)); % Animating the aubo i5
+                self.UpdateToolTr; % Updating tool transform location
+
+                drawnow(); % Updating the figure plot
+            end
         end
 
     end
