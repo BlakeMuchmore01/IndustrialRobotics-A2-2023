@@ -1,6 +1,6 @@
 %% Main Function
 % CoBot Blackjack Table Simulation
-function LabAssessment2()
+function MainFunction()
     clear; clc; clf; close all; % Clearing workspace, command window, and figures
     % profile on; % Profiling the code
 
@@ -20,9 +20,6 @@ function LabAssessment2()
     %% Creating the robot's surrounding environment
     figure(1); % Creating figure to simulate robots
     hold on; axis(constants.axis);
-    
-    % Calculate the rotation matrix from auboOrigin
-    rotationMatrix = constants.auboOrigin(1:3, 1:3);
    
     % Spawning the environmental objects
     table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
@@ -44,13 +41,13 @@ function LabAssessment2()
     auboI5.UpdateToolTr; % Updating end-effector transform property
     
     % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
-    twoFingeredGripper = []; % Creating cell structure to store gripper fingers
+    twoFingeredGripper = cell(1, 2); % Creating cell structure to store gripper fingers
     for i = 1:constants.numFingers
-        twoFingeredGripper{i} = TwoFingeredGripper(auboI5.toolTr,i,L);
+        twoFingeredGripper{i} = TwoFingeredGripper(auboI5.toolTr, i, L);
     end
 
     % Spawning the Dobot Magician and associated suction gripper
-    dobotMagician = DobotMagician(constants.auboOrigin*transl(0,0.3,0));
+    dobotMagician = DobotMagician(constants.auboOrigin*transl(0, 0.3, 0));
 
     %% Code functionality
 
