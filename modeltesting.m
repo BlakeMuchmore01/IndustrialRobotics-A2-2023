@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 2;
+model = 1;
 
 figure(1);
 
@@ -14,7 +14,7 @@ if model == 1
         twoFingeredGripper{i} = TwoFingeredGripper(eye(4),i,L);
     end
     
-    twoFingeredGripper{1}.model.teach(zeros(1,5));
+    twoFingeredGripper{1}.model.teach([0 45 45]*pi/180);
 end
 
 if model == 2

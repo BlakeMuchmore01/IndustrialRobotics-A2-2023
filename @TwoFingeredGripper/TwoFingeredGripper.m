@@ -1,4 +1,4 @@
-%% 2F-140 Robotiq Gripper for Aubo i5
+%% 2F-85 Robotiq Gripper for Aubo i5
 % https://robotiq.com/products/2f85-140-adaptive-robot-gripper
 
 classdef TwoFingeredGripper < RobotBaseClass
@@ -11,12 +11,12 @@ classdef TwoFingeredGripper < RobotBaseClass
 
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = zeros(1,5); % Default starting pose for Gripper Finger
+        initialJointAngles = [0 45 45]*pi/180; % Default starting pose for Gripper Finger
     end
 
     %% ...structors
     methods
-        %% Constructor for 2F-140
+        %% Constructor for 2F-85
         function self = TwoFingeredGripper(baseTr,fingerNum,L)
             % Setting the default base transform if not set within
             % constructor inputs
@@ -30,16 +30,18 @@ classdef TwoFingeredGripper < RobotBaseClass
                     % Logging that the default base transform has been used
                     L.mlog = {L.DEBUG,'TwoFingeredGripper','Base transform not set. Default base transform used'};
                     baseTr = eye(4); % Setting base transform as default
-                    
+                end
+
+                if nargin < 1
                     % Logging that the default finger number has been used
                     L.mlog = {L.DEBUG,'TwoFingeredGripper','Finger number not set. Default finger number used'};
                     fingerNum = 1; % Setting default finger number
                 end
             end
 
-            self.CreateModel(); % Creating the 2F-140 D&H parameter model
+            self.CreateModel(); % Creating the 2F-85 D&H parameter model
 
-            % Orientating the Aubo i5 within the workspace
+            % Orientating the 2F-85 within the workspace
             self.model.base = self.model.base.T * baseTr;
             self.homeQ = self.initialJointAngles; % Setting initial pose of Aubo i5
 
@@ -55,7 +57,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             % Logging the creation of the gripper finger
             L.mlog = {L.DEBUG,'TwoFingeredGripper',['Gripper Finger ',num2str(fingerNum),' created within the workspace']};
             
-            % Logging creation of 2F-140 gripper
+            % Logging creation of 2F-85 gripper
             if fingerNum == 2
                 L.mlog = {L.DEBUG,'TwoFingeredGripper','2F-85 gripper object created within the workspace'};
             end
@@ -63,22 +65,18 @@ classdef TwoFingeredGripper < RobotBaseClass
 
         %% D&H Parameter Serial Link Creation
         function CreateModel(self)
-            % D&H parameters for the 2F-140 finger model
+            % D&H parameters for the 2F-85 finger model
             % DH = [THETA D A ALPHA SIGMA OFFSET]
             % https://robotiq.com/products/2f85-140-adaptive-robot-gripper
-            link(1) = Link([0    0.04926     0         pi/2    0     0]);
-            link(2) = Link([0    0           0.059695  0       0     0]);
-            link(3) = Link([0    0           0.08174   0       0     50*pi/180]);
-            link(4) = Link([0    0           0.01445   0       0     50*pi/180]);
-            link(5) = Link([0    0           0.07006   0       0    -45*pi/180]);
+            link(1) = Link([0    0.06118   0.01270   pi/2   0   0]);
+            link(2) = Link([0    0         0.05718   0      0   0]);
+            link(3) = Link([0    0         0.04510   0      0   0]);
 
             % Incorporating joint limits 
             % Both finger types have same limits
             link(1).qlim = [0 0];
-            link(2).qlim = [0 25]*pi/180;
-            link(3).qlim = [0 25]*pi/180;
-            link(4).qlim = [14 15]*pi/180;
-            link(5).qlim = [-27 35]*pi/180;
+            link(2).qlim = [45 100]*pi/180;
+            link(3).qlim = [-10 45]*pi/180;
 
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
