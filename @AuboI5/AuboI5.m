@@ -44,7 +44,6 @@ classdef AuboI5 < RobotBaseClass
             self.homeQ = self.initialJointAngles; % Setting initial pose of Aubo i5
 
             % Plotting the Aubo i5 and associated ply models
-            self.model.plot(self.initialJointAngles,'noname','noshadow','nowrist','nobase','notiles');
             self.PlotAndColourRobot();
 
             % Logging the creation of the Aubo i5
