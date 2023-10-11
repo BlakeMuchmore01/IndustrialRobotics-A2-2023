@@ -19,7 +19,7 @@ function MainFunction()
 
     %% Creating the robot's surrounding environment
     figure(1); % Creating figure to simulate robots
-    hold on; axis(constants.axis);
+    hold on; axis(constants.axis); camlight;
    
     % Spawning the environmental objects
     table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>

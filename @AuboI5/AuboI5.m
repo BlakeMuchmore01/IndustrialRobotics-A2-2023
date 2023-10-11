@@ -6,6 +6,8 @@ classdef AuboI5 < RobotBaseClass
     % Constant Properties
     properties (Access = public, Constant)
         initialJointAngles = [0 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
+        maxManipulationMeasure = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
+        movementSteps = 100; % Number of steps allocated for movement trajectories
     end
 
     % Non-constant Properties
@@ -85,11 +87,15 @@ classdef AuboI5 < RobotBaseClass
 
         %% Moving the Aubo i5 to a Desired Transform
         function MoveToCartesian(self, coordinateTransform)
+            % Pre-allocating memory
+            qMatrix = zeros(self.movementSteps, self.model.n); % Pre-allocating memory for the trajectory joint angles
+            manipulability = zeros(1, self.movementSteps); % Pre-allocating memory for manipulability measurements
+
             % Using inverse kinematics to get final joint angles
             qFinal = self.model.ikcon(coordinateTransform);
 
-            % Calcualting the qmatrix to move from current to final joint angles
-            qMatrix = jtraj(self.model.getpos(), qFinal, 100);
+            % Calcualting the qmatrix trajectory to move from current to final joint angles
+            qMatrix = jtraj(self.model.getpos(), qFinal, self.movementSteps);
 
             % Looping through each of the joint states in the qMatrix and
             % animating the movement of the aubo i5
