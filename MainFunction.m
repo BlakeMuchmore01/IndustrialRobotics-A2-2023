@@ -5,6 +5,7 @@ function MainFunction()
     % profile on; % Profiling the code
 
     % Creating log file and setting command window level
+    
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
