@@ -1,11 +1,11 @@
 %% Dobot Magician Robot
 % URL: https://en.dobot.cn/products/education/magician.html
 
-classdef DobotMagician < RobotBaseClass
+classdef DMagician < RobotBaseClass
     %% Robot Class Properties
     % Non-constant properties
     properties (Access = public)   
-        plyFileNameStem = 'DobotMagician'; % Name stem used to find associated ply model files
+        plyFileNameStem = 'DMagician'; % Name stem used to find associated ply model files
     end
 
     % Constant properties
@@ -16,7 +16,7 @@ classdef DobotMagician < RobotBaseClass
     %% ...structors
     methods (Access = public) 
         %% Constructor 
-        function self = DobotMagician(baseTr, L)
+        function self = DMagician(baseTr, L)
 			% Setting the default base transform if not set within
             % constructor inputs
             if nargin < 2
@@ -53,7 +53,7 @@ classdef DobotMagician < RobotBaseClass
             link(3) = Link([0    0              0.147    0      0    0]);
             link(4) = Link([0    0              0.060    pi/2   0   -pi/2]);
             link(5) = Link([0   -0.05           0        0      0    pi]);
-
+            
             % Qlims for each joint
             link(1).qlim = [-135 135]*pi/180;
             link(2).qlim = [5    80]*pi/180;
