@@ -27,7 +27,7 @@ classdef DMagician < RobotBaseClass
 
                 if nargin < 1
                     % Logging that the default base transform has been used
-                    L.mlog = {L.DEBUG,'DobotMagician','Base transform not set. Default base transform used'};
+                    L.mlog = {L.DEBUG,'DMagician','Base transform not set. Default base transform used'};
                     baseTr = eye(4); % Setting base transform as default
                 end
             end
@@ -40,7 +40,7 @@ classdef DMagician < RobotBaseClass
             self.PlotAndColourRobot(); % Plotting the dobot magician and associated ply models
 
             % Logging the creation of the Dobot Magician
-            L.mlog = {L.DEBUG,'DobotMagician','Dobot Magician object created within the workspace'};
+            L.mlog = {L.DEBUG,'DMagician','Dobot Magician object created within the workspace'};
         end
 
         %% D&H Parameter Serial Link Creation

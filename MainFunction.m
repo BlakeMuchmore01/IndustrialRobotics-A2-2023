@@ -48,7 +48,7 @@ function MainFunction()
     end
 
     % Spawning the Dobot Magician and associated suction gripper
-    dobotMagician = DobotMagician(constants.auboOrigin*transl(0, 0.3, 0));
+    dobotMagician = DMagician(constants.auboOrigin*transl(0, 0.3, 0));
 
     %% Code functionality
 
