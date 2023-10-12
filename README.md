@@ -22,3 +22,16 @@ Users will have the following functionalities:
 
 The cobots will undergo active collision avoidance when required within the active environment.
 This will also include pausing the cobot's movement while unauthorised objects are within the unsafe zone.
+
+TO DO:
+- Create jogging slider for GUI (alongside code)
+- Arduino estop
+- Demo code (Teach + Blackjack game)
+- Active sensors for detection of collisions (Bonus)
+- Collision detection
+	- Active collision detection + avoidance
+- RMRC Movement
+- Light Curtain
+- Aubo Models
+- Playing card positioning and spawning
+- Real world demo
