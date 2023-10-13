@@ -13,6 +13,7 @@ classdef AuboI5 < RobotBaseClass
     % Non-constant Properties
     properties (Access = public)
         currentJointAngles; % Current joint angles of the Aubo i5
+        tool = cell(1,2); % Variable to store the tool (2F-85 Gripper) that is used by the Aubo i5
         plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
     end
 
@@ -35,10 +36,6 @@ classdef AuboI5 < RobotBaseClass
                 end
             end
 
-            % % Loading the data for the 2F-140 gripper object
-            % self.useTool = true; % Setting useTool property to true (indicates gripper in use)
-            % self.toolFilename = '@TwoFingeredGripper/TwoFingeredGripper'; 
-
             self.CreateModel(); % Creating the Aubo i5 D&H parameter model
 
             % Orientating the Aubo i5 within the workspace
@@ -50,6 +47,12 @@ classdef AuboI5 < RobotBaseClass
 
             % Logging the creation of the Aubo i5
             L.mlog = {L.DEBUG,'AuboI5','Aubo i5 object created within the workspace'};
+
+            % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
+            self.UpdateToolTr; % Updating the end-effector transform property
+            for gripperFinger = 1:2
+                self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
+            end
         end
 
         %% D&H Parameter Serial Link Creation

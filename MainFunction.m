@@ -5,7 +5,6 @@ function MainFunction()
     % profile on; % Profiling the code
 
     % Creating log file and setting command window level
-    
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
@@ -37,18 +36,8 @@ function MainFunction()
         'CData', imread('concrete.jpg'), 'FaceColor', 'texturemap');
     
     %% Spawning the Robots and Grippers
-    % Spawning the Aubo i5 and associated 2F-85 gripper
-    auboI5 = AuboI5(constants.auboOrigin,L);
-    auboI5.UpdateToolTr; % Updating end-effector transform property
-    
-    % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
-    twoFingeredGripper = cell(1, 2); % Creating cell structure to store gripper fingers
-    for i = 1:constants.numFingers
-        twoFingeredGripper{i} = TwoFingeredGripper(auboI5.toolTr, i, L);
-    end
-
-    % Spawning the Dobot Magician and associated suction gripper
-    dobotMagician = DobotMagician(constants.auboOrigin*transl(0, 0.3, 0));
+    auboI5 = AuboI5(constants.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    dobotMagician = DMagician(constants.auboOrigin*transl(0, 0.3, 0)); % Spawning the Dobot Magician and associated suction gripper
 
     %% Code functionality
 
