@@ -13,14 +13,13 @@ function MainFunction()
         'numFingers', 2, 'auboOrigin', eye(4));
 
     % Creating the GUI object
-    % guiWindow = GUI;
-    % guiWindow.LoadLogFile(L);
-    % L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
+    guiWindow = GUI;
+    guiWindow.LoadLogFile(L);
+    L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'};
 
     %% Creating the robot's surrounding environment
     figure(1); % Creating figure to simulate robots
     hold on; axis(constants.axis); camlight;
-   clc
 
     % Spawning the environmental objects
     table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
@@ -28,10 +27,10 @@ function MainFunction()
     cardstand = PlaceObject('CardStand.ply', [0.35 0.63 0.02]); %#ok<NASGU>
     cardstand = PlaceObject('CardStand.ply', [0.35 -0.3 0.02]); %#ok<NASGU>
     cardstand = PlaceObject('CardStand.ply', [0.2 0.16 0.02]); %#ok<NASGU>
+    eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
+    fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
 
-    % eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>solid
-    % fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
-
+    % Spawning the cards in their initial positions
     cards = PlayingCards(constants.auboOrigin*transl(0,0.4,0.01),L);
   
     % Define the original concrete coordinates
