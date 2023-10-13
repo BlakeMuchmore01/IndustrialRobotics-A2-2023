@@ -25,9 +25,9 @@ function MainFunction()
     % Spawning the environmental objects
     table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
     cardstand = PlaceObject('CardStand.ply', [0.5 0.16 0.02]); %#ok<NASGU>
-    cardstand = PlaceObject('CardStand.ply', [0.35 0.63 0.02]); %#ok<NASGU>
+    cardstand = PlaceObject('CardStand.ply', [0.35 0.66 0.02]); %#ok<NASGU>
     cardstand = PlaceObject('CardStand.ply', [0.35 -0.3 0.02]); %#ok<NASGU>
-    cardstand = PlaceObject('CardStand.ply', [0.2 0.16 0.02]); %#ok<NASGU>
+    cardstand = PlaceObject('CardStand.ply', [0.35 -0.3 0.02]); %#ok<NASGU>
 
     % eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>solid
     % fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>

@@ -23,8 +23,10 @@ if model == 2
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
+    figure(1);
     % Creating aubo i5
     r = AuboI5(eye(4),L);
+    axis([-1 1 -1 1 -1 1]);
 end
 
 pause;

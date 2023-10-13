@@ -8,12 +8,12 @@ classdef PlayingCards < RobotBaseClass
     properties (Access = public, Constant)
         cardCount = 10; % Default number of playing cards to create/plot
         WORKSPACE_DIMENSIONS = [-3 3 -3 3 -0.01 -0.01]; % Dimension of workspace
-        defaultName = 'PlayingCard'; % Default name for playing cards
     end
 
     % Non-constant properties
     properties (Access = public)
         cardModels; % Cell structure to store the playing cards created
+        plyFileNameStem = 'PlayingCard'; % Default name for playing cards
     end
 
     %% ...structors
@@ -36,31 +36,31 @@ classdef PlayingCards < RobotBaseClass
             end
 
             % Plotting the playing cards within the workspace
-            for i = 1:self.CreateModel
+            for i = 1:self.cardCount
                 % Creating the playing card D&H link model
-                self.cardModels{i} = self.GetCardModel(self,[self.defaultName,num2str(i)]);
-                self.cardModels{i}.base = self.cardModels{i}.base.T * baseTr; % Updating base pose of playing card
+                self.cardModels{i} = self.CreateModel(['card',num2str(i)]);
+                self.cardModels{i}.base = self.cardModels{i}.base.T * baseTr * transl(0,0,0.001*i); % Updating base pose of playing card
 
                 % Plotting the playing card
                 plot3d(self.cardModels{i},0,'workspace',self.WORKSPACE_DIMENSIONS,'view', ...
                     [-30,30],'delay',0,'noarrow','nowrist', 'notiles');
 
-                % Logging creation of brick
-                L.mlog = {L.DEBUG,'HalfSizedRedGreenBrick',['Brick ',num2str(i),' created within the workspace']};
+                % Logging creation of cards
+                L.mlog = {L.DEBUG,'PlayingCards',['Card ',num2str(i),' created within the workspace']};
             end
         end
     end
 
     methods (Static)
         %% Creating the playing card link models
-        function model = GetCardModel(self, name)
-            % Setting default name scheme for brick if no argin
+        function model = CreateModel(name)
+            % Setting default name scheme for card if no argin
             if nargin < 1
-                name = self.DEFAULT_NAME;
+                name = 'card';
             end
 
             % Reading the playing card model ply file and creating links
-            [faceData,vertexData] = plyread('PlayingCard.ply','tri');
+            [faceData,vertexData] = plyread('PlayingCardLink0.ply','tri');
             link(1) = Link([0   0.01   0   pi   0   0]);
             model = SerialLink(link,'name',name); % Creating link model
 
