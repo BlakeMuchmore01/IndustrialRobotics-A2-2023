@@ -24,7 +24,6 @@ The cobots will undergo active collision avoidance when required within the acti
 This will also include pausing the cobot's movement while unauthorised objects are within the unsafe zone.
 
 TO DO:
-- Create jogging slider for GUI (alongside code)
 - Arduino estop
 - Demo code (Teach + Blackjack game)
 - Active sensors for detection of collisions (Bonus)
