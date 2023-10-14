@@ -25,12 +25,14 @@ This will also include pausing the cobot's movement while unauthorised objects a
 
 TO DO:
 - Arduino estop
-- Demo code (Teach + Blackjack game)
 - Active sensors for detection of collisions (Bonus)
+
 - Collision detection
 	- Active collision detection + avoidance
 - RMRC Movement
 - Light Curtain
+- Demo code (Teach + Blackjack game)
+
 - Aubo Models
 - Playing card positioning and spawning
 - Real world demo

@@ -31,7 +31,7 @@ function MainFunction()
     fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
 
     % Spawning the cards in their initial positions
-    cards = PlayingCards(constants.auboOrigin*transl(0,0.4,0.01),L);
+    cards = PlayingCards(constants.auboOrigin*transl(0.2,0.4,0.01),L);
   
     % Define the original concrete coordinates
     concreteX = [-1.25,-1.25;1.25,1.25];
@@ -47,21 +47,15 @@ function MainFunction()
     dobotMagician = DMagician(constants.auboOrigin*transl(0, 0.3, 0)); % Spawning the Dobot Magician and associated suction gripper
 
     %% Code functionality
+    x2 = [0.3, 0.2, 0.5];
+    tr = eye(4);
+    tr(1:3,4) = x2;
+
+    auboI5.MoveToCartesian(tr);
 
 
 
 
 
     pause;
-end
-
-function cards()
-
-    cardpositionmatrix = [[] [] [] [] [];
-                          [] [] [] [] [];
-                          [] [] [] [] [];];
-
-    
-
-
 end
