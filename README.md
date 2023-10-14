@@ -34,5 +34,5 @@ TO DO:
 - Demo code (Teach + Blackjack game)
 
 - Aubo Models
-- Playing card positioning and spawning
+- Playing card final positioning
 - Real world demo
