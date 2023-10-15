@@ -41,13 +41,11 @@ classdef AuboI5 < RobotBaseClass
 
             self.CreateModel(); % Creating the Aubo i5 D&H parameter model
 
-            % Orientating the Aubo i5 within the workspace
-            self.model.base = self.model.base.T * baseTr;
+            self.model.base = self.model.base.T * baseTr; % Orientating the Aubo i5 within the workspace
             self.homeQ = self.initialJointAngles; % Setting initial pose of Aubo i5
 
             % Plotting the Aubo i5 and associated ply models
             self.PlotAndColourRobot();
-            %self.model.plot(self.homeQ);
 
             % Logging the creation of the Aubo i5
             L.mlog = {L.DEBUG,'AuboI5','Aubo i5 object created within the workspace'};
