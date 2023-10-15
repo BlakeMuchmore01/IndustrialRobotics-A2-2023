@@ -27,6 +27,8 @@ if model == 2
     % Creating aubo i5
     r = AuboI5(eye(4),L);
     axis([-1 1 -1 1 -1 1]);
+
+    r.model.teach([0 pi/2 0 pi/2 0 0]);
 end
 
 pause;
