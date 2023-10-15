@@ -23,12 +23,12 @@ classdef Arduino < handle
                 
                 % self.ardObj = arduino(Arduino.port, Arduino.board);
                 % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
-                self.ardObj = serial('COM3', 'BaudRate', 9600);
-                fopen(self.ardObj);
-               
+                self.ardObj = serialport('COM3', 9600);
+                configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
+
         end
 
-        function stateChanged = CheckButtonPressed(self)
+        function CheckButtonPressed(self)
 
                 % currentState = readDigitalPin(self.ardObj, self.pin);
                 % 
@@ -42,9 +42,17 @@ classdef Arduino < handle
                 %     disp("State Changed");
                 % end
 
-                data = fgetl(self.ardObj);
+                write(self.ardObj,8,"uint8");
+
+                data = readline(self.ardObj);
                 disp(data);
         end
 
+        function LED(self)
+
+
+           write(self.ardObj,8,"uint8");
+
+        end
     end
 end

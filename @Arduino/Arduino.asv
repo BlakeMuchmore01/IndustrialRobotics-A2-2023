@@ -21,27 +21,27 @@ classdef Arduino < handle
 
         function self = Arduino()
                 
-                %self.ardObj = arduino(Arduino.port, Arduino.board);
-                %self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
-                self.ardObj = serial('COM3', 'BaudRate', 9600);
-                fopen(self.ardObj);
-               
+                % self.ardObj = arduino(Arduino.port, Arduino.board);
+                % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
+                self.ardObj = serialport('COM3', 9600);
+                configureCallback(s,"terminator",@readSerialData)  
+
+        function CheckButtonPressed(self)
+
+                % currentState = readDigitalPin(self.ardObj, self.pin);
+                % 
+                % if self.pinState ~= currentState
+                % 
+                %     self.pinState = currentState;
+                %     stateChanged = true;
+                %     disp("State Changed");
+                % else
+                %     stateChanged = false;
+                %     disp("State Changed");
+                % end
+
+                data = readline(self.ardObj);
+                disp(data);
         end
-
-        function stateChanged = CheckButtonPressed(self)
-
-                currentState = readDigitalPin(self.ardObj, self.pin);
-
-                if self.pinState ~= currentState
-
-                    self.pinState = currentState;
-                    stateChanged = true;
-                    disp("State Changed");
-                else
-                    stateChanged = false;
-                    disp("State Changed");
-                end
-        end
-
     end
 end

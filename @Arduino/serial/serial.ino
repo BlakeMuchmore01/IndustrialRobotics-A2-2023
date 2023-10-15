@@ -15,16 +15,22 @@ void loop() {
   buttonState = digitalRead(buttonPin);
 
   if (buttonState != prevButtonState && buttonState == LOW) {
-
     isOn = !isOn;
-    if(isOn == 0) {
-      Serial.println("off");
-    }
-    if(isOn == 1) {
-      Serial.println("on");
-    }
   }
 
+  if(Serial.available() > 0) {
+
+    int byte = Serial.read();
+
+    if(byte == 8) {
+      delay(10);
+      Serial.println(isOn);
+    }
+
+  }
+
+
+  
   prevButtonState = buttonState;
   delay(50);
 
