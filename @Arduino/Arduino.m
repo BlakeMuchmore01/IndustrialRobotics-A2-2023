@@ -4,41 +4,55 @@ classdef Arduino < handle
 
     properties (Constant)
 
-        
-        port = "COM4";
+        port = "COM3";
         board = "Uno";
-        pin = "D13";
-        
-            
+        pin = "D13";   
+
     end
 
     properties
 
+        ardObj;
         pinState = 0;
 
     end
 
-    methods (Static)
+    methods
 
-        function self = InitiateArduino()
+        function self = Arduino()
                 
-                self = arduino(Arduino.port, Arduino.board);
-                self.pinState = readDigitalPin(self, self.pin);
-               
+                % self.ardObj = arduino(Arduino.port, Arduino.board);
+                % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
+                self.ardObj = serialport('COM3', 9600);
+                configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
+
         end
 
-        function stateChanged = CheckButtonPressed(self)
+        function CheckButtonPressed(self)
 
-                currentState = readDigitalPin(self, Arduino.pin);
+                % currentState = readDigitalPin(self.ardObj, self.pin);
+                % 
+                % if self.pinState ~= currentState
+                % 
+                %     self.pinState = currentState;
+                %     stateChanged = true;
+                %     disp("State Changed");
+                % else
+                %     stateChanged = false;
+                %     disp("State Changed");
+                % end
 
-                if self.pinState ~= currentState
+                write(self.ardObj,8,"uint8");
 
-                    self.pinState = currentState;
-                    stateChanged = true;
-                else
-                    stateChanged = false;
-                end
+                data = readline(self.ardObj);
+                disp(data);
         end
 
+        function LED(self)
+
+
+           write(self.ardObj,8,"uint8");
+
+        end
     end
 end
