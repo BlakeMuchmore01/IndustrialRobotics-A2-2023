@@ -24,10 +24,9 @@ The cobots will undergo active collision avoidance when required within the acti
 This will also include pausing the cobot's movement while unauthorised objects are within the unsafe zone.
 
 TO DO:
-- Active sensors for detection of collisions (Bonus)
-
 - Collision detection
 	- Active collision detection + avoidance
+    - Active sensors for detection of collisions (Bonus)
 - Demo code (Teach + Blackjack game)
 
 - Aubo Models
