@@ -102,5 +102,11 @@ classdef TwoFingeredGripper < RobotBaseClass
             end
         end
 
+        %% Updater of Gripper Position
+        function UpdateGripperPosition(self, baseTr)
+            % Updating the base positon of the gripper finger
+            self.model.base = self.model.base.T * baseTr;
+        end
+
     end
 end
