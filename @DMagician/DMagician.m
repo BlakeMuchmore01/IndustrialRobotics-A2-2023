@@ -11,6 +11,11 @@ classdef DMagician < RobotBaseClass
     % Constant properties
     properties (Access = public, Constant)
         defaultRealQ  = [0,pi/4,pi/4,0,0]; % Default joint angle
+        movementSteps = 1000; % Number of steps allocated for movement trajectories
+        movementTime = 10; % Time for movements undergone by the Aubo i5
+        epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
+        movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
+        maxLambda = 0.05;
     end
 
     %% ...structors
@@ -65,20 +70,68 @@ classdef DMagician < RobotBaseClass
             self.model = SerialLink(link,'name',self.name);
         end   
 
-        %% Moving the Dobot Magician to a Desired Transform
-        function MoveToCartesian(self, coordinateTransform)
-            % Using inverse kinematics to get final joint angles
-            qFinal = self.model.ikcon(coordinateTransform);
+        %% Moving the DMagician to a Desired Transform
+        function qMatrix = GetCartesianMovement(self, coordinateTransform)
+            deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step
 
-            % Calcualting the qmatrix to move from current to final joint angles
-            qMatrix = jtraj(self.model.getpos(), qFinal, 100);
+            % Allocating memory to data arrays
+            manipulability = zeros(self.movementSteps, 1);      % Array of measure of manipulability
+            qMatrix = zeros(self.movementSteps, self.model.n);  % Array of joint angle states
+            qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
+            theta = zeros(3, self.movementSteps);               % Array of roll-pitch-yaw angles
+            trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
 
-            % Looping through each of the joint states in the qMatrix and
-            % animating the movement of the dobot magician
-            for i = 1:size(qMatrix, 1)
-                % Animating the aubo i5 movement
-                self.model.animate(qMatrix(i,:)); % Animating the dobot magician
-                drawnow(); % Updating the figure plot
+            % Getting the initial and final x-y-z coordinates
+            initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
+            x1 = initialTr(1:3,4); % Extracting the x-y-z coordinates from the current pose transform
+            x2 = coordinateTransform(1:3,4); % Extracting  the x-y-z coordiantes from the final pose transform
+
+            % Getting the initial and final roll-pitch-yaw angles
+            rpy1 = tr2rpy(initialTr(1:3,1:3)); % Getting the inial roll-pitch-yaw angles
+            rpy2 = tr2rpy(coordinateTransform(1:3,1:3)); % Getting the final roll-pitch-yaw angles
+
+            % Creating the movement trajectory
+            s = lspb(0,1,self.movementSteps); % Create interpolation scalar
+            for i = 1:self.movementSteps
+                trajectory(:,i) = x1*(1-s(i)) + s(i)*x2; % Creating the translation trajectory
+                theta(:,i) = rpy1*(1-s(i)) + s(i)*rpy2; % Creating the rotation trajectory
+            end
+
+            % Creating the transform for the first instance of the trajectory
+            firstTr = [rpy2r(theta(1,1), theta(2,1), theta(3,1)) trajectory(:,1); zeros(1,3) 1];
+            q0 = self.model.getpos(); % Getting the initial guess for the joint angles
+            qMatrix(1,:) = self.model.ikcon(firstTr, q0); % Solving the qMatrix for the first waypointx
+
+            % Tracking the movement trajectory with RMRC
+            for i = 1:self.movementSteps-1
+                currentTr = self.model.fkine(qMatrix(i,:)).T; % Gettign the forward transform at current joint states
+                deltaX = trajectory(:,i+1) - currentTr(1:3,4); % Getting the position error from the next waypoint
+                Rd = rpy2r(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Gettign the next RPY angles
+                Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
+                
+                Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
+                S = Rdot * Ra;
+                linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
+                angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
+
+                deltaR = Rd(1:3,1:3) - Ra; % Calcualting the rotation matrix error
+                deltaTheta = tr2rpy(Rd * Ra'); % Converting rotation matrix error to RPY angles
+                xdot = self.movementWeight*[linearVelocity;angularVelocity]; % Calculate end-effector matrix to reach next waypoint
+
+                J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
+
+                % Implementing Damped Least Squares
+                manipulability(i,1) = sqrt(det(J*J')); % Calcualting the manipulabilty of the aubo i5
+                if manipulability(i,1) < self.epsilon % Checking if manipulability is within threshold
+                    lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping coefficient
+                    invJ = inv(J'*J + lambda*eye(6))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
+
+                else % If DLS isn't required
+                    invJ = inv(J'*J)*J'; %#ok<MINV>
+                end
+
+                qdot(i,:) = invJ * xdot; % Solving the RMRC equation
+                qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
             end
         end
     end

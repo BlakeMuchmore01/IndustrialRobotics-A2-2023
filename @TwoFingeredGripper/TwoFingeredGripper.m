@@ -12,6 +12,7 @@ classdef TwoFingeredGripper < RobotBaseClass
     % Constant Properties
     properties (Access = public, Constant)
         initialJointAngles = [0 45 45]*pi/180; % Default starting pose for Gripper Finger
+        movementSteps = 50; % Default number of steps for movement
     end
 
     %% ...structors
@@ -79,6 +80,26 @@ classdef TwoFingeredGripper < RobotBaseClass
 
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
+        end
+
+        %% Getter for the QMatrix to Open/Close Gripper Fingers
+        function qMatrix = GetOpenCloseQMatrix(self)
+            % Getting the qlims of the gripper finger
+            qlim = self.model.qlim;
+            
+            % Getting the joint angles for both open and closed states
+            openQ = qlim(:,1); % Joint angles for open state
+            closedQ = qlim(:,2); % Joint angles for closed state
+
+            % Switch statement to change the qMatrix generated
+            % Determined based off if gripper is open/closed
+            switch(self.isClosed)
+                case false % Gripper is currently opened and needs to close
+                    qMatrix = jtraj(openQ, closedQ, self.movementSteps);
+
+                case true % Gripper is currently closed and needs to open
+                    qMatrix = jtraj(closedQ, openQ, self.movementSteps);
+            end
         end
 
     end

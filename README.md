@@ -28,7 +28,6 @@ TO DO:
 
 - Collision detection
 	- Active collision detection + avoidance
-- RMRC Movement
 - Demo code (Teach + Blackjack game)
 
 - Aubo Models

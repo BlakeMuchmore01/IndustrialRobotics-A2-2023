@@ -9,8 +9,8 @@ classdef AuboI5 < RobotBaseClass
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 0.1 0.1 0.1]); % Weighting matrix for movement velocity vector
-        maxLambda = 0.01;
+        movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
+        maxLambda = 0.05;
     end
 
     % Non-constant Properties
@@ -91,7 +91,7 @@ classdef AuboI5 < RobotBaseClass
         end
 
         %% Moving the Aubo i5 to a Desired Transform
-        function MoveToCartesian(self, coordinateTransform)
+        function qMatrix = GetCartesianMovement(self, coordinateTransform)
             deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step
 
             % Allocating memory to data arrays
@@ -118,26 +118,25 @@ classdef AuboI5 < RobotBaseClass
             end
 
             % Creating the transform for the first instance of the trajectory
-            firstTr = rpy2tr(theta(1,1), theta(2,1), theta(3,1));
-            firstTr(1:3,4) = trajectory(:,1); % Updating the position section of the matrix
+            firstTr = [rpy2r(theta(1,1), theta(2,1), theta(3,1)) trajectory(:,1); zeros(1,3) 1];
             q0 = self.model.getpos(); % Getting the initial guess for the joint angles
-            qMatrix(1,:) = self.model.ikine(firstTr, 'q0', q0); % Solving the qMatrix for the first waypointx
+            qMatrix(1,:) = self.model.ikcon(firstTr, q0); % Solving the qMatrix for the first waypointx
 
             % Tracking the movement trajectory with RMRC
             for i = 1:self.movementSteps-1
-                currentTr = self.model.fkine(self.model.getpos()).T; % Gettign the forward transform at current joint states
-                deltaX = (trajectory(:,i+1) - currentTr(1:3,4)); % Getting the position error from the next waypoint
-                Rd = rpy2tr(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Gettign the next RPY angles
+                currentTr = self.model.fkine(qMatrix(i,:)).T; % Gettign the forward transform at current joint states
+                deltaX = trajectory(:,i+1) - currentTr(1:3,4); % Getting the position error from the next waypoint
+                Rd = rpy2r(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Gettign the next RPY angles
                 Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
                 
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
-                S = 0;
+                S = Rdot * Ra;
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
-                angularVelocity = 0; % Calcualting roll-pitch-yaw angular velocity
+                angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
 
                 deltaR = Rd(1:3,1:3) - Ra; % Calcualting the rotation matrix error
-                deltaTheta = tr2rpy(deltaR); % Converting rotation matrix error to RPY angles
-                xdot = deltaX/deltaT; % Calculate end-effector matrix to reach next waypoint
+                deltaTheta = tr2rpy(Rd * Ra'); % Converting rotation matrix error to RPY angles
+                xdot = self.movementWeight*[linearVelocity;angularVelocity]; % Calculate end-effector matrix to reach next waypoint
 
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
 
@@ -148,12 +147,11 @@ classdef AuboI5 < RobotBaseClass
                     invJ = inv(J'*J + lambda*eye(6))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
 
                 else % If DLS isn't required
-                    invJ = inv(J);
+                    invJ = inv(J'*J)*J'; %#ok<MINV>
                 end
 
                 qdot(i,:) = invJ * xdot; % Solving the RMRC equation
-                qMatrix(i+1,:) = qMatrix(i,:) + delatT * qdot'; % Updating next joint state based on joint velocities
-                self.model.animate(qMatrix(i+1,:));
+                qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
             end
         end
 

@@ -51,18 +51,12 @@ function MainFunction()
     algerbraicDist = GetAlgebraicDist(points, centerPoint, radii);
     pointsInside = find(algerbraicDist < 1);
     disp(['There are ', num2str(size(pointsInside,1)),' points inside']);
-    pause;
     
     %% Spawning the Robots and Grippers
     auboI5 = AuboI5(constants.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
     dobotMagician = DMagician(constants.auboOrigin*transl(0, 0.3, 0)); % Spawning the Dobot Magician and associated suction gripper
 
     %% Code functionality
-    % x2 = [0.3, 0.2, 0.5];
-    % tr = eye(4);
-    % tr(1:3,4) = x2;
-    % 
-    % auboI5.MoveToCartesian(tr);
     
     pause;
 end
