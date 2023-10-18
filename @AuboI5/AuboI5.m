@@ -10,7 +10,7 @@ classdef AuboI5 < RobotBaseClass
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
         movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
-        maxLambda = 0.05;
+        maxLambda = 0.05; % Value used for Damped Least Squares
     end
 
     % Non-constant Properties
@@ -88,6 +88,19 @@ classdef AuboI5 < RobotBaseClass
             % Used to update the pose of the gripper to the end-effector
             self.currentJointAngles = self.model.getpos(); % Getting the current joint angles of Aubo i5
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
+        end
+
+        %% Detect if there is Upcoming Collision
+        function isCollision = DetectCollision(models)
+            % Pre-initialising cell structure to store link elipse points
+            collisionElipsoid = cell(1,6); % Cell used to store ellipse points for collision detection
+
+
+
+
+
+
+            
         end
 
         %% Moving the Aubo i5 to a Desired Transform

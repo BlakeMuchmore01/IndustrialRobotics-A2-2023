@@ -124,7 +124,7 @@ classdef DMagician < RobotBaseClass
                 manipulability(i,1) = sqrt(det(J*J')); % Calcualting the manipulabilty of the aubo i5
                 if manipulability(i,1) < self.epsilon % Checking if manipulability is within threshold
                     lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping coefficient
-                    invJ = inv(J'*J + lambda*eye(6))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
+                    invJ = inv(J'*J + lambda*eye(5))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
 
                 else % If DLS isn't required
                     invJ = inv(J'*J)*J'; %#ok<MINV>
