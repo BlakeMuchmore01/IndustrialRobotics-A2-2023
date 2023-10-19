@@ -42,7 +42,11 @@ classdef LabAssessment2 < handle
             auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
             dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0, 0.3, 0)); % Spawning the Dobot Magician and associated suction gripper
             
-            pause;
+            % Using a timer to create an idler to wait to recieve incoming event requests from the GUI
+            timerObj = timer('TimerFcn',@(~,~) idleFunction(), 'Period', 1, 'ExecutionMode', 'fixedRate');
+            start(timerObj); % Starting  the idler function
+
+            guiWindow.delete(); % Closing the GUI wind
         end
 
         %% Creating the Surrounding Environment Relative to the Aubo i5
