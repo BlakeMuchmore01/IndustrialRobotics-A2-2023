@@ -12,6 +12,10 @@ classdef LabAssessment2 < handle
         lightCurtainCenter = [0 0 0]; % Default centre for the light curtain ellipse
         lightCurtainRadii = [1.05, 1.15, 1.1]; % Default radius' for the light curtain ellipse
     end
+
+    properties (Access = private)
+        hello = false;
+    end
     
     %% Methods of the Class
     methods (Static)
@@ -22,6 +26,8 @@ classdef LabAssessment2 < handle
             % Creating log file and setting command window level
             L = log4matlab('logFile.log');
             L.SetCommandWindowLevel(L.DEBUG); % Setting the log level to debug
+
+            LabAssessment2.hello = true;
 
             % Creating the GUI object
             guiWindow = GUI;
