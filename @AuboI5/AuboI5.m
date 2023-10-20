@@ -158,6 +158,7 @@ classdef AuboI5 < RobotBaseClass
             end
         end
 
+        %%
         function updateEllipsis(self, q)
 
                 tr = zeros(4,4,(self.ellipsis.n)+1);                

@@ -1,0 +1,14 @@
+2023-10-20 19:17:12,164 DEBUG LabAssessment2 - GUI page generated
+2023-10-20 19:17:18,092 DEBUG CreateEnvironment - Safety environment created
+2023-10-20 19:17:19,566 DEBUG Hand - Hand 1 created within the workspace
+2023-10-20 19:17:19,723 DEBUG Hand - Hand 2 created within the workspace
+2023-10-20 19:17:20,051 DEBUG PlayingCards - Card 1 created within the workspace
+2023-10-20 19:17:20,219 DEBUG PlayingCards - Card 2 created within the workspace
+2023-10-20 19:17:20,443 DEBUG PlayingCards - Card 3 created within the workspace
+2023-10-20 19:17:20,637 DEBUG PlayingCards - Card 4 created within the workspace
+2023-10-20 19:17:20,786 DEBUG PlayingCards - Card 5 created within the workspace
+2023-10-20 19:17:20,957 DEBUG PlayingCards - Card 6 created within the workspace
+2023-10-20 19:17:21,099 DEBUG PlayingCards - Card 7 created within the workspace
+2023-10-20 19:17:21,241 DEBUG PlayingCards - Card 8 created within the workspace
+2023-10-20 19:17:21,369 DEBUG PlayingCards - Card 9 created within the workspace
+2023-10-20 19:17:21,503 DEBUG PlayingCards - Card 10 created within the workspace

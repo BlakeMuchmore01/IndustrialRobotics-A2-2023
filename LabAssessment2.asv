@@ -66,7 +66,7 @@ classdef LabAssessment2 < handle
 
             % Checking user calls stop program request
             if guiWindow.endDemonstration == true
-                stop(timerObj);
+                stop(timerObj)
             end
         end
 
