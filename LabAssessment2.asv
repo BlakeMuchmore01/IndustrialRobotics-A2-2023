@@ -53,22 +53,25 @@ classdef LabAssessment2 < handle
             addlistener(guiWindow,'JointMovementSent', @(src,event) LabAssessment2.JointMovementSent(src,event));
 
             % Using a timer to create an idler to wait to recieve incoming event requests from the GUI
-            timerObj = timer('TimerFcn',@(~, ~) LabAssessment2.idleFunction(guiWindow), 'Period', 1, 'ExecutionMode', 'fixedRate');
+            timerObj = timer('TimerFcn',@(~, ~) LabAssessment2.idleFunction(guiWindow, timerObj), 'Period', 1, 'ExecutionMode', 'fixedRate');
             start(timerObj); % Starting  the idler function
-            % wait(timerObj); % Making the main function wait for the timer to end
+            %wait(timerObj); % Making the main function wait for the timer to end
+
+            while true
+
+            end
 
             guiWindow.delete(); % Closing the GUI wind
             close(figure(1)); % Closing the demo figure
         end
 
         %% Idler Function to Await GUI Event Notifications
-        function idleFunction(~, ~, guiWindow)
+        function idleFunction(~, ~, guiWindow, timerObj)
             disp('here');
 
             % Checking user calls stop program request
             if guiWindow.endDemonstration == true
-
-
+                stop(timerObj);
             end
         end
 
