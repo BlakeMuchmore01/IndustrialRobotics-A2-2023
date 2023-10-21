@@ -1,14 +1,1 @@
-2023-10-21 12:19:42,010 DEBUG LabAssessment2 - GUI page generated
-2023-10-21 12:19:45,793 DEBUG CreateEnvironment - Safety environment created
-2023-10-21 12:19:46,558 DEBUG Hand - Hand 1 created within the workspace
-2023-10-21 12:19:46,609 DEBUG Hand - Hand 2 created within the workspace
-2023-10-21 12:19:47,022 DEBUG PlayingCards - Card 1 created within the workspace
-2023-10-21 12:19:47,155 DEBUG PlayingCards - Card 2 created within the workspace
-2023-10-21 12:19:47,288 DEBUG PlayingCards - Card 3 created within the workspace
-2023-10-21 12:19:47,411 DEBUG PlayingCards - Card 4 created within the workspace
-2023-10-21 12:19:47,551 DEBUG PlayingCards - Card 5 created within the workspace
-2023-10-21 12:19:47,675 DEBUG PlayingCards - Card 6 created within the workspace
-2023-10-21 12:19:47,805 DEBUG PlayingCards - Card 7 created within the workspace
-2023-10-21 12:19:47,919 DEBUG PlayingCards - Card 8 created within the workspace
-2023-10-21 12:19:48,031 DEBUG PlayingCards - Card 9 created within the workspace
-2023-10-21 12:19:48,138 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-21 16:14:34,244 DEBUG AuboI5 - Aubo i5 object created within the workspace
