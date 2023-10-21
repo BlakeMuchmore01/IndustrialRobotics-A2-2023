@@ -67,7 +67,7 @@ classdef AuboI5 < RobotBaseClass
             link(1) = Link([0    0.1215   0        pi/2   0   0]);
             link(2) = Link([0    0        0.4080   0      0   0]);
             link(3) = Link([0    0        0.3760   0      0   0]);
-            link(4) = Link([0   -0.1025   0        pi/2   0   0]);
+            link(4) = Link([0   -0.1215   0        pi/2   0   0]);
             link(5) = Link([0    0.1025   0        pi/2   0   0]);
             link(6) = Link([0    0.0940   0        0      0   0]);
 
@@ -90,7 +90,7 @@ classdef AuboI5 < RobotBaseClass
             % Updating the toolTr property of the robot
             % Used to update the pose of the gripper to the end-effector
             self.currentJointAngles = self.model.getpos(); % Getting the current joint angles of Aubo i5
-            self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
+            self.toolTr = self.model.fkine(self.currentJointAngles).T * transl(0,0,-0.02); % Updating toolTr property
         end
 
         %% Moving the Aubo i5 to a Desired Transform

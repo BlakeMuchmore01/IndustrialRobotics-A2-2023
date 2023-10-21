@@ -29,6 +29,5 @@ TO DO:
     - Active sensors for detection of collisions (Bonus)
 - Demo code (Teach + Blackjack game)
 
-- Aubo Models
 - Playing card final positioning
 - Real world demo
