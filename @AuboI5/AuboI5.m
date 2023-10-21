@@ -54,9 +54,9 @@ classdef AuboI5 < RobotBaseClass
 
             % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
             self.UpdateToolTr; % Updating the end-effector transform property
-            % for gripperFinger = 1:2
-            %     self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
-            % end
+            for gripperFinger = 1:2
+                self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
+            end
         end
 
         %% D&H Parameter Serial Link Creation

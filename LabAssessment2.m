@@ -42,34 +42,14 @@ classdef LabAssessment2 < handle
             auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
             dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
 
-            % Creating listeners connected to the GUI and its related callbacks
-            addlistener(guiWindow,'StartButtonPressed', @(src,event) LabAssessment2.StartButtonPressed(src,event));
-            addlistener(guiWindow,'EndDemonstrationPressed', @(src,event) LabAssessment2.EndDemonstrationPressed(src,event));
-            addlistener(guiWindow,'EmergencyButtonPressed', @(src,event) LabAssessment2.EmergencyButtonPressed(src,event));
-            addlistener(guiWindow,'DemonstrationModeChanged', @(src,event) LabAssessment2.DemonstrationModeChanged(src,event));
-            addlistener(guiWindow,'BlackjackButtonRequest', @(src,event) LabAssessment2.BlackjackButtonRequest(src,event));
-            addlistener(guiWindow,'CartesianCoordSent', @(src,event) LabAssessment2.CartesianCoordSent(src,event));
-            addlistener(guiWindow,'CartesianCoordCancelled', @(src,event) LabAssessment2.CartesianCoordCancelled(src,event));
-            addlistener(guiWindow,'JointMovementSent', @(src,event) LabAssessment2.JointMovementSent(src,event));
-
-            % Using a timer to create an idler to wait to recieve incoming event requests from the GUI
-            timerObj = timer('TimerFcn',@(~, ~) LabAssessment2.idleFunction(guiWindow), 'Period', 1, 'ExecutionMode', 'fixedRate');
-            start(timerObj); % Starting  the idler function
-            % wait(timerObj); % Making the main function wait for the timer to end
+            % Waiting until a demonstration mode is chosen to continue with demo
+            while (guiWindow.simulationMode ~= "Blackjack" || guiWindow.simulationMode ~= "Teach")
+                pause(0.1);
+                drawnow;
+            end
 
             guiWindow.delete(); % Closing the GUI wind
             close(figure(1)); % Closing the demo figure
-        end
-
-        %% Idler Function to Await GUI Event Notifications
-        function idleFunction(~, ~, guiWindow)
-            disp('here');
-
-            % Checking user calls stop program request
-            if guiWindow.endDemonstration == true
-
-
-            end
         end
 
         %% Creating the Surrounding Environment Relative to the Aubo i5
