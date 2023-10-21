@@ -1,14 +1,23 @@
-2023-10-20 19:17:12,164 DEBUG LabAssessment2 - GUI page generated
-2023-10-20 19:17:18,092 DEBUG CreateEnvironment - Safety environment created
-2023-10-20 19:17:19,566 DEBUG Hand - Hand 1 created within the workspace
-2023-10-20 19:17:19,723 DEBUG Hand - Hand 2 created within the workspace
-2023-10-20 19:17:20,051 DEBUG PlayingCards - Card 1 created within the workspace
-2023-10-20 19:17:20,219 DEBUG PlayingCards - Card 2 created within the workspace
-2023-10-20 19:17:20,443 DEBUG PlayingCards - Card 3 created within the workspace
-2023-10-20 19:17:20,637 DEBUG PlayingCards - Card 4 created within the workspace
-2023-10-20 19:17:20,786 DEBUG PlayingCards - Card 5 created within the workspace
-2023-10-20 19:17:20,957 DEBUG PlayingCards - Card 6 created within the workspace
-2023-10-20 19:17:21,099 DEBUG PlayingCards - Card 7 created within the workspace
-2023-10-20 19:17:21,241 DEBUG PlayingCards - Card 8 created within the workspace
-2023-10-20 19:17:21,369 DEBUG PlayingCards - Card 9 created within the workspace
-2023-10-20 19:17:21,503 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-21 11:37:54,490 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-10-21 11:37:55,540 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-10-21 11:37:56,109 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-10-21 11:37:56,955 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-10-21 11:37:58,363 DEBUG DemonstrationModePressed - Blackjackrequested
+2023-10-21 11:37:59,910 DEBUG DemonstrationModePressed - Teachrequested
+2023-10-21 11:38:00,994 DEBUG EndDemonstrationButtonPushed - End demonstration requested
+2023-10-21 11:38:02,434 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-10-21 11:38:04,274 DEBUG BlackjackButtonPressed - Standrequested
+2023-10-21 11:38:05,264 DEBUG BlackjackButtonPressed - Hitrequested
+2023-10-21 11:38:08,368 DEBUG RobotDropDownValueChanged - Changed to Dobot Magician control
+2023-10-21 11:38:11,891 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-21 11:38:13,300 DEBUG SendCartesianCoordinateButtonPushed - Cartesian goal sent to the Aubo i5
+2023-10-21 11:38:16,065 DEBUG RobotDropDownValueChanged - Changed to Dobot Magician control
+2023-10-21 11:38:17,259 DEBUG SendCartesianCoordinateButtonPushed - Cartesian goal sent to the Dobot Magician
+2023-10-21 11:38:19,633 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-21 11:38:21,028 DEBUG CancelCoordinateMovementButtonPushed - Cleared Aubo i5 cartesian goal
+2023-10-21 11:38:23,459 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-21 11:38:24,432 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-21 11:38:25,573 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-21 11:38:26,773 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-21 11:38:27,923 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-21 11:38:31,528 DEBUG JointSliderChanging - Aubo i5 joint change sent
