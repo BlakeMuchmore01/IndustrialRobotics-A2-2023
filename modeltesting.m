@@ -69,9 +69,10 @@ if model == 4
 
         auboI5.model.animate(qmat(i,:));
         auboI5.UpdateToolTr;
+        disp(auboI5.toolTr);
 
         for j = 1:2
-            auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr);
+             auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr,j);
         end
 
         pause(0.01);
