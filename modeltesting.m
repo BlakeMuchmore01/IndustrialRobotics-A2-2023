@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 2;
+model = 4;
 
 figure(1);
 
@@ -35,10 +35,29 @@ if model == 3
     % Creating log file and setting command window level
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
+    
+
 
     % Creating the GUI object
     guiWindow = GUI;
     guiWindow.LoadLogFile(L); % Loading the logfile into the gui class
+
+end
+
+if model == 4
+    
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1); % Creating figure to simulate robots
+    hold on; axis(LabAssessment2.axisLimits); camlight;
+
+    LabAssessment2.CreateEnvironment(L)
+
+    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+
+
 
 end
 
