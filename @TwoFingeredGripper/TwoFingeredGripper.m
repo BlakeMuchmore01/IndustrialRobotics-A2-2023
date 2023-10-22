@@ -40,7 +40,7 @@ classdef TwoFingeredGripper < RobotBaseClass
                 end
             end
 
-            self.CreateModel(); % Creating the 2F-85 D&H parameter model
+            self.CreateModel(fingerNum); % Creating the 2F-85 D&H parameter model
 
             % Orientating the 2F-85 within the workspace
             self.model.base = self.model.base.T * baseTr;
@@ -64,7 +64,7 @@ classdef TwoFingeredGripper < RobotBaseClass
         end
 
         %% D&H Parameter Serial Link Creation
-        function CreateModel(self)
+        function CreateModel(self, fingerNum)
             % D&H parameters for the 2F-85 finger model
             % DH = [THETA D A ALPHA SIGMA OFFSET]
             % https://robotiq.com/products/2f85-140-adaptive-robot-gripper
@@ -79,7 +79,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             link(3).qlim = [-2 45]*pi/180;
 
             % Creating the serial link object
-            self.model = SerialLink(link,'name',self.name);
+            self.model = SerialLink(link,'name',[self.name, num2str(fingerNum)]);
         end
 
         %% Getter for the QMatrix to Open/Close Gripper Fingers
@@ -106,6 +106,7 @@ classdef TwoFingeredGripper < RobotBaseClass
         function UpdateGripperPosition(self, baseTr)
             % Updating the base positon of the gripper finger
             self.model.base = self.model.base.T * baseTr;
+            self.model.animate([0 45 45]*pi/180);
         end
 
     end

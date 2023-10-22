@@ -5,11 +5,11 @@ classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
+        initialJointAngles = [0 110 -135 90 0 0]*pi/180; % Default starting pose for Aubo i5
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
+        movementWeight = diag([1 1 1 0.2 0.2 0.2]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05; % Value used for Damped Least Squares
     end
 
@@ -55,7 +55,7 @@ classdef AuboI5 < RobotBaseClass
             % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
             self.UpdateToolTr; % Updating the end-effector transform property
             for gripperFinger = 1:2
-                self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
+                self.tool{1,gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
             end
         end
 
@@ -147,12 +147,12 @@ classdef AuboI5 < RobotBaseClass
                 manipulability(i,1) = sqrt(det(J*J')); % Calcualting the manipulabilty of the aubo i5
                 if manipulability(i,1) < self.epsilon % Checking if manipulability is within threshold
                     lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping coefficient
-                    invJ = inv(J'*J + lambda*eye(6))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
 
                 else % If DLS isn't required
-                    invJ = inv(J'*J)*J'; %#ok<MINV>
+                    lambda = 0; % Damping coefficient
                 end
-
+                
+                invJ = inv(J'*J + lambda*eye(6))*J'; %#ok<MINV> % Calculating the jacobian inv
                 qdot(i,:) = invJ * xdot; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
             end

@@ -52,30 +52,29 @@ if model == 4
     figure(1); % Creating figure to simulate robots
     hold on; axis(LabAssessment2.axisLimits); camlight;
 
-    % LabAssessment2.CreateEnvironment(L)
+    LabAssessment2.CreateEnvironment(L)
 
     auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
     % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     
     transform = eye(4);
     transform(1:3, 4) = [0.6, 0, 0.1];
-    disp(transform);
+    transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ");
 
     qmat = auboI5.GetCartesianMovement(transform);
-    pause;
     
 
     for i = 1:1:size(qmat,1)
         currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
-        distToGoal = sqrt((currentTr(1,4)-transform(1,4))^2 + (currentTr(2,4)-transform(2,4))^2 + (currentTr(3,4)-transform(3,4))^2);
-        disp(distToGoal);
 
-        if (distToGoal > 0.015)
-            auboI5.model.animate(qmat(i,:));
-            disp('here');
-            pause(0.01);
-            drawnow;
+        auboI5.model.animate(qmat(i,:));
+        auboI5.UpdateToolTr;
+
+        for j = 1:2
+            auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr);
         end
+
+        pause(0.01);
         drawnow;
     end
 

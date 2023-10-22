@@ -1,5 +1,5 @@
-2023-10-21 19:24:47,228 DEBUG AuboI5 - Base transform not set. Default base transform used
-2023-10-21 19:25:11,305 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-10-21 19:25:15,110 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-10-21 19:25:18,916 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-10-21 19:25:18,925 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-22 22:07:43,981 DEBUG CreateEnvironment - Safety environment created
+2023-10-22 22:08:04,342 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-22 22:08:07,806 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-22 22:08:11,473 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-22 22:08:11,478 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
