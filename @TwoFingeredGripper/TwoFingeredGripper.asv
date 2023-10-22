@@ -79,7 +79,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             link(3).qlim = [-2 45]*pi/180;
 
             % Creating the serial link object
-            self.model = SerialLink(link,'name',[self.name, num2str(fingerNum)]);
+            self.model = SerialLink(link,'name',[self.name,);
         end
 
         %% Getter for the QMatrix to Open/Close Gripper Fingers
@@ -103,14 +103,9 @@ classdef TwoFingeredGripper < RobotBaseClass
         end
 
         %% Updater of Gripper Position
-        function UpdateGripperPosition(self, baseTr, fingerNum)
+        function UpdateGripperPosition(self, baseTr)
             % Updating the base positon of the gripper finger
             self.model.base = baseTr;
-            if fingerNum == 2
-                self.model.base = self.model.base.T * trotz(pi);
-
-            end
-            
             self.model.animate(self.initialJointAngles);
         end
 

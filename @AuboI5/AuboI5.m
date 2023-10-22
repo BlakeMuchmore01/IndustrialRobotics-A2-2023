@@ -5,7 +5,7 @@ classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 pi/2 0 pi/2 0 0]; % Default starting pose for Aubo i5
+        initialJointAngles = [0 pi/2 0 pi/2 0 pi/2]; % Default starting pose for Aubo i5
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
@@ -55,7 +55,7 @@ classdef AuboI5 < RobotBaseClass
             % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
             self.UpdateToolTr; % Updating the end-effector transform property
             for gripperFinger = 1:2
-                self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
+                self.tool{1,gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
             end
         end
 
