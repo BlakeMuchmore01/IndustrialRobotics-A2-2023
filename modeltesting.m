@@ -76,7 +76,7 @@ if model == 4
     qmatrix = jtraj(auboI5.model.getpos(),q1,100);
 =======
     transform(1:3, 4) = [0.6, 0, 0.1];
-    transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ");
+    transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ") * eul2rotm([90 0 0]*pi/180);
 
     qmat = auboI5.GetCartesianMovement(transform);
     
