@@ -53,65 +53,58 @@ if model == 4
     hold on; axis(LabAssessment2.axisLimits); camlight;
 
     LabAssessment2.CreateEnvironment(L)
-<<<<<<< HEAD
 
-    cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.2,0.5,0.01),L); % Spawning the cards that will be moved by robots
-=======
->>>>>>> bd84568e32f72c14187233214892c8003fc508e4
+    cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.005),L); % Spawning the cards that will be moved by robots
 
-    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    %auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
     dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     
-    transform = eye(4);
-<<<<<<< HEAD
-    transform(1:3, 4) = [0.5, 0, 0.2];
-    rotMatrix1 = eul2rotm([-90 0 220]*pi/180);
-    rotMatrix2 = eul2rotm([90 0 0]*pi/180);
-    rotMatrix = rotMatrix1*rotMatrix2;
-    transform(1:3, 1:3) = rotMatrix;
-    disp(transform);
+    transform = eye(4) * trotz(pi);
+    transform(1:3,4) = cards.cardModels{10}.base.t + [0, 0, 0.041]';
+    qMatrix = dobotMagician.GetCartesianMovement(transform);
 
-    qmat = auboI5.GetCartesianMovement(transform);
-    q1 = auboI5.model.ikcon(transform);
-    qmatrix = jtraj(auboI5.model.getpos(),q1,100);
-=======
-    transform(1:3, 4) = [0.6, 0, 0.1];
-    transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ") * eul2rotm([90 0 0]*pi/180);
-
-    qmat = auboI5.GetCartesianMovement(transform);
-    
->>>>>>> bd84568e32f72c14187233214892c8003fc508e4
-
-
-    for i = 1:1:size(qmatrix,1)
-        currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
-
-<<<<<<< HEAD
-        if (distToGoal > 0.015)
-            auboI5.model.animate(qmatrix(i,:));
-            disp('here');
-            auboI5.UpdateToolTr;
-
-            for j = 1:2
-                auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
-            end
-            % auboI5.tool{1,2}.UpdateGripperPosition(auboI5.toolTr);
-
-            pause(0.01);
-            drawnow;
-=======
-        auboI5.model.animate(qmat(i,:));
-        auboI5.UpdateToolTr;
-        disp(auboI5.toolTr);
-
-        for j = 1:2
-             auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr,j);
->>>>>>> bd84568e32f72c14187233214892c8003fc508e4
-        end
-
+    for i = 1:size(qMatrix,1)
+        dobotMagician.model.animate(qMatrix(i,:));
         pause(0.01);
-        drawnow;
     end
+
+    transform = dobotMagician.model.fkine(dobotMagician.defaultRealQ).T;
+    qMatrix = dobotMagician.GetCartesianMovement(transform);
+
+    for i = 1:size(qMatrix,1)
+        dobotMagician.model.animate(qMatrix(i,:));
+        pause(0.01);
+    end
+
+    
+    % transform = eye(4);
+    % transform(1:3, 4) = [0.5, 0, 0.2];
+    % rotMatrix1 = eul2rotm([-90 0 220]*pi/180);
+    % rotMatrix2 = eul2rotm([90 0 0]*pi/180);
+    % rotMatrix = rotMatrix1*rotMatrix2;
+    % transform(1:3, 1:3) = rotMatrix;
+    % disp(transform);
+
+    % qmat = auboI5.GetCartesianMovement(transform);
+    % q1 = auboI5.model.ikcon(transform);
+    % qmatrix = jtraj(auboI5.model.getpos(),q1,100);
+    % transform(1:3, 4) = [0.6, 0, 0.1];
+    % transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ") * eul2rotm([90 0 0]*pi/180);
+
+    % qmat = auboI5.GetCartesianMovement(transform);
+    
+    % for i = 1:1:size(qmatrix,1)
+    %     currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
+    %     auboI5.model.animate(qmatrix(i,:));
+    %     auboI5.UpdateToolTr;
+    % 
+    %     for j = 1:2
+    %         auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
+    %     end
+    % 
+    %     pause(0.01);
+    %     drawnow;
+    % end
 
 
 

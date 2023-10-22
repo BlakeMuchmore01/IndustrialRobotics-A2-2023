@@ -10,11 +10,12 @@ classdef DMagician < RobotBaseClass
 
     % Constant properties
     properties (Access = public, Constant)
-        defaultRealQ  = [0,pi/4,pi/4,0,0]; % Default joint angle
+        defaultRealQ  = [0 15 45 120 0]*pi/180; % Default joint angle
+
         movementSteps = 1000; % Number of steps allocated for movement trajectories
-        movementTime = 10; % Time for movements undergone by the Aubo i5
-        epsilon = 0.05; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
+        movementTime = 5; % Time for movements undergone by the Aubo i5
+        epsilon = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
+        movementWeight = diag([1 1 1 1 1 1]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05;
     end
 
@@ -41,7 +42,7 @@ classdef DMagician < RobotBaseClass
 
             % Orientating the dobot magician within the workspace
             self.model.base = self.model.base.T * baseTr; % Updating the base of the robot to input base tr
-            self.homeQ = self.RealQToModelQ(self.defaultRealQ); % Setting initial starting pose of robot
+            self.homeQ = self.defaultRealQ; % Setting initial starting pose of robot
             self.PlotAndColourRobot(); % Plotting the dobot magician and associated ply models
 
             % Logging the creation of the Dobot Magician
@@ -78,7 +79,7 @@ classdef DMagician < RobotBaseClass
             manipulability = zeros(self.movementSteps, 1);      % Array of measure of manipulability
             qMatrix = zeros(self.movementSteps, self.model.n);  % Array of joint angle states
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
-            theta = zeros(3, self.movementSteps);               % Array of roll-pitch-yaw angles
+            theta = zeros(3, self.movementSteps);               % Array of end-effector angles
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
 
             % Getting the initial and final x-y-z coordinates
@@ -104,33 +105,30 @@ classdef DMagician < RobotBaseClass
 
             % Tracking the movement trajectory with RMRC
             for i = 1:self.movementSteps-1
-                currentTr = self.model.fkine(qMatrix(i,:)).T; % Gettign the forward transform at current joint states
+                currentTr = self.model.fkine(qMatrix(i,:)).T; % Getting the forward transform at current joint states
                 deltaX = trajectory(:,i+1) - currentTr(1:3,4); % Getting the position error from the next waypoint
-                Rd = rpy2r(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Gettign the next RPY angles
+                Rd = rpy2r(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Getting the next RPY angles (converted to rotation matrix)
                 Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
                 
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
                 S = Rdot * Ra;
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
-
-                deltaR = Rd(1:3,1:3) - Ra; % Calcualting the rotation matrix error
-                deltaTheta = tr2rpy(Rd * Ra'); % Converting rotation matrix error to RPY angles
-                xdot = self.movementWeight*[linearVelocity;angularVelocity]; % Calculate end-effector matrix to reach next waypoint
+                xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
 
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
 
                 % Implementing Damped Least Squares
                 manipulability(i,1) = sqrt(det(J*J')); % Calcualting the manipulabilty of the aubo i5
                 if manipulability(i,1) < self.epsilon % Checking if manipulability is within threshold
-                    lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping coefficient
-                    invJ = inv(J'*J + lambda*eye(5))*J'; %#ok<MINV> % Apply Damped Least Squares pseudoinverse
-
+                    lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping Coefficient
+                    
                 else % If DLS isn't required
-                    invJ = inv(J'*J)*J'; %#ok<MINV>
+                    lambda = 0; % Damping Coefficient
                 end
 
-                qdot(i,:) = invJ * xdot; % Solving the RMRC equation
+                invJ = inv(J'*J + lambda * eye(self.model.n))*J'; %#ok<MINV> % DLS inverse
+                qdot(i,:) = (invJ * xdot)'; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
             end
         end

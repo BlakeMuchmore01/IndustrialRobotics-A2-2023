@@ -37,7 +37,7 @@ classdef LabAssessment2 < handle
 
             % Creating all dynamic components for the demo (robots, cards, collision objects)
             hand = Hand(LabAssessment2.auboOrigin*transl(0,0,-1.15),L); % Hand used to verify light curtain
-            cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.2,0.5,0.01),L); % Spawning the cards that will be moved by robots
+            cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.01),L); % Spawning the cards that will be moved by robots
 
             auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
             dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
