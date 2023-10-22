@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 4;
+model = 34;
 
 figure(1);
 
@@ -59,24 +59,33 @@ if model == 4
     
     transform = eye(4);
     transform(1:3, 4) = [0.6, 0, 0.1];
-    disp(transform);
+    transform(1:3,1:3) = eul2rotm([0 0 0]*pi/180,"XYZ");
 
     qmat = auboI5.GetCartesianMovement(transform);
+<<<<<<< HEAD
     q1 = auboI5.model.ikcon(transform);
     qmatrix = jtraj(auboI5.model.getpos(),q1,100)
 
+=======
+    pause;
+    
+>>>>>>> bd84568e32f72c14187233214892c8003fc508e4
 
     for i = 1:1:size(qmat,1)
         currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
         distToGoal = sqrt((currentTr(1,4)-transform(1,4))^2 + (currentTr(2,4)-transform(2,4))^2 + (currentTr(3,4)-transform(3,4))^2);
-        disp(distToGoal);
 
+<<<<<<< HEAD
         if (distToGoal > 0.015)
             auboI5.model.animate(qmat(i,:));
             disp('here');
             pause(0.01);
             drawnow;
         end
+=======
+        auboI5.model.animate(qmat(i,:));
+        pause(0.01);
+>>>>>>> bd84568e32f72c14187233214892c8003fc508e4
         drawnow;
     end
 

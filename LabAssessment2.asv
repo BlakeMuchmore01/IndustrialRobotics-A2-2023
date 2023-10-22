@@ -73,8 +73,7 @@ classdef LabAssessment2 < handle
                             drawnow; % Allowing the GUI properties to be updated within the loop
                         end
                 end
-                
-                pause(0.1); % Pausing to reduce business of the while loop
+                pause(0.1); % Pausing to reduce business of the while 
                 drawnow; % Allowing the GUI properties to be updated within the loop
             end
 
