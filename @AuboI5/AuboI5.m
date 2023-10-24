@@ -11,30 +11,15 @@ classdef AuboI5 < RobotBaseClass
         epsilon = 0.01; % Maximum measure of manipulability to then require Damped Least Squares
         movementWeight = diag([0.8 0.8 0.8 0.2 0.2 0.2]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05; % Value used for Damped Least Squares
-
-        % Centre points used for collision ellipsiod creation
-        linkCentres = [0  0  0.025;
-                       0  0  0.125;
-                       0  0  0 ;
-                       0  0  0;
-                       0  0  0;
-                       0  0  0];
-        
-        % Radii used for collision ellipsoid creation
-        linkRadii = [0.1   0.1  0.04;
-                     0.1   0.1  0.1;
-                     0.01  0.01  0.01;
-                     0.01  0.01  0.01;
-                     0.01  0.01  0.01;
-                     0.01  0.01  0.01];
     end
 
     % Non-constant Properties
     properties (Access = public)
         currentJointAngles; % Current joint angles of the Aubo i5
         tool = cell(1,2); % Variable to store the tool (2F-85 Gripper) that is used by the Aubo i5
-        ellipsis; 
         plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
+        linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
+        linkRadii = cell(6,3); % Structure of link elliposid radii
     end
 
     %% ...structors
