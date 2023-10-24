@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 5;
+model = 4;
 
 figure(1);
 
