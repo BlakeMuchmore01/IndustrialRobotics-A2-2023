@@ -107,22 +107,19 @@ classdef LabAssessment2 < handle
 
         %% Checking if there is Something within the Light Curtain
         function isClear = LightCurtainCheck(model)
-            isClear = true; % Setting default case of function as false
+            isClear = false; % Setting default case of function as false
             
-            % Looping through the models that have been supplied
-            for i = 1:size(models,2)
-                % Getting the points of the model that need to be checked
-                points = [model{i}.points{1,2}(:,1), model{i}.points{1,2}(:,2), model{i}.points{1,2}(:,3)];
-    
-                % Checking the algerbraic distance of these points
-                algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
-                    
-                % Checking if the model is within the light curtain (i.e. there
-                % is an algerbraic distance of < 1 with any of the above points
-                if(find(algerbraicDist < 1) > 0)
-                    isClear = false; % Object has been detected within the light curtain
-                    return; % Returning on first detection of object within the light curtain
-                end
+            % Getting the points of the model that need to be checked
+            points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
+
+            % Checking the algerbraic distance of these points
+            algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
+                
+            % Checking if the model is within the light curtain (i.e. there
+            % is an algerbraic distance of < 1 with any of the above points
+            if(find(algerbraicDist < 1) > 0)
+                isClear = true; % Object has been detected within the light curtain
+                return; % Returning on first detection of object within the light curtain
             end
         end
         

@@ -9,8 +9,24 @@ classdef AuboI5 < RobotBaseClass
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.01; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 0.2 0.2 0.2]); % Weighting matrix for movement velocity vector
+        movementWeight = diag([0.8 0.8 0.8 0.2 0.2 0.2]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05; % Value used for Damped Least Squares
+
+        % Centre points used for collision ellipsiod creation
+        linkCentres = [0  0  0.025;
+                       0  0  0.125;
+                       0  0  0 ;
+                       0  0  0;
+                       0  0  0;
+                       0  0  0];
+        
+        % Radii used for collision ellipsoid creation
+        linkRadii = [0.1   0.1  0.04;
+                     0.1   0.1  0.1;
+                     0.01  0.01  0.01;
+                     0.01  0.01  0.01;
+                     0.01  0.01  0.01;
+                     0.01  0.01  0.01];
     end
 
     % Non-constant Properties
@@ -156,86 +172,133 @@ classdef AuboI5 < RobotBaseClass
             end
         end
 
-        %%
-        function updateEllipsis(self, q)
+        %% Creating the Ellipsis Around each Robot Link
+        function UpdateEllipsis(self, q)
+            % Creating an array of 4x4 transforms relating to robot links
+            linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
+            linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
 
-                tr = zeros(4,4,(self.ellipsis.n)+1);                
-                tr(:,:,1) = self.ellipsis.base;
+            piFlag = 0;
 
-                piFlag = 0;
+            centre = [0 0 0;
+                      -0.3 0 -0.125;
+                      -0.3 0 -0.05;
+                      0 0 0;
+                      0 0 0;
+                      0 0 0];
+            
+            mult =     [0.5 0.5 0.5;
+                      0.66 0.66 0.66;
+                      0.66 0.66 0.66;
+                      0.5 0.5 0.5;
+                      0.4 0.4 0.4;
+                      0.125 0.125 0.125];
+            
+            % Getting the link data of the robot links
+            links = self.ellipsis.links;
 
-                centre = [0 0 0;
-                          -0.3 0 -0.125;
-                          -0.3 0 -0.05;
-                          0 0 0;
-                          0 0 0;
-                          0 0 0];
+            for i = 1:length(links)
+                L = links(1,i);
                 
-                mult =     [0.5 0.5 0.5;
-                          0.66 0.66 0.66;
-                          0.66 0.66 0.66;
-                          0.5 0.5 0.5;
-                          0.4 0.4 0.4;
-                          0.125 0.125 0.125];
+                current_transform = linkTransforms(:,:, i);
                 
-                links = self.ellipsis.links;
+                current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
+                transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
+                linkTransforms(:,:,i + 1) = current_transform;
+            end
 
-                for i = 1:length(links)
-                    L = links(1,i);
-                    
-                    current_transform = tr(:,:, i);
-                    
-                    current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
-                    transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
-                    tr(:,:,i + 1) = current_transform;
+            for i = 1:length(links)
+
+                A = 0.001;
+                D = 0.001;
+
+                if(i >= 2)
+
+                    if(links(i-1).alpha == pi/2)
+                        piFlag = ~piFlag;
+                    end
+
+                    if(piFlag)
+                        A = A + links(i).d;
+                        D = D + links(i).a;
+                    else
+                        A = A + links(i).a;
+                        D = D + links(i).d;
+                    end
+                else
+                     A = A + links(i).a;
+                     D = D + links(i).d;
                 end
 
-                for i = 1:length(links)
+                if (D > 0.001)
+                    radii = [D, 0.2, 0.2];
+                else
+                     radii = [A, 0.2, 0.2];
+                end
+                
 
-                    A = 0.001;
-                    D = 0.001;
+                [X, Y, Z] = ellipsoid(centre(i,1), centre(i,2), centre(i,3), radii(1), radii(2), radii(3));
 
-                    if(i >= 2)
+                self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,2)];
+                self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
 
-                        if(links(i-1).alpha == pi/2)
-                            piFlag = ~piFlag;
-                        end
+            end
 
-                        if(piFlag)
-                            A = A + links(i).d;
-                            D = D + links(i).a;
-                        else
-                            A = A + links(i).a;
-                            D = D + links(i).d;
-                        end
-                    else
-                         A = A + links(i).a;
-                         D = D + links(i).d;
-                    end
+            centre = [0,0,0];
+            radii = [0.1,0.1,0.1];
+
+            [X, Y, Z] = ellipsoid(centre(1), centre(2), centre(3), radii(1), radii(2), radii(3));
+
+            self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
+            self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
+
+            self.ellipsis.plot3d(self.model.getpos());
+        end
+
+        %% Checking if a Collision is Occurring 
+        function isCollision = CheckCollisions(self, jointAngles, model)
+            isCollision = false; % Setting default return condition to state no present collisions
+            
+            % Creating an array of 4x4 transforms relating to robot links
+            linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
+            linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
+
+            % Getting the link data of the robot links
+            linkData = self.ellipsis.links;
+
+            % Getting the points of the model that need to be checked
+            points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
+
+            % For loop to get the remaining link transforms
+            for i = 1:self.ellipsis.n
+                % Calculating link transforms via link data
+                linkTransforms(:,:,i+1) = linkTransforms(:,:,i) * trotz(jointAngles(i)) * transl(0,0,linkData(i).d) ...
+                * transl(linkData(i).a,0,0) * trotx(linkData(i).alpha);
+            end
+
+            % Looping through each ellipsoid to check for collisions
+            for i = 1:size(linkTransforms, 3)
+                % Updating the points of the model relative to the links on the robot
+                modelPointsAndOnes = (inv(linkTransforms(:,:,i)) * [points, ones(size(points,1),1)]')'; %#ok<MINV>
+                updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
     
-                    if (D > 0.001)
-                        radii = [D, 0.2, 0.2];
-                    else
-                         radii = [A, 0.2, 0.2];
-                    end
+                % Checking the algerbraic distance of these points
+                algerbraicDist = LabAssessment2.GetAlgebraicDist(updatedModelPoints, self.linkCentres, self.linkRadii);
                     
-
-                    [X, Y, Z] = ellipsoid(centre(i,1), centre(i,2), centre(i,3), radii(1), radii(2), radii(3));
-
-                    self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,2)];
-                    self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
-
+                % Checking if the model is within the light curtain (i.e. there
+                % is an algerbraic distance of < 1 with any of the above points
+                if(find(algerbraicDist < 1) > 0)
+                    isCollision = true; % Object has been detected within the light curtain
+                    return; % Returning on first detection of object within the light curtain
                 end
+            end
+        end
 
-                centre = [0,0,0];
-                radii = [0.1,0.1,0.1];
-
-                [X, Y, Z] = ellipsoid(centre(1), centre(2), centre(3), radii(1), radii(2), radii(3));
-
-                self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
-                self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
-
-                self.ellipsis.plot3d(self.model.getpos());
+        %% Getter for the Algerbraic Distance between Objects and Light Curtain
+        function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
+            algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
+                  + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
+                  + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
 
     end

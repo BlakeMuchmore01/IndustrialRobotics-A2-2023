@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 4;
+model = 5;
 
 figure(1);
 
@@ -101,9 +101,17 @@ if model == 4
         pause(0.01);
         drawnow;
     end
+end
 
+if model == 5
+L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
 
+    figure(1); % Creating figure to simulate robots
+    hold on; axis(LabAssessment2.axisLimits); camlight;
 
+    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    auboI5.CreateEllipsis();
 end
 
 pause;
