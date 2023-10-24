@@ -18,6 +18,7 @@ classdef AuboI5 < RobotBaseClass
         currentJointAngles; % Current joint angles of the Aubo i5
         tool = cell(1,2); % Variable to store the tool (2F-85 Gripper) that is used by the Aubo i5
         plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
+        ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
         linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
         linkRadii = cell(6,3); % Structure of link elliposid radii
     end
