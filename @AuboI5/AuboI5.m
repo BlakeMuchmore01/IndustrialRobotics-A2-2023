@@ -255,7 +255,7 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis.plot3d(self.model.getpos());
         end
 
-        %% Checking if a Collision is Occurring 
+        %% Checking if a Collision is Occurring with a Model
         function isCollision = CheckCollisions(self, jointAngles, model)
             isCollision = false; % Setting default return condition to state no present collisions
             
