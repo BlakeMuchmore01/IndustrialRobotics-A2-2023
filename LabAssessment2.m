@@ -47,23 +47,8 @@ classdef LabAssessment2 < handle
                 pause(0.1);
                 drawnow;
             end
-            
-            % While loop to check demonstration mode chosen by the GUI
-            while (~guiWindow.EndDemonstration)
-                % Switch statement to alter code functionality depending on state chosen previously
-                switch guiWindow.simulationMode
-                    % Functionality for the blackjack card distribution
-                    case "Blackjack"
-                        
-                        
-                    % Functionality for the teaching/jogging
-                    case "Teach"
-                        
-                end
-                
-                pause(0.5); % Pausing to reduce business of the while loop
-                drawnow; % Allowing the GUI properties to be updated within the loop
-            end
+
+            % Implement blackjack and teach functionality
 
             guiWindow.delete(); % Closing the GUI wind
             close(figure(1)); % Closing the demo figure
