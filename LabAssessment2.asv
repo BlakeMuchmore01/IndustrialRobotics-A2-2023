@@ -52,10 +52,10 @@ classdef LabAssessment2 < handle
             % Implement blackjack and teach functionality
             while ~guiWindow.endDemonstration
                 % Getting the robot that is being controlled by the user
-                drawnow;
                 switch guiWindow.RobotDropDown.Value
                     case "Aubo I5"
                         % Getting the updated joint angles and animating
+                        dra
                         auboJointAngles = guiWindow.moveAuboDeg;
                         auboI5.model.animate(deg2rad(auboJointAngles));
                         drawnow;
@@ -65,7 +65,6 @@ classdef LabAssessment2 < handle
                         dobotMagician.model.animate(deg2rad(dobotJointAngles));
                         drawnow;
                 end
-                drawnow;
             end
 
             guiWindow.delete(); % Closing the GUI wind

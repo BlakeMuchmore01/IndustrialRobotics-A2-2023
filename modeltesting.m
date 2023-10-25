@@ -134,10 +134,10 @@ if model == 6
     cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.005),L);
 
     auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
-    % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+    dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     
     cards.cardModels{1}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
-    cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; %card to dobot mount 
+    cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; % card to dobot mount 
     
     card_transform = eye(4);
     card_transform(1:3, 4) = [0.2, 0.5, 0.075];
@@ -271,23 +271,22 @@ end
 if model == 7
 
     % this is for running the sim for promo vid
-
-
-        L = log4matlab('logFile.log');
+    L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
 
     figure(1); % Creating figure to simulate robots
     hold on; axis(LabAssessment2.axisLimits); camlight;
 
-    % LabAssessment2.CreateEnvironment(L);
+    LabAssessment2.CreateEnvironment(L);
 
     cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.005),L);
 
     auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
-    % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+    dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     
     cards.cardModels{1}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
     cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; %card to dobot mount 
+    drawnow;
     
     card_transform = eye(4);
     card_transform(1:3, 4) = [0.2, 0.5, 0.075];
