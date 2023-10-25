@@ -5,12 +5,13 @@ classdef AuboI5 < RobotBaseClass
     %% Robot Class Properties
     % Constant Properties
     properties (Access = public, Constant)
-        initialJointAngles = [0 135 -100 145 -90 0]*pi/180; % Default starting pose for Aubo i5
+        initialJointAngles = deg2rad([0 135 -105 150 -90 0]); % Default starting pose for Aubo i5
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.01; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([0.8 0.8 0.8 0.2 0.2 0.2]); % Weighting matrix for movement velocity vector
-        maxLambda = 0.05; % Value used for Damped Least Squares
+        movementWeight = diag([1 1 1 1 1 1]); % Weighting matrix for movement velocity vector
+        maxLambda = 5E-2; % Value used for Damped Least Squares
+        delta = 2*pi/1000; % Small angle change for trajectory
     end
 
     % Non-constant Properties
@@ -79,7 +80,7 @@ classdef AuboI5 < RobotBaseClass
             link(1).qlim = [-175  175]*pi/180;
             link(2).qlim = [-175  175]*pi/180;
             link(3).qlim = [-175  175]*pi/180;
-            link(4).qlim = [-175  175]*pi/180;
+            link(4).qlim = [-360  360]*pi/180;
             link(5).qlim = [-175  175]*pi/180;
             link(6).qlim = [-360  360]*pi/180;
 
@@ -96,67 +97,111 @@ classdef AuboI5 < RobotBaseClass
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
-        %% Moving the Aubo i5 to a Desired Transform
-        function qMatrix = GetCartesianMovement(self, coordinateTransform)
-            deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step
-
+        %% RMRC using Quaternions
+        function qMatrix = GetQuaternionRMRC(self, coordinateTransform)
+            deltaT = self.movementTime/self.movementSteps; % Calculating the discrete time step
+        
             % Allocating memory to data arrays
             manipulability = zeros(self.movementSteps, 1);      % Array of measure of manipulability
             qMatrix = zeros(self.movementSteps, self.model.n);  % Array of joint angle states
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
-            theta = zeros(3, self.movementSteps);               % Array of end-effector angles
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
-
+            quat = zeros(4, self.movementSteps);                % Array of quaternions
+            positionError = zeros(3,self.movementSteps); % For plotting trajectory error
+            angleError = zeros(3,self.movementSteps);    % For plotting trajectory error
+        
             % Getting the initial and final x-y-z coordinates
             initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
             x1 = initialTr(1:3,4); % Extracting the x-y-z coordinates from the current pose transform
             x2 = coordinateTransform(1:3,4); % Extracting  the x-y-z coordiantes from the final pose transform
-
-            % Getting the initial and final roll-pitch-yaw angles
-            rpy1 = tr2rpy(initialTr(1:3,1:3)); % Getting the inial roll-pitch-yaw angles
-            rpy2 = tr2rpy(coordinateTransform(1:3,1:3)); % Getting the final roll-pitch-yaw angles
-
+        
+            % Getting the initial and final quaternions
+            quaternion1 = rotm2quat(initialTr(1:3,1:3)); % Getting the initial quaternion
+            quaternion2 = rotm2quat(coordinateTransform(1:3,1:3)); % Getting the final quaternion
+        
             % Creating the movement trajectory
-            s = lspb(0,1,self.movementSteps); % Create interpolation scalar
+            s = lspb(0,1,self.movementSteps); % Creating interpolation scalar
             for i = 1:self.movementSteps
                 trajectory(:,i) = x1*(1-s(i)) + s(i)*x2; % Creating the translation trajectory
-                theta(:,i) = rpy1*(1-s(i)) + s(i)*rpy2; % Creating the rotation trajectory
+        
+                % Creating the rotational trajectory
+                dotProduct = dot(quaternion1,quaternion2); % Calcualting the dot product of the two quaternions
+        
+                % If dot product is < 0, means quaternions are > 90deg apart
+                % Changing sign of quaternion and dot product to calculate the shortest interpolation
+                if dotProduct < 0
+                    quaternion2 = - quaternion2;
+                    dotProduct = -dotProduct;
+                end
+        
+                if dotProduct > 0.995
+                    quat(:, i) = (1 - s(i)) * quaternion1 + s(i) * quaternion2;
+                else
+                    theta_0 = acos(dotProduct);
+                    theta = theta_0 * s(i);
+                    sin_theta = sin(theta);
+                    sin_theta_0 = sin(theta_0);
+        
+                    s0 = cos(theta) - dotProduct * sin_theta / sin_theta_0;
+                    s1 = sin_theta / sin_theta_0;
+        
+                    quat(:, i) = (s0 * quaternion1) + (s1 * quaternion2);
+                end
             end
-
-            % Creating the transform for the first instance of the trajectory
-            firstTr = [rpy2r(theta(1,1), theta(2,1), theta(3,1)) trajectory(:,1); zeros(1,3) 1];
-            q0 = self.model.getpos(); % Getting the initial guess for the joint angles
-            qMatrix(1,:) = self.model.ikcon(firstTr, q0); % Solving the qMatrix for the first waypointx
-
-            % Tracking the movement trajectory with RMRC
+        
+            % Creating the movement trajectory using RMRC
             for i = 1:self.movementSteps-1
                 currentTr = self.model.fkine(qMatrix(i,:)).T; % Getting the forward transform at current joint states
                 deltaX = trajectory(:,i+1) - currentTr(1:3,4); % Getting the position error from the next waypoint
-                Rd = rpy2r(theta(1,i+1), theta(2,i+1), theta(3,i+1)); % Getting the next RPY angles (converted to rotation matrix)
-                Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
-                
+        
+                Rd = quat2rotm(quat(:,1)'); % Getting the next rotation matrix
+                Ra = currentTr(1:3,1:3); % Getting the current rotation matrix
+        
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
                 S = Rdot * Ra;
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
-
+                deltaTheta = tr2rpy(Rd*Ra');
+        
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
-
+        
                 % Implementing Damped Least Squares
                 manipulability(i,1) = sqrt(det(J*J')); % Calcualting the manipulabilty of the aubo i5
-                disp(manipulability(i,1));
                 if manipulability(i,1) < self.epsilon % Checking if manipulability is within threshold
                     lambda = (1 - (manipulability(i,1)/self.epsilon)^2) * self.maxLambda; % Damping Coefficient
                     
                 else % If DLS isn't required
                     lambda = 0; % Damping Coefficient
                 end
-
+        
                 invJ = inv(J'*J + lambda * eye(self.model.n))*J'; %#ok<MINV> % DLS inverse
                 qdot(i,:) = (invJ * xdot)'; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
+        
+                positionError(:,i) = deltaX;             % For plotting
+                angleError(:,i) = deltaTheta;            % For plotting
             end
+        
+            figure(2)
+            subplot(2,1,1)
+            plot(positionError'*1000,'LineWidth',1)
+            refline(0,0)
+            xlabel('Step')
+            ylabel('Position Error (mm)')
+            legend('X-Axis','Y-Axis','Z-Axis')
+            
+            subplot(2,1,2)
+            plot(angleError','LineWidth',1)
+            refline(0,0)
+            xlabel('Step')
+            ylabel('Angle Error (rad)')
+            legend('Roll','Pitch','Yaw')
+        
+            figure(3)
+            plot(manipulability,'k','LineWidth',1)
+            refline(0,self.epsilon)
+            title('Manipulability')
         end
 
         %% Creating the Ellipsis Around each Robot Link

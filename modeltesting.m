@@ -24,11 +24,14 @@ if model == 2
     L.SetCommandWindowLevel(L.DEBUG);
 
     figure(1);
+    hold on; axis(LabAssessment2.axisLimits); camlight;
+    LabAssessment2.CreateEnvironment(L);
+
     % Creating aubo i5
     r = AuboI5(eye(4),L);
     axis([-1 1 -1 1 -1 1]);
 
-    r.model.teach([0 pi/2 0 pi/2 0 0]);
+    r.model.teach(r.model.getpos());
 end
 
 if model == 3
@@ -52,7 +55,7 @@ if model == 4
     figure(1); % Creating figure to simulate robots
     hold on; axis(LabAssessment2.axisLimits); camlight;
 
-    LabAssessment2.CreateEnvironment(L)
+    LabAssessment2.CreateEnvironment(L);
 
     % cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.005),L); % Spawning the cards that will be moved by robots
 
@@ -76,10 +79,8 @@ if model == 4
     %     pause(0.01);
     % end
 
-    transform = eye(4);
-    transform(1:3, 4) = [0.4, 0, 0.1];
-    rotm = eul2rotm([-90 0 220]*pi/180) * eul2rotm([45 0 0]*pi/180);
-    transform(1:3, 1:3) = rotm;
+    transform = auboI5.model.fkine(deg2rad([0 51.5 -108 190 -90 0])).T;
+    
 
     % qmat = auboI5.GetCartesianMovement(transform);
     % q1 = auboI5.model.ikcon(transform);
@@ -87,7 +88,7 @@ if model == 4
     % transform(1:3, 4) = [0.6, 0, 0.1];
     % transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ") * eul2rotm([90 0 0]*pi/180);
 
-    qMatrix = auboI5.GetCartesianMovement(transform);
+    qMatrix = auboI5.GetQuaternionRMRC(transform);
     pause;
     
     for i = 1:1:size(qMatrix,1)
@@ -101,6 +102,9 @@ if model == 4
         pause(0.01);
         drawnow;
     end
+
+    disp(transform);
+    disp(auboI5.model.fkine(auboI5.model.getpos()).T);
 end
 
 if model == 5
