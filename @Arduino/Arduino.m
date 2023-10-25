@@ -24,7 +24,7 @@ classdef Arduino < handle
         end
         
         %% Checking if the E-stop has been Pressed
-        function CheckButtonPressed(self)
+        function eStopPressed = CheckButtonPressed(self)
 
                 % currentState = readDigitalPin(self.ardObj, self.pin);
                 % 
@@ -44,7 +44,7 @@ classdef Arduino < handle
 
                 % Reading the e-stop state
                 data = readline(self.ardObj);
-                disp(data); % Displaying the e-stop state
+                eStopPressed = data; % Outputting arduino data
         end
 
         %% Testing Function for Writing
