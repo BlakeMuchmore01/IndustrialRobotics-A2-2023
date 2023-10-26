@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 4;
+model = 7;
 figure(1);
 
 if model == 1
@@ -237,17 +237,18 @@ if model == 6
     qnext_aubo = auboI5.model.ikcon(transform_cardpos);
 
     qmatrix = jtraj(qcurr_aubo, qnext_aubo, 100);
+    qMatrixAubo = auboI5.GetCartesianMovementRMRC(transform_cardpos);
     
 
 
 
 
-    for i = 1:1:size(qmatrix,1)
+    for i = 1:1:size(qMatrixAubo,1)
         currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
         distToGoal = sqrt((currentTr(1,4)-transform(1,4))^2 + (currentTr(2,4)-transform(2,4))^2 + (currentTr(3,4)-transform(3,4))^2);
         disp(distToGoal);
 
-        auboI5.model.animate(qmatrix(i,:));
+        auboI5.model.animate(qMatrixAubo(i,:));
         auboI5.UpdateToolTr;
 
         for j = 1:2
@@ -284,9 +285,9 @@ if model == 7
     auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
     dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     
-    cards.cardModels{1}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
-    cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; %card to dobot mount 
-    drawnow;
+    % cards.cardModels{1}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
+    % cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; %card to dobot mount 
+    % drawnow;
     
     card_transform = eye(4);
     card_transform(1:3, 4) = [0.2, 0.5, 0.075];
@@ -296,16 +297,161 @@ if model == 7
     q_cardup = [0 15 45 120 -90]*pi/180; %q for raised dobot
 
     transform_cardpos = eye(4); 
-    transform_cardpos(1:3, 4) = [0.2222, 0.32, 0.25];
+    transform_cardpos(1:3, 4) = [0.2222, 0.15, 0.25];
     rotMatrix = eul2rotm([0 0 -pi/2])*eul2rotm([90 0 0]*pi/180);
     transform_cardpos(1:3, 1:3) = rotMatrix; %transform for aubo to get card from dobot
 
-    transform = eye(4);
-    transform(1:3, 4) = [0.5, 0, 0.2];
+    transform_placecard = eye(4);
+    transform_placecard(1:3, 4) = [0.53, 0, 0.21];
     rotMatrix1 = eul2rotm([-90 0 220]*pi/180);
     rotMatrix2 = eul2rotm([90 0 0]*pi/180);
     rotMatrix = rotMatrix1*rotMatrix2;
-    transform(1:3, 1:3) = rotMatrix; %transform for aubo to place card on holder (other positions to be confirmed)
+    transform_placecard(1:3, 1:3) = rotMatrix; %transform for aubo to place card on holder (other positions to be confirmed)
+
+    placecard = [0.53 0.12, 0.21; ...
+                 0.53 0.06 0.21; ...
+                 0.53 0 0.21; ...
+                 0.53 -0.06 0.21; ...
+                 0.53 -0.12 0.21;];
+
+    q_cardup = [0 15 45 120 -90]*pi/180;
+    q_cardpos = dobotMagician.model.ikcon(card_transform);
+
+    
+    qmatrix_dobot_getcard = jtraj(q_cardup, q_cardpos, 200);
+    qmatrix_dobot_putcard = jtraj(q_cardpos, q_cardup, 200);
+
+    gripperclosematrix = jtraj([0 45 45]*pi/180, [0 92.5 4]*pi/180, 100);
+    gripperopenmatrix = jtraj([0 92.5 4], [0 45 45], 100);
+
+    %go to card 
+
+    for k = 1:1:5
+
+        for i = 1:1:size(qmatrix_dobot_getcard,1)
+        
+            dobotMagician.model.animate(qmatrix_dobot_getcard(i,:));
+            
+        
+            
+            pause(0.01);
+            drawnow;
+        
+        end
+        
+        %place card
+        for i = 1:1:size(qmatrix_dobot_putcard,1)
+        
+            dobotMagician.model.animate(qmatrix_dobot_putcard(i,:));
+        
+            cards.cardModels{k}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ;
+            cards.cardModels{k}.animate(0);
+            
+            
+            pause(0.01);
+            drawnow;
+        
+        end
+        
+        transform_cardpos = eye(4); 
+        transform_cardpos(1:3, 4) = [0.2222, 0.32, 0.26];
+        
+        rotMatrix = eul2rotm([0 0 -pi/2])*eul2rotm([90 0 0]*pi/180);
+        transform_cardpos(1:3, 1:3) = rotMatrix;
+        qMatrixAubo = auboI5.GetCartesianMovementRMRC(transform_cardpos);
+        
+        
+        for i = 1:1:size(qMatrixAubo,1)
+            % currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
+            % distToGoal = sqrt((currentTr(1,4)-transform(1,4))^2 + (currentTr(2,4)-transform(2,4))^2 + (currentTr(3,4)-transform(3,4))^2);
+            % disp(distToGoal);
+        
+            auboI5.model.animate(qMatrixAubo(i,:));
+            auboI5.UpdateToolTr;
+        
+            for j = 1:2
+        
+                auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
+                
+        
+            end
+                % auboI5.tool{1,2}.UpdateGripperPosition(auboI5.toolTr);
+        
+        
+            pause(0.01);
+        
+            drawnow;
+        end
+        
+        for i = 1:1:size(gripperclosematrix,1)
+        
+            for j = 1:2
+        
+                auboI5.tool{1, j}.model.animate(gripperclosematrix(i,:));
+                pause(0.01)
+                drawnow;
+        
+            end
+        
+        end
+        
+        transform_placecards = eye(4);
+        
+        
+        transform_placecards(1,4) = placecard(k,1);
+        transform_placecards(2,4) = placecard(k,1);
+        transform_placecards(3,4) = placecard(k,1);
+        
+        rotMatrix1 = eul2rotm([-90 0 220]*pi/180);
+        rotMatrix2 = eul2rotm([90 0 0]*pi/180);
+        rotMatrix = rotMatrix1*rotMatrix2;
+        transform_placecards(1:3, 1:3) = rotMatrix;
+        
+        qmatrixAuboplacecard = auboI5.GetCartesianMovementRMRC(transform_placecards);
+        
+        for i = 1:1:size(qmatrixAuboplacecard,1)
+            % currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
+            % distToGoal = sqrt((currentTr(1,4)-transform(1,4))^2 + (currentTr(2,4)-transform(2,4))^2 + (currentTr(3,4)-transform(3,4))^2);
+            % disp(distToGoal);
+        
+            auboI5.model.animate(qmatrixAuboplacecard(i,:));
+            auboI5.UpdateToolTr;
+        
+            for j = 1:2
+        
+                auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
+                auboI5.tool{1,j}.model.animate([0 92.5 4]);
+                drawnow();
+                
+        
+            end
+                % auboI5.tool{1,2}.UpdateGripperPosition(auboI5.toolTr);
+        
+            cards.cardModels{k}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
+            cards.cardModels{k}.animate(0);
+        
+        
+            pause(0.01);
+        
+            drawnow;
+        end
+        
+        for i = 1:1:size(gripperopenmatrix,1)
+        
+            for j = 1:2
+        
+                auboI5.tool{1, j}.model.animate(gripperopenmatrix(i,:));
+                pause(0.01)
+                drawnow;
+        
+            end
+        
+        end
+
+    end
+
+
+
 
     
 

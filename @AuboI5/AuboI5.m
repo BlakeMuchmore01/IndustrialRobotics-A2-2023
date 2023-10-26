@@ -6,7 +6,7 @@ classdef AuboI5 < RobotBaseClass
     % Constant Properties
     properties (Access = public, Constant)
         initialJointAngles = deg2rad([0 135 -105 150 -90 0]); % Default starting pose for Aubo i5
-        movementSteps = 1000; % Number of steps allocated for movement trajectories
+        movementSteps = 100; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.01; % Maximum measure of manipulability to then require Damped Least Squares
         movementWeight = diag([1 1 1 1 1 1]); % Weighting matrix for movement velocity vector
