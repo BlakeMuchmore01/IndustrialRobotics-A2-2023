@@ -89,7 +89,7 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis = SerialLink(link,'name',[self.name,'_ellipsis']);
         end
 
-        %% Updator for End Effector Transform (Tool Transform)
+        %% Updater for End Effector Transform (Tool Transform)
         function UpdateToolTr(self)
             % Updating the toolTr property of the robot
             % Used to update the pose of the gripper to the end-effector

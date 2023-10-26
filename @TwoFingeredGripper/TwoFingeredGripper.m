@@ -12,7 +12,7 @@ classdef TwoFingeredGripper < RobotBaseClass
     % Constant Properties
     properties (Access = public, Constant)
         initialJointAngles = [0 45 45]*pi/180; % Default starting pose for Gripper Finger
-        movementSteps = 50; % Default number of steps for movement
+        movementSteps = 100; % Default number of steps for movement
     end
 
     %% ...structors
@@ -96,9 +96,11 @@ classdef TwoFingeredGripper < RobotBaseClass
             switch(self.isClosed)
                 case false % Gripper is currently opened and needs to close
                     qMatrix = jtraj(openQ, closedQ, self.movementSteps);
+                    self.isClosed = true;
 
                 case true % Gripper is currently closed and needs to open
                     qMatrix = jtraj(closedQ, openQ, self.movementSteps);
+                    self.isClosed = false;
             end
         end
 

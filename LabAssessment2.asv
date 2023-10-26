@@ -68,6 +68,7 @@ classdef LabAssessment2 < handle
                 
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
+                LabAssessment2.StandSelected(player,L);
 
             elseif model == 2
                 % Blackjack and teach functionality
@@ -95,7 +96,7 @@ classdef LabAssessment2 < handle
         end
 
         %% Hit Functionality
-        function HitSelected(auboI5, dobotMagician, ~, cards, cardNum, player, logFile)
+        function HitSelected(auboI5, dobotMagician, guiWindow, cards, cardNum, player, logFile)
             % Getting the qMatrix to move the dobot magician to the top card position
             qMatrixDobot = dobotMagician.GetCartesianMovement(cards.cardInitialTransforms(end));
             

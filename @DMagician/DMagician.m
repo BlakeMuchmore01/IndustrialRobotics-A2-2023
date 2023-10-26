@@ -6,12 +6,12 @@ classdef DMagician < RobotBaseClass
     % Non-constant properties
     properties (Access = public)   
         plyFileNameStem = 'DMagician'; % Name stem used to find associated ply model files
+        currentJointAngles; % Current joint angles of the dobot magician
     end
 
     % Constant properties
     properties (Access = public, Constant)
         defaultRealQ  = [0 15 45 120 0]*pi/180; % Default joint angle
-
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 5; % Time for movements undergone by the Aubo i5
         epsilon = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
@@ -69,7 +69,15 @@ classdef DMagician < RobotBaseClass
 
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
-        end   
+        end
+
+        %% Updater for End Effector Transform (Tool Transform)
+        function UpdateToolTr(self)
+            % Updating the toolTr property of the robot
+            % Used to update the pose of the gripper to the end-effector
+            self.currentJointAngles = self.model.getpos(); % Getting the current joint angles of Aubo i5
+            self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
+        end
 
         %% Moving the DMagician to a Desired Transform
         function qMatrix = GetCartesianMovement(self, coordinateTransform)
