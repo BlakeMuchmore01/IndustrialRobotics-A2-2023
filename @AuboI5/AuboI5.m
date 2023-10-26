@@ -107,8 +107,8 @@ classdef AuboI5 < RobotBaseClass
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
             theta = zeros(3, self.movementSteps);               % Array of end-effector angles
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
-            positionError = zeros(3,self.movementSteps); % For plotting trajectory error
-            angleError = zeros(3,self.movementSteps);    % For plotting trajectory error
+            % positionError = zeros(3,self.movementSteps);      % For plotting trajectory error
+            % angleError = zeros(3,self.movementSteps);         % For plotting trajectory error
 
             % Getting the initial and final x-y-z coordinates
             initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
@@ -143,7 +143,7 @@ classdef AuboI5 < RobotBaseClass
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
-                deltaTheta = tr2rpy(Rd*Ra');
+                % deltaTheta = tr2rpy(Rd*Ra'); % For plotting
 
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
 
