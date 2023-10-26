@@ -60,12 +60,11 @@ classdef PlayingCards < RobotBaseClass
             finalCardTransforms = zeros(4,4, size(self.cardFinalPositions));
 
             % Getting the rotation matrix of the final card orientation
-            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles)';
+            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles);
 
             % Looping through the card final positon array property
             for i = 1:size(self.cardFinalPositions, 1)
-                % Populating the final card transforms array
-                finalCardTransforms{:,:,i} = [cardFinalRotationMatrix self.cardFinalPositions; zeros(1,3) 1];
+                finalCardTransforms{:,:,i} = [];
             end
         end
     end

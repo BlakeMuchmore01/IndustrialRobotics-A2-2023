@@ -36,7 +36,7 @@ classdef LabAssessment2 < handle
             LabAssessment2.CreateEnvironment(L);
 
             % Creating all dynamic components for the demo (robots, cards, collision objects)
-            % hand = Hand(LabAssessment2.auboOrigin*transl(0,0,-1.15),L); % Hand used to verify light curtain
+            hand = Hand(LabAssessment2.auboOrigin*transl(0,0,-1.15),L); % Hand used to verify light curtain
             cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.01),L); % Spawning the cards that will be moved by robots
 
             auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
@@ -49,7 +49,7 @@ classdef LabAssessment2 < handle
                 drawnow;
             end
 
-            % Implement blackjack and teach functionality
+            % Blackjack and teach functionality
             while ~guiWindow.endDemonstration
                 % Getting the robot that is being controlled by the user
                 drawnow;

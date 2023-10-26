@@ -48,7 +48,6 @@ function RealRobotControlGripper
             if (guiWindow.eStopPressed || ~guiWindow.startPressed)
                 pause(0.1);
                 drawnow;
-                continue;
             end
     
             % If above stopping conditions are passed, move the robot
@@ -85,7 +84,6 @@ function RealRobotControlGripper
             if (guiWindow.eStopPressed || ~guiWindow.startPressed)
                 pause(0.1);
                 drawnow;
-                continue;
             end
     
             % If above stopping conditions are passed, move the robot
@@ -104,8 +102,72 @@ function RealRobotControlGripper
             drawnow;
         end
 
+        % Looping for down movement
+        for i = 1:size(qMatrixDown,1)
+            % Checking if E-Stop has been hit by either Arduino or GUI
+            if(arduino.CheckButtonPressed())
+                % Making estop pressed property true
+                guiWindow.eStopPressed = true;
+                guiWindow.startPressed = false;
+            end
+            
+            % Looping while loop if estop has been pressed or if the continue
+            % button hasnt been pressed after an e-stop
+            if (guiWindow.eStopPressed || ~guiWindow.startPressed)
+                pause(0.1);
+                drawnow;
+            end
+    
+            % If above stopping conditions are passed, move the robot
+            endEffectorPosition = qMatrixDown(i,:);
+    
+            targetEndEffectorMsg.Position.X = endEffectorPosition(1);
+            targetEndEffectorMsg.Position.Y = endEffectorPosition(2);
+            targetEndEffectorMsg.Position.Z = endEffectorPosition(3);
+            
+            qua = eul2quat(endEffectorRotation);
+            targetEndEffectorMsg.Orientation.W = qua(1);
+            targetEndEffectorMsg.Orientation.X = qua(2);
+            targetEndEffectorMsg.Orientation.Y = qua(3);
+            targetEndEffectorMsg.Orientation.Z = qua(4);
+            send(targetEndEffectorPub,targetEndEffectorMsg);
+            drawnow;
+        end
+
         % Deactivating Gripper
         toolStateMsg.Data = [0]; %#ok<NBRAK2> % Send 1 for on and 0 for off 
         send(toolStatePub,toolStateMsg);
+
+        % Looping for up movement
+        for i = 1:size(qMatrixUp,1)
+            % Checking if E-Stop has been hit by either Arduino or GUI
+            if(arduino.CheckButtonPressed())
+                % Making estop pressed property true
+                guiWindow.eStopPressed = true;
+                guiWindow.startPressed = false;
+            end
+            
+            % Looping while loop if estop has been pressed or if the continue
+            % button hasnt been pressed after an e-stop
+            if (guiWindow.eStopPressed || ~guiWindow.startPressed)
+                pause(0.1);
+                drawnow;
+            end
+    
+            % If above stopping conditions are passed, move the robot
+            endEffectorPosition = qMatrixUp(i,:);
+    
+            targetEndEffectorMsg.Position.X = endEffectorPosition(1);
+            targetEndEffectorMsg.Position.Y = endEffectorPosition(2);
+            targetEndEffectorMsg.Position.Z = endEffectorPosition(3);
+            
+            qua = eul2quat(endEffectorRotation);
+            targetEndEffectorMsg.Orientation.W = qua(1);
+            targetEndEffectorMsg.Orientation.X = qua(2);
+            targetEndEffectorMsg.Orientation.Y = qua(3);
+            targetEndEffectorMsg.Orientation.Z = qua(4);
+            send(targetEndEffectorPub,targetEndEffectorMsg);
+            drawnow;
+        end
     end
 end
