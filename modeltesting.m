@@ -80,7 +80,7 @@ if model == 4
     %     pause(0.01);
     % end
 
-    transform = auboI5.model.fkine(deg2rad([0 51.5 -108 190 -90 0])).T;
+    transform = auboI5.model.fkine(deg2rad([0 51.5 -108 190 -90 90])).T;
     
 
     % qmat = auboI5.GetCartesianMovement(transform);
@@ -89,7 +89,7 @@ if model == 4
     % transform(1:3, 4) = [0.6, 0, 0.1];
     % transform(1:3,1:3) = eul2rotm([-90 0 220]*pi/180,"XYZ") * eul2rotm([90 0 0]*pi/180);
 
-    qMatrix = auboI5.GetQuaternionRMRC(transform);
+    qMatrix = auboI5.GetCartesianMovementRMRC(transform);
     pause;
     
     for i = 1:1:size(qMatrix,1)

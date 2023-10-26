@@ -1,5 +1,5 @@
-2023-10-26 11:05:55,730 DEBUG CreateEnvironment - Safety environment created
-2023-10-26 11:06:15,155 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-10-26 11:06:18,773 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-10-26 11:06:22,429 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-10-26 11:06:22,433 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-26 11:24:02,769 DEBUG CreateEnvironment - Safety environment created
+2023-10-26 11:24:22,101 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-26 11:24:25,604 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-26 11:24:29,098 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-26 11:24:29,105 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
