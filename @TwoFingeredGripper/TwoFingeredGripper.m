@@ -115,7 +115,7 @@ classdef TwoFingeredGripper < RobotBaseClass
             end
 
             % Animating the updating pose of the gripper
-            self.model.animate([0 45 45]*pi/180);
+            self.model.animate(self.model.getpos());
         end
 
     end
