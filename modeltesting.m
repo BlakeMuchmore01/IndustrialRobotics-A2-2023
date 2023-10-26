@@ -308,11 +308,29 @@ if model == 7
     rotMatrix = rotMatrix1*rotMatrix2;
     transform_placecard(1:3, 1:3) = rotMatrix; %transform for aubo to place card on holder (other positions to be confirmed)
 
-    placecard = [0.53 0.12, 0.21; ...
-                 0.53 0.06 0.21; ...
-                 0.53 0 0.21; ...
-                 0.53 -0.06 0.21; ...
-                 0.53 -0.12 0.21;];
+    placecard = [0.5327 0.12, 0.21; ...
+                 0.5327 0.06 0.21; ...
+                 0.5327 0 0.21; ...
+                 0.5327 -0.06 0.21; ...
+                 0.5327 -0.12 0.21;];
+
+    cardpositions = [0.5327 0.12, 0.21; ...
+                     0.5327 0.06 0.21; ...
+                     0.5327 0 0.21; ...
+                     0.5327 -0.06 0.21; ...
+                     0.5327 -0.12 0.21;
+
+                     0.3827 -0.34, 0.21; ...
+                     0.3827 -0.40 0.21; ...
+                     0.3827 -0.46 0.21; ...
+                     0.3827 -0.52 0.21; ...
+                     0.3827 -0.58 0.21;
+
+                     0.3827 0.59, 0.21; ...
+                     0.3827 0.65 0.21; ...
+                     0.3827 0.71 0.21; ...
+                     0.3827 0.77 0.21; ...
+                     0.3827 0.83 0.21;];
 
     q_cardup = [0 15 45 120 -90]*pi/180;
     q_cardpos = dobotMagician.model.ikcon(card_transform);
@@ -322,7 +340,7 @@ if model == 7
     qmatrix_dobot_putcard = jtraj(q_cardpos, q_cardup, 200);
 
     gripperclosematrix = jtraj([0 45 45]*pi/180, [0 92.5 4]*pi/180, 100);
-    gripperopenmatrix = jtraj([0 92.5 4], [0 45 45], 100);
+    gripperopenmatrix = jtraj([0 92.5 4]*pi/180, [0 45 45]*pi/180, 100);
 
     %go to card 
 
@@ -399,11 +417,10 @@ if model == 7
         
         
         transform_placecards(1,4) = placecard(k,1);
-        transform_placecards(2,4) = placecard(k,1);
-        transform_placecards(3,4) = placecard(k,1);
+        transform_placecards(2,4) = placecard(k,2);
+        transform_placecards(3,4) = placecard(k,3);
         
-        rotMatrix1 = eul2rotm([-90 0 220]*pi/180);
-        rotMatrix2 = eul2rotm([90 0 0]*pi/180);
+        
         rotMatrix = rotMatrix1*rotMatrix2;
         transform_placecards(1:3, 1:3) = rotMatrix;
         
@@ -420,7 +437,6 @@ if model == 7
             for j = 1:2
         
                 auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
-                auboI5.tool{1,j}.model.animate([0 92.5 4]);
                 drawnow();
                 
         
