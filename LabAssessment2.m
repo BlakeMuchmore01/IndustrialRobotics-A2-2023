@@ -29,7 +29,7 @@ classdef LabAssessment2 < handle
             L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'}; % Logging creation of gui
 
             % Creating listeners to wait for notifications from GUI
-            LabAssessment2.CreateListeners();
+            LabAssessment2.CreateListeners(guiWindow);
 
             % Creating the figure showing to show the main demo
             figure(1); % Creating figure to simulate robots
@@ -109,7 +109,8 @@ classdef LabAssessment2 < handle
 
             % Getting the qMatrix to move the dobot to its upright position
             % to hand the card to the aubo i5
-            qMatrixDobot = dobotMagician.GetCartesianMovement(dobotMagician.defaultRealQ);
+            initialPosition = dobotMagician.model.fkine(dobotMagician.defaultRealQ).T;
+            qMatrixDobot = dobotMagician.GetCartesianMovement(initialPosition);
 
             % Looping through the qMatrix to move the dobot to its upright position while holding the card
             for i = 1:size(qMatrixDobot,1)
@@ -173,7 +174,7 @@ classdef LabAssessment2 < handle
             logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 distributed the playing card'};
 
             % Getting the qMatrix to move the aubo i5 to it's original position
-            initialPosition = auboI5.model.fkine(auboI5.initialJointAngles);
+            initialPosition = auboI5.model.fkine(auboI5.initialJointAngles).T;
             qMatrixAubo = auboI5.GetCartesianMovementRMRC(initialPosition);
             qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
 
@@ -229,7 +230,7 @@ classdef LabAssessment2 < handle
         end
 
         %% Function to Create Listeners to Event Based GUI Code
-        function CreateListeners()
+        function CreateListeners(guiWindow)
             % Creating listeners for events that are undergone in the GUI
             addlistener(guiWindow,'StartButtonPressed', @(src,event) LabAssessment2.StartButtonPressed(src,event));
             addlistener(guiWindow,'EmergencyButtonPressed', @(src,event) LabAssessment2.EmergencyButtonPressed(src,event));
