@@ -106,9 +106,10 @@ classdef AuboI5 < RobotBaseClass
             qMatrix = zeros(self.movementSteps, self.model.n);  % Array of joint angle states
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
-            quat = zeros(4, self.movementSteps);                % Array of quaternions
+            quat = zeros(self.movementSteps, 4);                % Array of quaternions
             positionError = zeros(3,self.movementSteps); % For plotting trajectory error
             angleError = zeros(3,self.movementSteps);    % For plotting trajectory error
+            aV = zeros(self.movementSteps, 3);
         
             % Getting the initial and final x-y-z coordinates
             initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
@@ -135,7 +136,7 @@ classdef AuboI5 < RobotBaseClass
                 end
         
                 if dotProduct > 0.995
-                    quat(:, i) = (1 - s(i)) * quaternion1 + s(i) * quaternion2;
+                    quat(i, :) = (1 - s(i)) * quaternion1 + s(i) * quaternion2;
                 else
                     theta_0 = acos(dotProduct);
                     theta = theta_0 * s(i);
@@ -145,7 +146,7 @@ classdef AuboI5 < RobotBaseClass
                     s0 = cos(theta) - dotProduct * sin_theta / sin_theta_0;
                     s1 = sin_theta / sin_theta_0;
         
-                    quat(:, i) = (s0 * quaternion1) + (s1 * quaternion2);
+                    quat(i, :) = (s0 * quaternion1) + (s1 * quaternion2);
                 end
             end
         
@@ -154,15 +155,17 @@ classdef AuboI5 < RobotBaseClass
                 currentTr = self.model.fkine(qMatrix(i,:)).T; % Getting the forward transform at current joint states
                 deltaX = trajectory(:,i+1) - currentTr(1:3,4); % Getting the position error from the next waypoint
         
-                Rd = quat2rotm(quat(:,1)'); % Getting the next rotation matrix
+                Rd = quat2rotm(quat(1,:)); % Getting the next rotation matrix
                 Ra = currentTr(1:3,1:3); % Getting the current rotation matrix
         
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
-                S = Rdot * Ra;
+                S = Rdot * Ra';
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
                 deltaTheta = tr2rpy(Rd*Ra');
+
+                aV(i,:) = angularVelocity';
         
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
         
