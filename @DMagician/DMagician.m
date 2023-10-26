@@ -119,7 +119,7 @@ classdef DMagician < RobotBaseClass
                 Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
                 
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
-                S = Rdot * Ra';
+                S = Rdot * Ra;
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
