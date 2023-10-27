@@ -145,10 +145,9 @@ classdef LabAssessment2 < handle
             qMatrixAubo = auboI5.GetCartesianMovementRMRC([handOffRotation handOffTranslation'; zeros(1,3) 1]);
 
             % Creating a gripper opening matrix if the gripper is currently closed
-            gripperRequiresOpenning = false;
             if auboI5.tool{1}.isClosed
                 qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
-                gripperRequiresOpenning = true;
+                c
             end
 
             % Looping through the qMatrix to move the aubo to pick up the card and close the gripper 
@@ -163,7 +162,7 @@ classdef LabAssessment2 < handle
                 end
 
                 % If the robot is currently closed, open it
-                if gripperRequiresOpenning == true
+                if auboI5.tool{1}.isClosed
                     % Looping through the qMatrix for both grippers
                     for gripperNum = 1:2
                         auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));

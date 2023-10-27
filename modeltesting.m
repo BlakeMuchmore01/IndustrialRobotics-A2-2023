@@ -1,6 +1,22 @@
 clf; clear; clc;
-model = 7;
+model = 0;
 figure(1);
+
+if model == 0
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1); % Creating figure to simulate robots
+    hold on; axis(LabAssessment2.axisLimits); camlight;
+
+    LabAssessment2.CreateEnvironment(L);
+
+    % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+    % dobotMagician.model.teach(dobotMagician.model.getpos());
+
+    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    auboI5.model.teach(auboI5.model.getpos());
+end
 
 if model == 1
     % Creating log file and setting command window level
@@ -465,13 +481,24 @@ if model == 7
         end
 
     end
-
-
-
-
-    
-
-
 end
+
+if model == 8
+    % Creating log file and setting command window level
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1);
+    hold on; axis(LabAssessment2.axisLimits); camlight;
+    LabAssessment2.CreateEnvironment(L);
+
+    cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.01),L);
+    tr = cards.GetFinalCardTransforms();
+
+    disp(tr);
+end
+
+
+
 
 pause;

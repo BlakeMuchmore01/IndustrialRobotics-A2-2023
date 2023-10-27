@@ -12,6 +12,7 @@ classdef TwoFingeredGripper < RobotBaseClass
     % Constant Properties
     properties (Access = public, Constant)
         initialJointAngles = [0 45 45]*pi/180; % Default starting pose for Gripper Finger
+        closedJointAngles = [0 92.5 4]*pi/180 % Joint angles to close the Gripper Fingers
         movementSteps = 100; % Default number of steps for movement
     end
 
@@ -84,22 +85,15 @@ classdef TwoFingeredGripper < RobotBaseClass
 
         %% Getter for the QMatrix to Open/Close Gripper Fingers
         function qMatrix = GetOpenCloseQMatrix(self)
-            % Getting the qlims of the gripper finger
-            qlim = self.model.qlim;
-            
-            % Getting the joint angles for both open and closed statesc
-            openQ = qlim(:,1); % Joint angles for open state
-            closedQ = qlim(:,2); % Joint angles for closed state
-
             % Switch statement to change the qMatrix generated
             % Determined based off if gripper is open/closed
             switch(self.isClosed)
                 case false % Gripper is currently opened and needs to close
-                    qMatrix = jtraj(openQ, closedQ, self.movementSteps);
+                    qMatrix = jtraj(self.initialJointAngles, self.closedJointAngles, self.movementSteps);
                     self.isClosed = true;
 
                 case true % Gripper is currently closed and needs to open
-                    qMatrix = jtraj(closedQ, openQ, self.movementSteps);
+                    qMatrix = jtraj(self.closedJointAngles, self.initialJointAngles, self.movementSteps);
                     self.isClosed = false;
             end
         end

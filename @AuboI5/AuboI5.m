@@ -77,8 +77,8 @@ classdef AuboI5 < RobotBaseClass
 
             % Qlims for each joint
             % https://www.aubo-cobot.com/public/i5product3?CPID=i5
-            link(1).qlim = [-175  175]*pi/180;
-            link(2).qlim = [-175  175]*pi/180;
+            link(1).qlim = [-90   90]*pi/180;
+            link(2).qlim = [5     175]*pi/180;
             link(3).qlim = [-175  175]*pi/180;
             link(4).qlim = [-360  360]*pi/180;
             link(5).qlim = [-175  175]*pi/180;
