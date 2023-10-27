@@ -249,18 +249,6 @@ classdef LabAssessment2 < handle
             logFile.mlog = {logFile.DEBUG,'CreateEnvironment','Safety environment created'};
         end
 
-        %% Function to Create Listeners to Event Based GUI Code
-        function CreateListeners(guiWindow)
-            % Creating listeners for events that are undergone in the GUI
-            addlistener(guiWindow,'StartButtonPressed', @(src,event) LabAssessment2.StartButtonPressed(src,event));
-            addlistener(guiWindow,'EmergencyButtonPressed', @(src,event) LabAssessment2.EmergencyButtonPressed(src,event));
-            addlistener(guiWindow,'DemonstrationModeChanged', @(src,event) LabAssessment2.DemonstrationModeChanged(src,event));
-            addlistener(guiWindow,'BlackjackButtonRequest', @(src,event) LabAssessment2.BlackjackButtonRequest(src,event));
-            addlistener(guiWindow,'CartesianCoordSent', @(src,event) LabAssessment2.CartesianCoordSent(src,event));
-            addlistener(guiWindow,'CartesianCoordCancelled', @(src,event) LabAssessment2.CartesianCoordCancelled(src,event));
-            addlistener(guiWindow,'JointMovementSent', @(src,event) LabAssessment2.JointMovementSent(src,event));
-        end
-
         %% Checking if there is Something within the Light Curtain
         function isClear = LightCurtainCheck(model)
             isClear = true; % Setting default case of function as false
