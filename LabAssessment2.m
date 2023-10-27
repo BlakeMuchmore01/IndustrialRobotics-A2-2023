@@ -88,11 +88,22 @@ classdef LabAssessment2 < handle
                                 % Getting the updated joint angles and animating
                                 auboJointAngles = guiWindow.moveAuboDeg;
                                 auboI5.model.animate(deg2rad(auboJointAngles));
+                                auboI5.UpdateToolTr();
+                                
+                                for i = 1:2
+                                    auboI5.tool{1,i}.UpdateGripperPosition(auboI5.toolTr,i)
+                                end
+
                                 drawnow;
                             case "Dobot Magician"
                                 % Getting the updated joint angles and animating
                                 dobotJointAngles = guiWindow.moveDobotDeg;
                                 dobotMagician.model.animate(deg2rad(dobotJointAngles));
+                                auboI5.UpdateToolTr();
+                                
+                                for i = 1:2
+                                    auboI5.tool{1,i}.UpdateGripperPosition(auboI5.toolTr,i)
+                                end
                                 drawnow;
                         end
                         drawnow;
@@ -256,6 +267,11 @@ classdef LabAssessment2 < handle
             % Getting the points of the model that need to be checked
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
             points = points(1:3) + model.base.t(1:3)';
+
+            [X,Y,Z] = ellipsoid(LabAssessment2.lightCurtainCenter(1), LabAssessment2.lightCurtainCenter(2), LabAssessment2.lightCurtainCenter(3), ...
+                LabAssessment2.lightCurtainRadii(1), LabAssessment2.lightCurtainRadii(2), LabAssessment2.lightCurtainRadii(3));
+            surf(X,Y,Z);
+            alpha(0.5);
 
             % Checking the algerbraic distance of these points
             algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
