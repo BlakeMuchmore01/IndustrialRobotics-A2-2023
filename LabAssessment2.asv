@@ -56,61 +56,58 @@ classdef LabAssessment2 < handle
             switch guiWindow.simulationMode
                 % Blackjack Functionality
                 case "Blackjack"
-                    % Creating a pla
+                    % Creating a variable to track what player is currently being delt to
+                    player = 1; 
 
+                    % Dealing each player their initial two cards, alongside the dealer's
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
+                    player = LabAssessment2.StandSelected(player,L); % Changing player
+                    
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
+                    player = LabAssessment2.StandSelected(player,L); % Changing player
+                    
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
+                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
 
+                    % Setting player variable to 1 again to allow for first player 
+                    % to start interacting with the blackjack functionality
+                    player = 1;
 
-
-
-
-
-
-
+                    %%%%%%%%%%%%%%%% FIGURE OUT REMAINING CODE %%%%%%%
 
                 % Teach and Jogging Functionality
                 case "Teach"
-            end
+                    % Blackjack and teach functionality
+                    while ~guiWindow.endDemonstration
+                        % Getting the robot that is being controlled by the user
+                        drawnow;
+                        switch guiWindow.RobotDropDown.Value
+                            case "Aubo I5"
+                                % Getting the updated joint angles and animating
+                                auboJointAngles = guiWindow.moveAuboDeg;
+                                auboI5.model.animate(deg2rad(auboJointAngles));
+                                auboI5.UpdateToolTr();
+                                
+                                for i = 1:2
+                                    auboI5.tool{1,i}.UpdateGripperPosition(auboI5.toolTr,i)
+                                end
 
-
-
-
-
-
-            model = 1;
-            if model == 1
-                % Creating number to specify which player to distribute the card to
-                player = 1;
-
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
-                player = LabAssessment2.StandSelected(player,L);
-                
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
-                player = LabAssessment2.StandSelected(player,L);
-                
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
-                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
-
-            elseif model == 2
-                % Blackjack and teach functionality
-                while ~guiWindow.endDemonstration
-                    % Getting the robot that is being controlled by the user
-                    drawnow;
-                    switch guiWindow.RobotDropDown.Value
-                        case "Aubo I5"
-                            % Getting the updated joint angles and animating
-                            auboJointAngles = guiWindow.moveAuboDeg;
-                            auboI5.model.animate(deg2rad(auboJointAngles));
-                            drawnow;
-                        case "Dobot Magician"
-                            % Getting the updated joint angles and animating
-                            dobotJointAngles = guiWindow.moveDobotDeg;
-                            dobotMagician.model.animate(deg2rad(dobotJointAngles));
-                            drawnow;
+                                drawnow;
+                            case "Dobot Magician"
+                                % Getting the updated joint angles and animating
+                                dobotJointAngles = guiWindow.moveDobotDeg;
+                                dobotMagician.model.animate(deg2rad(dobotJointAngles));
+                                auboI5.UpdateToolTr();
+                                
+                                for i = 1:2
+                                    auboI5.tool{1,i}.UpdateGripperPosition(auboI5.toolTr,i)
+                                end
+                                drawnow;
+                        end
+                        drawnow;
                     end
-                    drawnow;
-                end
             end
 
             guiWindow.delete(); % Closing the GUI wind
@@ -282,6 +279,10 @@ classdef LabAssessment2 < handle
             % Getting the points of the model that need to be checked
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
             points = points(1:3) + model.base.t(1:3)';
+
+            [X,Y,Z] = ellipsoid(LabAssessment2.lightCurtainCenter(1), LabAssessment2.lightCurtainCenter(2), LabAssessment2.lightCurtainCenter(3), ...
+                LabAssessment2.lightCurtainRadii(1), LabAssessment2.lightCurtainRadii(2), LabAssessment2.lightCurtainRadii(3));
+            
 
             % Checking the algerbraic distance of these points
             algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
