@@ -56,30 +56,61 @@ classdef LabAssessment2 < handle
             switch guiWindow.simulationMode
                 % Blackjack Functionality
                 case "Blackjack"
-                    % Creating a variable to track what player is currently being delt to
-                    player = 1; 
+                    % Creating a pla
 
-                    % Dealing each player their initial two cards, alongside the dealer's
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
-                    player = LabAssessment2.StandSelected(player,L); % Changing player
-                    
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
-                    player = LabAssessment2.StandSelected(player,L); % Changing player
-                    
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
 
-                    % Setting player variable to 1 again to allow for first player 
-                    % to start interacting with the blackjack functionality
-                    player = 1;
 
-                    %%%%%%%%%%%%%%%% FIGURE OUT REMAINING CODE %%%%%%%
+
+
+
+
+
+
 
                 % Teach and Jogging Functionality
                 case "Teach"
+            end
 
+
+
+
+
+
+            model = 1;
+            if model == 1
+                % Creating number to specify which player to distribute the card to
+                player = 1;
+
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
+                player = LabAssessment2.StandSelected(player,L);
+                
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
+                player = LabAssessment2.StandSelected(player,L);
+                
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
+                LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
+
+            elseif model == 2
+                % Blackjack and teach functionality
+                while ~guiWindow.endDemonstration
+                    % Getting the robot that is being controlled by the user
+                    drawnow;
+                    switch guiWindow.RobotDropDown.Value
+                        case "Aubo I5"
+                            % Getting the updated joint angles and animating
+                            auboJointAngles = guiWindow.moveAuboDeg;
+                            auboI5.model.animate(deg2rad(auboJointAngles));
+                            drawnow;
+                        case "Dobot Magician"
+                            % Getting the updated joint angles and animating
+                            dobotJointAngles = guiWindow.moveDobotDeg;
+                            dobotMagician.model.animate(deg2rad(dobotJointAngles));
+                            drawnow;
+                    end
+                    drawnow;
+                end
             end
 
             guiWindow.delete(); % Closing the GUI wind
