@@ -54,9 +54,9 @@ classdef AuboI5 < RobotBaseClass
 
             % Creating 2F-85 gripper and attaching it to the Aubo i5 end-effector
             self.UpdateToolTr; % Updating the end-effector transform property
-            % for gripperFinger = 1:2
-            %     self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
-            % end
+            for gripperFinger = 1:2
+                self.tool{gripperFinger} = TwoFingeredGripper(self.toolTr, gripperFinger, L);
+            end
         end
 
         %% D&H Parameter Serial Link Creation
@@ -183,9 +183,9 @@ classdef AuboI5 < RobotBaseClass
 
                 for i = 1:length(links)
                     L = links(1,i);
-                    
+
                     current_transform = tr(:,:, i);
-                    
+
                     current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
                     transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
                     tr(:,:,i + 1) = current_transform;
@@ -229,15 +229,51 @@ classdef AuboI5 < RobotBaseClass
                 end
 
                 centre = [0,0,0];
-                radii = [0.1,0.1,0.1];
+                radii = [0.05,0.05,0.05];
 
                 [X, Y, Z] = ellipsoid(centre(1), centre(2), centre(3), radii(1), radii(2), radii(3));
 
                 self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
                 self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
 
-                self.ellipsis.plot3d(self.model.getpos());
+                self.ellipsis.plot3d(self.ellipsis.getpos());
+
+
+        end
+    
+        function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
+    
+                  algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
+                      + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
+                      + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
 
+        function points = makeTestCube(self)
+
+            hold on;
+
+            [Y,Z] = meshgrid(-0.5:0.01:-0.3, 0:0.01:0.25);
+            sizeMat = size(Y);
+            X = repmat(0.1,sizeMat(1),sizeMat(2));
+            oneSideOfCube_h = surf(X,Y,Z);
+            
+            % Combine one surface as a point cloud
+            cubePoints = [X(:),Y(:),Z(:)];
+            
+            % Make a cube by rotating the single side by 0,90,180,270, and around y to make the top and bottom faces
+            cubePoints = [ cubePoints ...
+                         ; cubePoints * rotz(pi/2)...
+                         ; cubePoints * rotz(pi) ...
+                         ; cubePoints * rotz(3*pi/2) ...
+                         ; cubePoints * roty(pi/2) ...
+                         ; cubePoints * roty(-pi/2)];         
+                     
+            % Plot the cube's point cloud         
+            cubeAtOigin_h = plot3(cubePoints(:,1),cubePoints(:,2),cubePoints(:,3),'r.');
+            cubePoints = cubePoints + repmat([2,0,-0.5],size(cubePoints,1),1);
+            cube_h = plot3(cubePoints(:,1),cubePoints(:,2),cubePoints(:,3),'b.');
+            points = cubePoints;
+                      
+        end
     end
 end
