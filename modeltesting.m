@@ -2,6 +2,20 @@ clf; clear; clc;
 model = 7;
 figure(1);
 
+if model == -2
+
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1);
+    hold on;
+    r = AuboI5();
+    h = Hand(r.toolTr, L);
+    r.UpdateEllipsis(r.model.getpos());
+    r.CheckCollisions(r.model.getpos(),h.handModels{1})
+
+end
+
 if model == -1
         % Creating log file and setting command window level
         L = log4matlab('logFile.log');
