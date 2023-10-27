@@ -193,19 +193,19 @@ classdef AuboI5 < RobotBaseClass
 
             piFlag = 0;
 
-            centre = [0 0 0;
-                      -0.3 0 -0.125;
-                      -0.3 0 -0.05;
-                      0 0 0;
-                      0 0 0;
-                      0 0 0];
+                    centre =  [0 0 0;
+                        -0.3 0 -0.15;
+                         0.3 0 -0.05;
+                               0 0 0;
+                               0 0 0;
+                               0 0 0];
             
-            mult =     [0.5 0.5 0.5;
+            mult =    [0.5 0.5 0.5;
                       0.66 0.66 0.66;
                       0.66 0.66 0.66;
                       0.5 0.5 0.5;
                       0.4 0.4 0.4;
-                      0.125 0.125 0.125];
+                      0.5 0.25 0.25];
             
             % Getting the link data of the robot links
             links = self.ellipsis.links;
@@ -218,6 +218,12 @@ classdef AuboI5 < RobotBaseClass
                 current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
                 transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
                 linkTransforms(:,:,i + 1) = current_transform;
+
+                % centreTr = (current_transform-linkTransforms(:,:,i))/2;
+                % 
+                % centre(i,1) = centre(i,1) + centreTr(4,1);
+                % centre(i,2) = centre(i,2) + centreTr(4,2);
+                % centre(i,3) = centre(i,3) + centreTr(4,3);
             end
 
             for i = 1:length(links)
@@ -252,7 +258,7 @@ classdef AuboI5 < RobotBaseClass
 
                 [X, Y, Z] = ellipsoid(centre(i,1), centre(i,2), centre(i,3), radii(1), radii(2), radii(3));
 
-                self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,2)];
+                self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
                 self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
 
             end
@@ -281,6 +287,7 @@ classdef AuboI5 < RobotBaseClass
 
             % Getting the points of the model that need to be checked
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
+            points = points(1:3) + model.base.t(1:3)';
 
             % For loop to get the remaining link transforms
             for i = 1:self.ellipsis.n
