@@ -1,6 +1,20 @@
 clf; clear; clc;
-model = 3;
+model = -2;
 figure(1);
+
+if model == -2
+
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1);
+    hold on;
+    r = AuboI5();
+    h = Hand(r.toolTr, L);
+    r.UpdateEllipsis(r.model.getpos());
+    r.CheckCollisions(r.model.getpos(),h.handModels{1})
+
+end
 
 if model == -1
         % Creating log file and setting command window level
@@ -79,6 +93,8 @@ if model == 3
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
     
+
+
     % Creating the GUI object
     guiWindow = GUI;
     guiWindow.LoadLogFile(L); % Loading the logfile into the gui class
