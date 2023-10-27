@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = -2;
+model = 7;
 figure(1);
 
 if model == -2
@@ -361,20 +361,30 @@ if model == 7
     rotMatrix = rotMatrix1*rotMatrix2;
     transform_placecard(1:3, 1:3) = rotMatrix; %transform for aubo to place card on holder (other positions to be confirmed)
 
-    placecard = [0.5327 0.12, 0.21; ...
-                 0.5327 0.06 0.21; ...
-                 0.5327 0 0.21; ...
-                 0.5327 -0.06 0.21; ...
-                 0.5327 -0.12 0.21;];
+    % placecard = [0.5327 0.12, 0.21; ...
+    %              0.5327 0.06 0.21; ...
+    %              0.5327 0 0.21; ...
+    %              0.5327 -0.06 0.21; ...
+    %              0.5327 -0.12 0.21;];
 
-    cardpositions = [0.5327 0.12, 0.21; ...
+    placecard = [    
+                     0.5327 0.12, 0.21; ...
+                     0.5327 0.06 0.21; ...
+                     0.3827 -0.34, 0.21; ...
+                     0.3827 -0.40 0.21; ...
+                     0.5327 0 0.21;];
+
+    cardpositions = [0.3827 -0.34, 0.21; ...
+                     0.3827 -0.40 0.21; ...
+                     0.5327 0.12, 0.21; ...
                      0.5327 0.06 0.21; ...
                      0.5327 0 0.21; ...
+                     
+                     
                      0.5327 -0.06 0.21; ...
                      0.5327 -0.12 0.21;
 
-                     0.3827 -0.34, 0.21; ...
-                     0.3827 -0.40 0.21; ...
+                     
                      0.3827 -0.46 0.21; ...
                      0.3827 -0.52 0.21; ...
                      0.3827 -0.58 0.21;
@@ -397,10 +407,10 @@ if model == 7
 
     %go to card 
     pause;
-    video = VideoWriter('PromoVid1.avi');
+    video = VideoWriter('PromoVid4.avi');
     open(video);
 
-    for k = 1:1:2
+    for k = 1:1:5
 
         for i = 1:1:size(qmatrix_dobot_getcard,1)
         
@@ -445,6 +455,7 @@ if model == 7
             % disp(distToGoal);
         
             auboI5.model.animate(qMatrixAubo(i,:));
+            % auboI5.UpdateEllipsis(auboI5.model.getpos());
             auboI5.UpdateToolTr;
         
             for j = 1:2
@@ -498,6 +509,10 @@ if model == 7
             % disp(distToGoal);
         
             auboI5.model.animate(qmatrixAuboplacecard(i,:));
+            % auboI5.UpdateEllipsis(auboI5.model.getpos());
+
+            % 
+            % auboI5.UpdateEllipsis(qmatrixAuboplacecard(i,:));
             auboI5.UpdateToolTr;
         
             for j = 1:2
