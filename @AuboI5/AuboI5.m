@@ -23,11 +23,11 @@ classdef AuboI5 < RobotBaseClass
         ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
         linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
         linkRadii = cell(6,3); % Structure of link elliposid radii
-        centre =  [0 0 0;
+        centre =  [0 0 -0.25;
                         -0.3 0 -0.15;
                          -0.3 0 -0.05;
                                0 0.1 0;
-                               0 0 0;
+                               0 -0.1 0;
                                0 0 0];
     end
 
@@ -204,7 +204,7 @@ classdef AuboI5 < RobotBaseClass
                       0.66 0.66 0.66;
                       0.4 0.6 0.4;
                       0.4 0.4 0.4;
-                      0.5 0.25 0.25];
+                      0.5 0.25 0.8];
             
             % Getting the link data of the robot links
             links = self.ellipsis.links;
