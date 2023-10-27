@@ -321,16 +321,16 @@ if model == 7
                      0.5327 -0.12 0.21;
 
                      0.3827 -0.34, 0.21; ...
-                     0.3827 -0.4 0.21; ...
+                     0.3827 -0.40 0.21; ...
                      0.3827 -0.46 0.21; ...
                      0.3827 -0.52 0.21; ...
                      0.3827 -0.58 0.21;
 
                      0.3827 0.59, 0.21; ...
-                     0.3827 0.06 0.21; ...
-                     0.3827 0 0.21; ...
-                     0.3827 -0.06 0.21; ...
-                     0.3827 -0.12 0.21;];
+                     0.3827 0.65 0.21; ...
+                     0.3827 0.71 0.21; ...
+                     0.3827 0.77 0.21; ...
+                     0.3827 0.83 0.21;];
 
     q_cardup = [0 15 45 120 -90]*pi/180;
     q_cardpos = dobotMagician.model.ikcon(card_transform);
@@ -343,8 +343,11 @@ if model == 7
     gripperopenmatrix = jtraj([0 92.5 4]*pi/180, [0 45 45]*pi/180, 100);
 
     %go to card 
+    pause;
+    video = VideoWriter('PromoVid1.avi');
+    open(video);
 
-    for k = 1:1:5
+    for k = 1:1:2
 
         for i = 1:1:size(qmatrix_dobot_getcard,1)
         
@@ -354,6 +357,8 @@ if model == 7
             
             pause(0.01);
             drawnow;
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         
         end
         
@@ -368,6 +373,8 @@ if model == 7
             
             pause(0.01);
             drawnow;
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         
         end
         
@@ -399,6 +406,9 @@ if model == 7
             pause(0.01);
         
             drawnow;
+
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         end
         
         for i = 1:1:size(gripperclosematrix,1)
@@ -408,6 +418,9 @@ if model == 7
                 auboI5.tool{1, j}.model.animate(gripperclosematrix(i,:));
                 pause(0.01)
                 drawnow;
+
+                frame = getframe(gcf);
+                writeVideo(video,frame);
         
             end
         
@@ -439,7 +452,9 @@ if model == 7
                 auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
                 drawnow();
                 
-        
+                frame = getframe(gcf);
+                writeVideo(video,frame);
+            
             end
                 % auboI5.tool{1,2}.UpdateGripperPosition(auboI5.toolTr);
         
@@ -459,12 +474,18 @@ if model == 7
                 auboI5.tool{1, j}.model.animate(gripperopenmatrix(i,:));
                 pause(0.01)
                 drawnow;
+
+                frame = getframe(gcf);
+                writeVideo(video,frame);
         
             end
         
         end
 
     end
+
+    close(video);
+    pause;
 
 
 
