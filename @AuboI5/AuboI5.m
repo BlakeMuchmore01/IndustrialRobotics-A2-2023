@@ -23,6 +23,12 @@ classdef AuboI5 < RobotBaseClass
         ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
         linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
         linkRadii = cell(6,3); % Structure of link elliposid radii
+        centre =  [0 0 0;
+                        -0.3 0 -0.15;
+                         -0.3 0 -0.05;
+                               0 0.1 0;
+                               0 0 0;
+                               0 0 0];
     end
 
     %% ...structors
@@ -186,24 +192,17 @@ classdef AuboI5 < RobotBaseClass
         end     
         
         %% Creating the Ellipsis Around each Robot Link
-        function UpdateEllipsis(self, q)
+        function c = UpdateEllipsis(self, q)
             % Creating an array of 4x4 transforms relating to robot links
             linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
             linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
 
             piFlag = 0;
-
-                    centre =  [0 0 0;
-                        -0.3 0 -0.15;
-                         0.3 0 -0.05;
-                               0 0 0;
-                               0 0 0;
-                               0 0 0];
             
             mult =    [0.5 0.5 0.5;
                       0.66 0.66 0.66;
                       0.66 0.66 0.66;
-                      0.5 0.5 0.5;
+                      0.4 0.6 0.4;
                       0.4 0.4 0.4;
                       0.5 0.25 0.25];
             
@@ -219,11 +218,11 @@ classdef AuboI5 < RobotBaseClass
                 transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
                 linkTransforms(:,:,i + 1) = current_transform;
 
-                % centreTr = (current_transform-linkTransforms(:,:,i))/2;
-                % 
-                % centre(i,1) = centre(i,1) + centreTr(4,1);
-                % centre(i,2) = centre(i,2) + centreTr(4,2);
-                % centre(i,3) = centre(i,3) + centreTr(4,3);
+                centreTr = (current_transform-linkTransforms(:,:,i))/2;
+
+                self.centre(i,1) = self.centre(i,1) + centreTr(4,1);
+                self.centre(i,2) = self.centre(i,2) + centreTr(4,2);
+                self.centre(i,3) = self.centre(i,3) + centreTr(4,3);
             end
 
             for i = 1:length(links)
@@ -256,22 +255,22 @@ classdef AuboI5 < RobotBaseClass
                 end
                 
 
-                [X, Y, Z] = ellipsoid(centre(i,1), centre(i,2), centre(i,3), radii(1), radii(2), radii(3));
+                [X, Y, Z] = ellipsoid(self.centre(i,1), self.centre(i,2), self.centre(i,3), radii(1), radii(2), radii(3));
 
                 self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
                 self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
 
             end
 
-            centre = [0,0,0];
             radii = [0.1,0.1,0.1];
 
-            [X, Y, Z] = ellipsoid(centre(1), centre(2), centre(3), radii(1), radii(2), radii(3));
+            [X, Y, Z] = ellipsoid(0, 0, 0, radii(1), radii(2), radii(3));
 
             self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
             self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
 
             self.ellipsis.plot3d(self.model.getpos());
+            c = self.centre;
         end
 
         %% Checking if a Collision is Occurring with a Model
@@ -303,7 +302,7 @@ classdef AuboI5 < RobotBaseClass
                 updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
     
                 % Checking the algerbraic distance of these points
-                algerbraicDist = LabAssessment2.GetAlgebraicDist(updatedModelPoints, self.linkCentres, self.linkRadii);
+                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, self.linkCentres, self.linkRadii);
                     
                 % Checking if the model is within the light curtain (i.e. there
                 % is an algerbraic distance of < 1 with any of the above points
