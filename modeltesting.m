@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = -1;
+model = 3;
 figure(1);
 
 if model == -1
@@ -79,8 +79,6 @@ if model == 3
     L = log4matlab('logFile.log');
     L.SetCommandWindowLevel(L.DEBUG);
     
-
-
     % Creating the GUI object
     guiWindow = GUI;
     guiWindow.LoadLogFile(L); % Loading the logfile into the gui class
