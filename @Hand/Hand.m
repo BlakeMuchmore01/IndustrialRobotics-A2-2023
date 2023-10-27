@@ -6,7 +6,7 @@ classdef Hand < RobotBaseClass
 
     % Constant Properties
     properties (Access = public, Constant)
-        handCount = 1; % Default number of hands to create/plot
+        handCount = 2; % Default number of hands to create/plot
         WORKSPACE_DIMENSIONS = [-3 3 -3 3 -0.01 -0.01]; % Dimension of workspace
     end
 

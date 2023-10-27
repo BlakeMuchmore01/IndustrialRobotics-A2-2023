@@ -6,13 +6,34 @@ classdef PlayingCards < RobotBaseClass
 
     % Constant Properties
     properties (Access = public, Constant)
-        cardCount = 10; % Default number of playing cards to create/plot
+        cardCount = 15; % Default number of playing cards to create/plot
         WORKSPACE_DIMENSIONS = [-3 3 -3 3 -0.01 -0.01]; % Dimension of workspace
+
+        % Array of final card positions (where the aubo is to place them)
+        cardFinalPositions = [0.3827 -0.34, 0.21; ...
+                              0.3827 -0.40 0.21; ...
+                              0.3827 -0.46 0.21; ...
+                              0.3827 -0.52 0.21; ...
+                              0.3827 -0.58 0.21;
+                              
+                              0.5327 0.12, 0.21; ...
+                              0.5327 0.06 0.21; ...
+                              0.5327 0 0.21; ...
+                              0.5327 -0.06 0.21; ...
+                              0.5327 -0.12 0.21;
+                              
+                              0.3827 0.59, 0.21; ...
+                              0.3827 0.65 0.21; ...
+                              0.3827 0.71 0.21; ...
+                              0.3827 0.77 0.21; ...
+                              0.3827 0.83 0.21;];
+        cardFinalAngles = deg2rad([-180, 40, -180]); % Card angles when placed on stands
     end
 
     % Non-constant properties
     properties (Access = public)
         cardModels; % Cell structure to store the playing cards created
+        cardInitialTransforms; % Structure of card initial pose transforms
         plyFileNameStem = 'PlayingCard'; % Default name for playing cards
     end
 
@@ -40,6 +61,7 @@ classdef PlayingCards < RobotBaseClass
                 % Creating the playing card D&H link model
                 self.cardModels{i} = self.CreateModel(['card',num2str(i)]);
                 self.cardModels{i}.base = self.cardModels{i}.base.T * baseTr * transl(0,0,0.001*i); % Updating base pose of playing card
+                self.cardInitialTransforms = self.cardModels{i}.base; % Storing card initial transforms for later use
 
                 % Plotting the playing card
                 plot3d(self.cardModels{i},0,'workspace',self.WORKSPACE_DIMENSIONS,'view', ...
@@ -47,6 +69,29 @@ classdef PlayingCards < RobotBaseClass
 
                 % Logging creation of cards
                 L.mlog = {L.DEBUG,'PlayingCards',['Card ',num2str(i),' created within the workspace']};
+            end
+        end
+
+        %% Function to Get the Final Card Transforms
+        function finalCardTransforms = GetFinalCardTransforms(self)
+            % Pre-initialising the finalCardTransforms Array
+            % 3 Players with maximum 5 cards given
+            finalCardTransforms = zeros(4,4,5,3);
+
+            % Getting the rotation matrix of the final card orientation
+            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles);
+
+            % Creating a counter to go through the card positions property array
+            counter = 1;
+            
+            % Looping through each of the players to distribute card positions
+            for player = 1:size(finalCardTransforms,4)
+                % Looping through cards position allocations to distribute
+                for cardNum = 1:size(finalCardTransforms,3)
+                    % Populating the final card transforms array
+                    finalCardTransforms{:,:,cardNum,player} = [cardFinalRotationMatrix self.cardFinalPositions{counter}'; zeros(1,3) 1];
+                    counter = counter + 1; % Increasing the counter
+                end
             end
         end
     end
