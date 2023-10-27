@@ -1,6 +1,45 @@
 clf; clear; clc;
-model = 7;
+model = -1;
 figure(1);
+
+if model == -1
+        % Creating log file and setting command window level
+        L = log4matlab('logFile.log');
+        L.SetCommandWindowLevel(L.DEBUG); % Setting the log level to debug
+
+        % Creating the figure showing to show the main demo
+        figure(1); % Creating figure to simulate robots
+        hold on; axis(LabAssessment2.axisLimits); camlight;
+
+        % Creating the environment surrounding the aubo i5
+        LabAssessment2.CreateEnvironment(L);
+
+        % Creating all dynamic components for the demo (robots, cards, collision objects)
+        hand = Hand(LabAssessment2.auboOrigin*transl(1.5,0,0.5),L); % Hand used to verify light curtain
+        cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.01),L); % Spawning the cards that will be moved by robots
+
+        auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+        dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+
+        test = LabAssessment2.LightCurtainCheck(hand.handModels{1});
+        disp(test);
+end
+
+if model == 0
+    L = log4matlab('logFile.log');
+    L.SetCommandWindowLevel(L.DEBUG);
+
+    figure(1); % Creating figure to simulate robots
+    hold on; axis(LabAssessment2.axisLimits); camlight;
+
+    LabAssessment2.CreateEnvironment(L);
+
+    % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+    % dobotMagician.model.teach(dobotMagician.model.getpos());
+
+    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    auboI5.model.teach(auboI5.model.getpos());
+end
 
 if model == 1
     % Creating log file and setting command window level
@@ -343,8 +382,11 @@ if model == 7
     gripperopenmatrix = jtraj([0 92.5 4]*pi/180, [0 45 45]*pi/180, 100);
 
     %go to card 
+    pause;
+    video = VideoWriter('PromoVid1.avi');
+    open(video);
 
-    for k = 1:1:5
+    for k = 1:1:2
 
         for i = 1:1:size(qmatrix_dobot_getcard,1)
         
@@ -354,6 +396,8 @@ if model == 7
             
             pause(0.01);
             drawnow;
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         
         end
         
@@ -368,6 +412,8 @@ if model == 7
             
             pause(0.01);
             drawnow;
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         
         end
         
@@ -399,6 +445,9 @@ if model == 7
             pause(0.01);
         
             drawnow;
+
+            frame = getframe(gcf);
+            writeVideo(video,frame);
         end
         
         for i = 1:1:size(gripperclosematrix,1)
@@ -408,6 +457,9 @@ if model == 7
                 auboI5.tool{1, j}.model.animate(gripperclosematrix(i,:));
                 pause(0.01)
                 drawnow;
+
+                frame = getframe(gcf);
+                writeVideo(video,frame);
         
             end
         
@@ -439,7 +491,9 @@ if model == 7
                 auboI5.tool{1,j}.UpdateGripperPosition(auboI5.toolTr, j);
                 drawnow();
                 
-        
+                frame = getframe(gcf);
+                writeVideo(video,frame);
+            
             end
                 % auboI5.tool{1,2}.UpdateGripperPosition(auboI5.toolTr);
         
@@ -459,12 +513,18 @@ if model == 7
                 auboI5.tool{1, j}.model.animate(gripperopenmatrix(i,:));
                 pause(0.01)
                 drawnow;
+
+                frame = getframe(gcf);
+                writeVideo(video,frame);
         
             end
         
         end
 
     end
+
+    close(video);
+    pause;
 
 
 

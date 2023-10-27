@@ -60,11 +60,11 @@ classdef LabAssessment2 < handle
 
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
-                LabAssessment2.StandSelected(player,L);
+                player = LabAssessment2.StandSelected(player,L);
                 
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
-                LabAssessment2.StandSelected(player,L);
+                player = LabAssessment2.StandSelected(player,L);
                 
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L);
                 LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L);
@@ -96,8 +96,19 @@ classdef LabAssessment2 < handle
 
         %% Hit Functionality
         function HitSelected(auboI5, dobotMagician, ~, cards, cardNum, player, logFile)
+            % Grabbing the last card within the card model array
+            for i = size(cards.cardModels,2):-1:1
+                % Checking if its empty
+                if isempty(cards.cardModels{i})
+                    continue; % Check next index for card
+                else
+                    endCard = i; % Getting the index number of the card
+                    break;
+                end
+            end
+            
             % Getting the qMatrix to move the dobot magician to the top card position
-            qMatrixDobot = dobotMagician.GetCartesianMovement(cards.cardInitialTransforms(end));
+            qMatrixDobot = dobotMagician.GetCartesianMovement(cards.cardInitialTransforms{1,endCard} * transl(0,0,0.045));
             
             % Looping through the qMatrix to move the dobot to pick up the top card in the deck
             for i = 1:size(qMatrixDobot,1)
@@ -119,15 +130,26 @@ classdef LabAssessment2 < handle
                 dobotMagician.UpdateToolTr()
 
                 % Moving the card alongside the end-effector of the dobot
-                cards.cardModels(end).base = dobotMagician.toolTr * trotz(pi/2) * transl(0, 0, -0.045);
+                cards.cardModels{endCard}.base = dobotMagician.toolTr * transl(0, 0, -0.045);
+                cards.cardModels{endCard}.animate(0);
                 drawnow; % Updating the plot
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
 
+            % Creating the hand of transform (tranform aubo achieves to grab card off dobot
+            handOffRotation = eul2rotm([0 1.5708 -1.5708]);
+            handOffTranslation = [0.2222, 0.32, 0.26]; 
+
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(cards.cardModels(end).base);
-            qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
+            qMatrixAubo = auboI5.GetCartesianMovementRMRC([handOffRotation handOffTranslation'; zeros(1,3) 1]);
+
+            % Creating a gripper opening matrix if the gripper is currently closed
+            gripperRequiresOpenning = false;
+            if auboI5.tool{1}.isClosed
+                qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
+                gripperRequiresOpenning = true;
+            end
 
             % Looping through the qMatrix to move the aubo to pick up the card and close the gripper 
             for i = 1:size(qMatrixAubo,1)
@@ -140,9 +162,9 @@ classdef LabAssessment2 < handle
                     auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
                 end
 
-                % Closing the gripper in the last 100 steps of the Aubo's movement     
-                if (size(qMatrixAubo,1) - i <= 100)
-                    % Undergoing the closing gripper qMatrix
+                % If the robot is currently closed, open it
+                if gripperRequiresOpenning == true
+                    % Looping through the qMatrix for both grippers
                     for gripperNum = 1:2
                         auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
                     end
@@ -150,6 +172,16 @@ classdef LabAssessment2 < handle
                 drawnow; % Updating the plot
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 collected the playing card'};
+            
+            % Closing the gripper of the aubo
+            qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
+            for i = 1:size(qMatrixGripper,1)
+                % Looping through the qMatrix for both grippers
+                for gripperNum = 1:2
+                    auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
+                end
+                drawnow; % Updating the plot
+            end
 
             % Getting the qMatrix to move the Aubo i5 to distrubute the card to the player
             % Getting the final position of the card being distributed
@@ -168,35 +200,14 @@ classdef LabAssessment2 < handle
                 end
 
                 % Updating the position of the card alongside the gripper
-                cards.cardModels(end).base = auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01);
+                cards.cardModels{endCard}.base = auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                cards.cardModels{endCard}.animate(0);
                 drawnow; % Updating the plot
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 distributed the playing card'};
 
-            % Getting the qMatrix to move the aubo i5 to it's original position
-            initialPosition = auboI5.model.fkine(auboI5.initialJointAngles).T;
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(initialPosition);
-            qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
-
-            % Looping through the qMatrix to move the aubo to it's original position
-            % Looping through the qMatrix to move the aubo to distribute the card to the player
-            for i = 1:size(qMatrixAubo,1)
-                % Animating the Aubo i5's movement and updating the gripper position
-                auboI5.model.animate(qMatrixAubo(i,:));
-                auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
-
-                % Updating the positions of the gripper fingers
-                for gripperNum = 1:2
-                    auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
-
-                    % Opening the gripper on the first 100 steps of the aubo's motion
-                    if i <= 100
-                        auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
-                    end
-                end
-                drawnow;
-            end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 returned to original position'};
+            % Removing the card that was previously moved from the intial transform array
+            cards.cardModels{endCard} = [];
         end
 
         %% Stand Functionality
@@ -243,10 +254,11 @@ classdef LabAssessment2 < handle
 
         %% Checking if there is Something within the Light Curtain
         function isClear = LightCurtainCheck(model)
-            isClear = false; % Setting default case of function as false
+            isClear = true; % Setting default case of function as false
             
             % Getting the points of the model that need to be checked
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
+            points = points(1:3) + model.base.t(1:3)';
 
             % Checking the algerbraic distance of these points
             algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
@@ -254,7 +266,7 @@ classdef LabAssessment2 < handle
             % Checking if the model is within the light curtain (i.e. there
             % is an algerbraic distance of < 1 with any of the above points
             if(find(algerbraicDist < 1) > 0)
-                isClear = true; % Object has been detected within the light curtain
+                isClear = false; % Object has been detected within the light curtain
                 return; % Returning on first detection of object within the light curtain
             end
         end

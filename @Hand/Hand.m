@@ -39,8 +39,8 @@ classdef Hand < RobotBaseClass
             for i = 1:self.handCount
                 % Creating the hand D&H link model
                 self.handModels{i} = self.CreateModel(['hand',num2str(i)]);
-                % self.handModels{i}.base = self.handModels{i}.base.T * baseTr; % Updating base pose of hands
-                self.handModels{1, 1}.points{1, 2} = self.handModels{1, 1}.points{1, 2} + baseTr(1:3,4)';
+                self.handModels{i}.base = baseTr; % Updating base pose of hands
+                % self.handModels{1, 1}.points{1, 2} = self.handModels{1, 1}.points{1, 2} + baseTr(1:3,4)';
 
                 % Plotting the hands
                 plot3d(self.handModels{i},pi,'workspace',self.WORKSPACE_DIMENSIONS,'view', ...

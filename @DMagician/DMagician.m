@@ -15,7 +15,7 @@ classdef DMagician < RobotBaseClass
         movementSteps = 1000; % Number of steps allocated for movement trajectories
         movementTime = 5; % Time for movements undergone by the Aubo i5
         epsilon = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 1 1 1]); % Weighting matrix for movement velocity vector
+        movementWeight = diag([1 1 1 0.1 0.1 0.1]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05;
     end
 
@@ -119,7 +119,7 @@ classdef DMagician < RobotBaseClass
                 Ra = currentTr(1:3,1:3); % Getting the current end-effector rotation matrix
                 
                 Rdot = (1/deltaT) * (Rd-Ra); % Calcualting the roll-pitch-yaw angular velocity rotation matrix
-                S = Rdot * Ra;
+                S = Rdot * Ra';
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
@@ -139,6 +139,9 @@ classdef DMagician < RobotBaseClass
                 qdot(i,:) = (invJ * xdot)'; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
             end
+
+            % Removing movements for the last link in the dobot (Suction gripper cannot rotate)
+            qMatrix(:,5) = 0;
         end
     end
     
