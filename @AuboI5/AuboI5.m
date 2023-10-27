@@ -21,9 +21,9 @@ classdef AuboI5 < RobotBaseClass
         plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
         ellipsis; % Stores the elipsoid robot object to check for collisions
         ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
-        linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
-        linkRadii = cell(6,3); % Structure of link elliposid radii
-        centre =  [0 0 -0.25;
+        linkCentres = zeros(6,3); % Structure of link centres to use for ellipsoid updating
+        linkRadii = zeros(6,3); % Structure of link elliposid radii
+        centreOffset =  [0 0 -0.25;
                         -0.3 0 -0.15;
                          -0.3 0 -0.05;
                                0 0.1 0;
@@ -192,7 +192,7 @@ classdef AuboI5 < RobotBaseClass
         end     
         
         %% Creating the Ellipsis Around each Robot Link
-        function c = UpdateEllipsis(self, q)
+        function UpdateEllipsis(self, q)
             % Creating an array of 4x4 transforms relating to robot links
             linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
             linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
@@ -220,10 +220,15 @@ classdef AuboI5 < RobotBaseClass
 
                 centreTr = (current_transform-linkTransforms(:,:,i))/2;
 
-                self.centre(i,1) = self.centre(i,1) + centreTr(4,1);
-                self.centre(i,2) = self.centre(i,2) + centreTr(4,2);
-                self.centre(i,3) = self.centre(i,3) + centreTr(4,3);
+                self.linkCentres(i,1) = self.centreOffset(i,1) + centreTr(3,1);
+                self.linkCentres(i,2) = self.centreOffset(i,2) + centreTr(3,2);
+                self.linkCentres(i,3) = self.centreOffset(i,3) + centreTr(3,3);
             end
+
+            self.UpdateToolTr;
+            self.linkCentres(6,1) = self.toolTr(1,4);
+            self.linkCentres(6,2) = self.toolTr(2,4);
+            self.linkCentres(6,3) = self.toolTr(3,4);
 
             for i = 1:length(links)
 
@@ -253,9 +258,12 @@ classdef AuboI5 < RobotBaseClass
                 else
                      radii = [A, 0.2, 0.2];
                 end
-                
 
-                [X, Y, Z] = ellipsoid(self.centre(i,1), self.centre(i,2), self.centre(i,3), radii(1), radii(2), radii(3));
+                self.linkRadii(i,1) = radii(1);
+                self.linkRadii(i,2) = radii(2);
+                self.linkRadii(i,3) = radii(3);
+
+                [X, Y, Z] = ellipsoid(self.centreOffset(i,1), self.centreOffset(i,2), self.centreOffset(i,3), radii(1), radii(2), radii(3));
 
                 self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
                 self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
@@ -269,8 +277,9 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
             self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
 
-            self.ellipsis.plot3d(self.model.getpos());
-            c = self.centre;
+            self.ellipsis.plot3d(q);
+            self.linkCentres
+            self.linkRadii
         end
 
         %% Checking if a Collision is Occurring with a Model
@@ -302,7 +311,7 @@ classdef AuboI5 < RobotBaseClass
                 updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
     
                 % Checking the algerbraic distance of these points
-                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, self.linkCentres, self.linkRadii);
+                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, self.linkCentres(i,:), self.linkRadii);
                     
                 % Checking if the model is within the light curtain (i.e. there
                 % is an algerbraic distance of < 1 with any of the above points
