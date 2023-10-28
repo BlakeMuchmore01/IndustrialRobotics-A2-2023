@@ -23,12 +23,7 @@ classdef AuboI5 < RobotBaseClass
         ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
         linkCentres = cell(6,3); % Structure of link centres to use for ellipsoid updating
         linkRadii = cell(6,3); % Structure of link elliposid radii
-        centre =  [0 0 -0.25;
-                        -0.3 0 -0.15;
-                         -0.3 0 -0.05;
-                               0 0.1 0;
-                               0 -0.1 0;
-                               0 0 0];
+        centre =  [0 0 -0.25; -0.3 0 -0.15; -0.3 0 -0.05; 0 0.1 0; 0 -0.1 0; 0 0 0];
     end
 
     %% ...structors
@@ -95,6 +90,24 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis = SerialLink(link,'name',[self.name,'_ellipsis']);
         end
 
+        %% Moving the Aubo i5 Joint to Specified Angles
+        function MoveJoint(self, jointIndex, JointValue)
+            % Getting the current joint angles of the Aubo i5 and updating
+            % the joint value of the specified index
+            self.currentJointAngles = self.model.getpos();
+            self.currentJointAngles(str2double(jointIndex)) = deg2rad(JointValue);
+
+            % Animating the robot and updating its toolTr to move the grippers
+            self.model.animate(self.currentJointAngles);
+            self.UpdateToolTr();
+            
+            % Updating the positions of the grippers
+            for i = 1:2
+                self.tool{i}.UpdateGripperPosition(self.toolTr, i);
+            end
+            drawnow; % Updating the plot
+        end
+
         %% Updater for End Effector Transform (Tool Transform)
         function UpdateToolTr(self)
             % Updating the toolTr property of the robot
@@ -113,8 +126,6 @@ classdef AuboI5 < RobotBaseClass
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
             theta = zeros(3, self.movementSteps);               % Array of end-effector angles
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
-            % positionError = zeros(3,self.movementSteps);      % For plotting trajectory error
-            % angleError = zeros(3,self.movementSteps);         % For plotting trajectory error
 
             % Getting the initial and final x-y-z coordinates
             initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
@@ -149,7 +160,6 @@ classdef AuboI5 < RobotBaseClass
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
-                % deltaTheta = tr2rpy(Rd*Ra'); % For plotting
 
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
 
@@ -165,30 +175,7 @@ classdef AuboI5 < RobotBaseClass
                 invJ = inv(J'*J + lambda * eye(self.model.n))*J'; %#ok<MINV> % DLS inverse
                 qdot(i,:) = (invJ * xdot)'; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
-
-                % positionError(:,i) = deltaX;             % For plotting
-                % angleError(:,i) = deltaTheta;            % For plotting
             end
-
-            % figure(2)
-            % subplot(2,1,1)
-            % plot(positionError'*1000,'LineWidth',1)
-            % refline(0,0)
-            % xlabel('Step')
-            % ylabel('Position Error (mm)')
-            % legend('X-Axis','Y-Axis','Z-Axis')
-            % 
-            % subplot(2,1,2)
-            % plot(angleError','LineWidth',1)
-            % refline(0,0)
-            % xlabel('Step')
-            % ylabel('Angle Error (rad)')
-            % legend('Roll','Pitch','Yaw')
-            % 
-            % figure(3)
-            % plot(manipulability,'k','LineWidth',1)
-            % refline(0,self.epsilon)
-            % title('Manipulability')
         end     
         
         %% Creating the Ellipsis Around each Robot Link

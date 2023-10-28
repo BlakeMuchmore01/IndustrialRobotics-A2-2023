@@ -1,1 +1,108 @@
-2023-10-27 22:24:39,212 DEBUG CreateEnvironment - Safety environment created
+2023-10-28 15:32:18,006 DEBUG CreateEnvironment - Safety environment created
+2023-10-28 15:32:42,756 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-28 15:32:48,386 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-28 15:32:52,789 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-28 15:32:52,799 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-28 15:32:57,218 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-10-28 15:32:57,358 DEBUG PlayingCards - Card 1 created within the workspace
+2023-10-28 15:32:57,464 DEBUG PlayingCards - Card 2 created within the workspace
+2023-10-28 15:32:57,581 DEBUG PlayingCards - Card 3 created within the workspace
+2023-10-28 15:32:57,713 DEBUG PlayingCards - Card 4 created within the workspace
+2023-10-28 15:32:57,830 DEBUG PlayingCards - Card 5 created within the workspace
+2023-10-28 15:32:57,942 DEBUG PlayingCards - Card 6 created within the workspace
+2023-10-28 15:32:58,060 DEBUG PlayingCards - Card 7 created within the workspace
+2023-10-28 15:32:58,175 DEBUG PlayingCards - Card 8 created within the workspace
+2023-10-28 15:32:58,300 DEBUG PlayingCards - Card 9 created within the workspace
+2023-10-28 15:32:58,436 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-28 15:32:58,553 DEBUG PlayingCards - Card 11 created within the workspace
+2023-10-28 15:32:58,669 DEBUG PlayingCards - Card 12 created within the workspace
+2023-10-28 15:32:58,788 DEBUG PlayingCards - Card 13 created within the workspace
+2023-10-28 15:32:58,906 DEBUG PlayingCards - Card 14 created within the workspace
+2023-10-28 15:32:59,018 DEBUG PlayingCards - Card 15 created within the workspace
+2023-10-28 15:32:59,036 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-28 15:33:34,340 DEBUG DemonstrationModePressed - Teach requested
+2023-10-28 15:33:37,348 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,372 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,396 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,420 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,443 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,461 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:37,480 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:38,490 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:38,514 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:38,544 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:38,566 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:38,586 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:39,460 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:39,485 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,170 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,191 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,211 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,230 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,757 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,782 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:40,803 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,195 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,214 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,234 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,263 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,281 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,306 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:42,332 DEBUG JointSliderChanging - Aubo i5 joint change sent
+2023-10-28 15:33:43,444 DEBUG RobotDropDownValueChanged - Changed to Dobot Magician control
+2023-10-28 15:33:44,548 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:44,580 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,207 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,309 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,413 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,442 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,461 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,480 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,502 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,523 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,543 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:45,562 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,795 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,817 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,840 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,865 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,885 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,909 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,931 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:46,951 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,309 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,331 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,353 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,376 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,396 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,416 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,438 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,459 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,628 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:48,650 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,874 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,893 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,917 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,940 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,961 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,982 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:49,999 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,017 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,226 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,250 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,275 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,492 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,514 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,535 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:50,628 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:51,810 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:51,834 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,354 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,438 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,469 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,493 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,519 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,538 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,559 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,582 DEBUG JointSliderChanging - Dobot Magician joint change sent
+2023-10-28 15:33:52,604 DEBUG JointSliderChanging - Dobot Magician joint change sent

@@ -71,6 +71,19 @@ classdef DMagician < RobotBaseClass
             self.model = SerialLink(link,'name',self.name);
         end
 
+        %% Moving the Aubo i5 Joint to Specified Angles
+        function MoveJoint(self, jointIndex, JointValue)
+            % Getting the current joint angles of the Aubo i5 and updating
+            % the joint value of the specified index
+            self.currentJointAngles = self.model.getpos();
+            self.currentJointAngles(str2double(jointIndex)) = deg2rad(JointValue);
+
+            % Animating the robot and updating its toolTr to move the grippers
+            self.model.animate(self.currentJointAngles);
+            self.UpdateToolTr();
+            drawnow; % Updating the plot
+        end
+
         %% Updater for End Effector Transform (Tool Transform)
         function UpdateToolTr(self)
             % Updating the toolTr property of the robot
