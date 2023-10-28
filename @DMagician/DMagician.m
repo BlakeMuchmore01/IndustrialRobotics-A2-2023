@@ -84,6 +84,24 @@ classdef DMagician < RobotBaseClass
             drawnow; % Updating the plot
         end
 
+        %% Moving the Aubo i5 End-Effector to Specified Cartesian 
+        function MoveToCartesian(coordinate)
+            % Creating the transform for the dobot magician to move to
+            self.UpdateToolTr(); % Getting the end-effector transform
+            rotm = self.toolTr(1:3,1:3); % Getting the rotation matrix of the end-effector
+            transform = [rotm coordinate', zeros(1,3) 1];
+            
+            % Getting the qMatrix to move the dobot magician to the cartesian coordiante
+            qMatrix = self.GetCartesianMovement(transform);
+
+            % Looping through the qMatrix to move the dobot magician
+            for i = 1:size(qMatrix, 1)
+                % Animating the dobot magician's movement and updating the gripper position
+                self.model.animate(qMatrix(i,:));
+                self.UpdateToolTr(); % Updating the end-effector transform of the 
+            end
+        end
+
         %% Updater for End Effector Transform (Tool Transform)
         function UpdateToolTr(self)
             % Updating the toolTr property of the robot

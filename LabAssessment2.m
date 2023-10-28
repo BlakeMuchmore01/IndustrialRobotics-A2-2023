@@ -8,6 +8,9 @@ classdef LabAssessment2 < handle
     properties (Access = public, Constant)
         lightCurtainCenter = [0 0 0]; % Default centre for the light curtain ellipse
         lightCurtainRadii = [1.05, 1.15, 1.1]; % Default radius' for the light curtain ellipse
+        
+        % Hand off transform (tranform aubo achieves to grab card off dobot
+        handOffTransform = [eul2rotm([0 1.5708 -1.5708]) [0.2222, 0.32, 0.26]'; zeros(1,3) 1];
     end
     
     %% Methods of the Class
@@ -54,13 +57,9 @@ classdef LabAssessment2 < handle
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
 
-            % Creating the hand of transform (tranform aubo achieves to grab card off dobot
-            handOffRotation = eul2rotm([0 1.5708 -1.5708]);
-            handOffTranslation = [0.2222, 0.32, 0.26]; 
-
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC([handOffRotation handOffTranslation'; zeros(1,3) 1]);
+            qMatrixAubo = auboI5.GetCartesianMovementRMRC(self.handOffTransform);
 
             % Creating a gripper opening matrix if the gripper is currently closed
             gripperRequiresOpenning = false;

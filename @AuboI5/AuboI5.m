@@ -90,7 +90,30 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis = SerialLink(link,'name',[self.name,'_ellipsis']);
         end
 
-        %% Moving the Aubo i5 Joint to Specified Angles
+        %% Moving the Aubo i5 End-Effector to Specified Cartesian 
+        function MoveToCartesian(coordinate)
+            % Creating the transform for the Aubo i5 to move to
+            self.UpdateToolTr(); % Getting the end-effector transform
+            rotm = self.toolTr(1:3,1:3); % Getting the rotation matrix of the end-effector
+            transform = [rotm coordinate', zeros(1,3) 1];
+            
+            % Getting the qMatrix to move the Aubo i5 to the cartesian coordiante
+            qMatrix = self.GetCartesianMovementRMRC(transform);
+
+            % Looping through the qMatrix to move the Aubo
+            for i = 1:size(qMatrix, 1)
+                % Animating the Aubo i5's movement and updating the gripper position
+                self.model.animate(qMatrix(i,:));
+                self.UpdateToolTr(); % Updating the end-effector transform of the 
+
+                % Updating the positions of the gripper fingers
+                for gripperNum = 1:2
+                    self.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
+                end
+            end
+        end
+
+        %% Moving the Aubo i5 Joints to Specified Angles
         function MoveJoint(self, jointIndex, JointValue)
             % Getting the current joint angles of the Aubo i5 and updating
             % the joint value of the specified index
