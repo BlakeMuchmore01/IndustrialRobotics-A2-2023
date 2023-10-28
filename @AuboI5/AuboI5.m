@@ -91,11 +91,11 @@ classdef AuboI5 < RobotBaseClass
         end
 
         %% Moving the Aubo i5 End-Effector to Specified Cartesian 
-        function MoveToCartesian(coordinate)
+        function MoveToCartesian(self, coordinate)
             % Creating the transform for the Aubo i5 to move to
             self.UpdateToolTr(); % Getting the end-effector transform
             rotm = self.toolTr(1:3,1:3); % Getting the rotation matrix of the end-effector
-            transform = [rotm coordinate', zeros(1,3) 1];
+            transform = [rotm coordinate'; zeros(1,3) 1];
             
             % Getting the qMatrix to move the Aubo i5 to the cartesian coordiante
             qMatrix = self.GetCartesianMovementRMRC(transform);
@@ -108,8 +108,9 @@ classdef AuboI5 < RobotBaseClass
 
                 % Updating the positions of the gripper fingers
                 for gripperNum = 1:2
-                    self.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
+                    self.tool{gripperNum}.UpdateGripperPosition(self.toolTr, gripperNum);
                 end
+                drawnow; % Updating the plot
             end
         end
 
