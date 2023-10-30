@@ -1,26 +1,24 @@
-2023-10-28 16:36:22,001 DEBUG CreateEnvironment - Safety environment created
-2023-10-28 16:36:44,108 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-10-28 16:36:49,945 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-10-28 16:36:55,648 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-10-28 16:36:55,654 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
-2023-10-28 16:37:02,441 DEBUG DMagician - Dobot Magician object created within the workspace
-2023-10-28 16:37:02,593 DEBUG PlayingCards - Card 1 created within the workspace
-2023-10-28 16:37:02,700 DEBUG PlayingCards - Card 2 created within the workspace
-2023-10-28 16:37:02,837 DEBUG PlayingCards - Card 3 created within the workspace
-2023-10-28 16:37:02,938 DEBUG PlayingCards - Card 4 created within the workspace
-2023-10-28 16:37:03,085 DEBUG PlayingCards - Card 5 created within the workspace
-2023-10-28 16:37:03,216 DEBUG PlayingCards - Card 6 created within the workspace
-2023-10-28 16:37:03,378 DEBUG PlayingCards - Card 7 created within the workspace
-2023-10-28 16:37:03,539 DEBUG PlayingCards - Card 8 created within the workspace
-2023-10-28 16:37:03,692 DEBUG PlayingCards - Card 9 created within the workspace
-2023-10-28 16:37:03,835 DEBUG PlayingCards - Card 10 created within the workspace
-2023-10-28 16:37:03,966 DEBUG PlayingCards - Card 11 created within the workspace
-2023-10-28 16:37:04,103 DEBUG PlayingCards - Card 12 created within the workspace
-2023-10-28 16:37:04,246 DEBUG PlayingCards - Card 13 created within the workspace
-2023-10-28 16:37:04,402 DEBUG PlayingCards - Card 14 created within the workspace
-2023-10-28 16:37:04,539 DEBUG PlayingCards - Card 15 created within the workspace
-2023-10-28 16:37:04,566 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
-2023-10-28 16:37:37,039 DEBUG DemonstrationModePressed - Teach requested
-2023-10-28 16:38:05,441 DEBUG RobotDropDownValueChanged - Changed to Dobot Magician control
-2023-10-28 16:38:12,440 DEBUG SendCartesianCoordinateButtonPushed - Cartesian goal sent to the Aubo i5
-2023-10-28 16:38:16,832 DEBUG SendCartesianCoordinateButtonPushed - Cartesian goal sent to the Dobot Magician
+2023-10-28 17:05:23,272 DEBUG CreateEnvironment - Safety environment created
+2023-10-28 17:05:45,041 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-28 17:05:49,105 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-28 17:05:53,049 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-28 17:05:53,061 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-28 17:05:57,482 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-10-28 17:05:57,590 DEBUG PlayingCards - Card 1 created within the workspace
+2023-10-28 17:05:57,711 DEBUG PlayingCards - Card 2 created within the workspace
+2023-10-28 17:05:57,827 DEBUG PlayingCards - Card 3 created within the workspace
+2023-10-28 17:05:57,933 DEBUG PlayingCards - Card 4 created within the workspace
+2023-10-28 17:05:58,036 DEBUG PlayingCards - Card 5 created within the workspace
+2023-10-28 17:05:58,161 DEBUG PlayingCards - Card 6 created within the workspace
+2023-10-28 17:05:58,269 DEBUG PlayingCards - Card 7 created within the workspace
+2023-10-28 17:05:58,400 DEBUG PlayingCards - Card 8 created within the workspace
+2023-10-28 17:05:58,515 DEBUG PlayingCards - Card 9 created within the workspace
+2023-10-28 17:05:58,616 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-28 17:05:58,730 DEBUG PlayingCards - Card 11 created within the workspace
+2023-10-28 17:05:58,849 DEBUG PlayingCards - Card 12 created within the workspace
+2023-10-28 17:05:58,989 DEBUG PlayingCards - Card 13 created within the workspace
+2023-10-28 17:05:59,099 DEBUG PlayingCards - Card 14 created within the workspace
+2023-10-28 17:05:59,232 DEBUG PlayingCards - Card 15 created within the workspace
+2023-10-28 17:05:59,247 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-28 17:06:07,827 DEBUG DemonstrationModePressed - Teach requested
+2023-10-28 17:06:23,183 DEBUG SendCartesianCoordinateButtonPushed - Cartesian goal sent to the Aubo i5
