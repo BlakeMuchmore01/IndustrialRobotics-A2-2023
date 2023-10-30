@@ -12,7 +12,7 @@ classdef DMagician < RobotBaseClass
     % Constant properties
     properties (Access = public, Constant)
         defaultRealQ  = [0 15 45 120 0]*pi/180; % Default joint angle
-        movementSteps = 1000; % Number of steps allocated for movement trajectories
+        movementSteps = 100; % Number of steps allocated for movement trajectories
         movementTime = 5; % Time for movements undergone by the Aubo i5
         epsilon = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
         movementWeight = diag([1 1 1 0.1 0.1 0.1]); % Weighting matrix for movement velocity vector
@@ -69,6 +69,38 @@ classdef DMagician < RobotBaseClass
 
             % Creating the serial link object
             self.model = SerialLink(link,'name',self.name);
+        end
+
+        %% Moving the Aubo i5 Joint to Specified Angles
+        function MoveJoint(self, jointIndex, JointValue)
+            % Getting the current joint angles of the Aubo i5 and updating
+            % the joint value of the specified index
+            self.currentJointAngles = self.model.getpos();
+            self.currentJointAngles(str2double(jointIndex)) = deg2rad(JointValue);
+
+            % Animating the robot and updating its toolTr to move the grippers
+            self.model.animate(self.currentJointAngles);
+            self.UpdateToolTr();
+            drawnow; % Updating the plot
+        end
+
+        %% Moving the Aubo i5 End-Effector to Specified Cartesian 
+        function MoveToCartesian(self, coordinate)
+            % Creating the transform for the dobot magician to move to
+            self.UpdateToolTr(); % Getting the end-effector transform
+            rotm = self.toolTr(1:3,1:3); % Getting the rotation matrix of the end-effector
+            transform = [rotm coordinate'; zeros(1,3) 1];
+            
+            % Getting the qMatrix to move the dobot magician to the cartesian coordiante
+            qMatrix = self.GetCartesianMovement(transform);
+
+            % Looping through the qMatrix to move the dobot magician
+            for i = 1:size(qMatrix, 1)
+                % Animating the dobot magician's movement and updating the gripper position
+                self.model.animate(qMatrix(i,:));
+                self.UpdateToolTr(); % Updating the end-effector transform of the 
+                drawnow; % Updating the plot
+            end
         end
 
         %% Updater for End Effector Transform (Tool Transform)

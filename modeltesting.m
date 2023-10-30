@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = 7;
+model = 3;
 figure(1);
 
 if model == -2
@@ -89,16 +89,9 @@ if model == 2
 end
 
 if model == 3
-    % Creating log file and setting command window level
-    L = log4matlab('logFile.log');
-    L.SetCommandWindowLevel(L.DEBUG);
-    
-
-
     % Creating the GUI object
     guiWindow = GUI;
-    guiWindow.LoadLogFile(L); % Loading the logfile into the gui class
-
+    pause;
 end
 
 if model == 4
@@ -337,6 +330,10 @@ if model == 7
 
     auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
     dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
+
+    % h = Hand(LabAssessment2.auboOrigin,L);
+    % 
+    % LabAssessment2.LightCurtainCheck(h.handModels{1});
     
     % cards.cardModels{1}.base = auboI5.model.fkine(auboI5.model.getpos()).T * trotz(pi/2) * trotx(pi/2) * transl(0, 0.2, -0.01) ; %card to closed gripper mounting
     % cards.cardModels{1}.base = dobotMagician.model.fkine(dobotMagician.model.getpos()).T * trotz(pi/2) * transl(0, 0, -0.045) ; %card to dobot mount 
@@ -448,6 +445,8 @@ if model == 7
         transform_cardpos(1:3, 1:3) = rotMatrix;
         qMatrixAubo = auboI5.GetCartesianMovementRMRC(transform_cardpos);
         
+        auboI5.UpdateEllipsis(auboI5.model.getpos());
+        pause;
         
         for i = 1:1:size(qMatrixAubo,1)
             % currentTr = auboI5.model.fkine(auboI5.model.getpos()).T;
@@ -455,7 +454,7 @@ if model == 7
             % disp(distToGoal);
         
             auboI5.model.animate(qMatrixAubo(i,:));
-            % auboI5.UpdateEllipsis(auboI5.model.getpos());
+            auboI5.UpdateEllipsis(auboI5.model.getpos());
             auboI5.UpdateToolTr;
         
             for j = 1:2
@@ -562,5 +561,15 @@ if model == 7
 
 
 end
+
+if model == 8 
+
+    LabAssessment2.LightCurtainCheck
+
+
+
+
+
+end 
 
 pause;

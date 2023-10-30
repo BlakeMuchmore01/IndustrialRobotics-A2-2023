@@ -6,103 +6,15 @@ classdef LabAssessment2 < handle
     %% Properties of the Class
     % Constant properties
     properties (Access = public, Constant)
-        axisLimits = [-1.25 1.25 -1.25 1.25 -0.76 1.5]; % Default axis of the plotting figure
-        numFingers = 2; % Max number of fingers to spawn on the gripper finger
-        auboOrigin = eye(4); % Default spawn location of the aubo i5 - remaining environment spawns around it
         lightCurtainCenter = [0 0 0]; % Default centre for the light curtain ellipse
         lightCurtainRadii = [1.05, 1.15, 1.1]; % Default radius' for the light curtain ellipse
+        
+        % Hand off transform (tranform aubo achieves to grab card off dobot
+        handOffTransform = [eul2rotm([0 1.5708 -1.5708]) [0.2222, 0.32, 0.26]'; zeros(1,3) 1];
     end
     
     %% Methods of the Class
     methods (Static)
-        function MainFunction()
-            clear; clc; clf; close all; % Clearing workspace, command window, and figures
-            % profile on; % Profiling the code
-
-            % Creating log file and setting command window level
-            L = log4matlab('logFile.log');
-            L.SetCommandWindowLevel(L.DEBUG); % Setting the log level to debug
-
-            % Creating the GUI object
-            guiWindow = GUI;
-            guiWindow.LoadLogFile(L); % Loading the logfile into the gui class
-            L.mlog = {L.DEBUG,'LabAssessment2','GUI page generated'}; % Logging creation of gui
-
-            % Creating listeners to wait for notifications from GUI
-            LabAssessment2.CreateListeners(guiWindow);
-
-            % Creating the figure showing to show the main demo
-            figure(1); % Creating figure to simulate robots
-            hold on; axis(LabAssessment2.axisLimits); camlight;
-
-            % Creating the environment surrounding the aubo i5
-            LabAssessment2.CreateEnvironment(L);
-
-            % Creating all dynamic components for the demo (robots, cards, collision objects)
-            % hand = Hand(LabAssessment2.auboOrigin*transl(0,0,-1.15),L); % Hand used to verify light curtain
-            cards = PlayingCards(LabAssessment2.auboOrigin*transl(0.25,0.5,0.01),L); % Spawning the cards that will be moved by robots
-
-            auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
-            dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
-            guiWindow.LoadRobots(auboI5, dobotMagician);
-
-            % Waiting until a demonstration mode is chosen to continue with demo
-            while (guiWindow.simulationMode ~= "Blackjack" && guiWindow.simulationMode ~= "Teach")
-                pause(0.1);
-                drawnow;
-            end
-
-            % Switch case between simulation modes
-            switch guiWindow.simulationMode
-                % Blackjack Functionality
-                case "Blackjack"
-                    % Creating a variable to track what player is currently being delt to
-                    player = 1; 
-
-                    % Dealing each player their initial two cards, alongside the dealer's
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
-                    player = LabAssessment2.StandSelected(player,L); % Changing player
-                    
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
-                    player = LabAssessment2.StandSelected(player,L); % Changing player
-                    
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,1,player,L); % Dealing a card
-                    LabAssessment2.HitSelected(auboI5,dobotMagician,guiWindow,cards,2,player,L); % Dealing a card
-
-                    % Setting player variable to 1 again to allow for first player 
-                    % to start interacting with the blackjack functionality
-                    player = 1;
-
-                    %%%%%%%%%%%%%%%% FIGURE OUT REMAINING CODE %%%%%%%
-
-                % Teach and Jogging Functionality
-                case "Teach"
-                    % Blackjack and teach functionality
-                    while ~guiWindow.endDemonstration
-                        % Getting the robot that is being controlled by the user
-                        drawnow;
-                        switch guiWindow.RobotDropDown.Value
-                            case "Aubo I5"
-                                % Getting the updated joint angles and animating
-                                auboJointAngles = guiWindow.moveAuboDeg;
-                                auboI5.model.animate(deg2rad(auboJointAngles));
-                                drawnow;
-                            case "Dobot Magician"
-                                % Getting the updated joint angles and animating
-                                dobotJointAngles = guiWindow.moveDobotDeg;
-                                dobotMagician.model.animate(deg2rad(dobotJointAngles));
-                                drawnow;
-                        end
-                        drawnow;
-                    end
-            end
-
-            guiWindow.delete(); % Closing the GUI wind
-            close(figure(1)); % Closing the demo figure
-        end
-
         %% Hit Functionality
         function HitSelected(auboI5, dobotMagician, ~, cards, cardNum, player, logFile)
             % Grabbing the last card within the card model array
@@ -145,13 +57,9 @@ classdef LabAssessment2 < handle
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
 
-            % Creating the hand of transform (tranform aubo achieves to grab card off dobot
-            handOffRotation = eul2rotm([0 1.5708 -1.5708]);
-            handOffTranslation = [0.2222, 0.32, 0.26]; 
-
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC([handOffRotation handOffTranslation'; zeros(1,3) 1]);
+            qMatrixAubo = auboI5.GetCartesianMovementRMRC(self.handOffTransform);
 
             % Creating a gripper opening matrix if the gripper is currently closed
             gripperRequiresOpenning = false;
@@ -237,9 +145,9 @@ classdef LabAssessment2 < handle
             fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
 
             % Define the concrete coordinates
-            concreteX = [-1.25,-1.25;1.25,1.25];
-            concreteY = [-1.25,1.25;-1.25,1.25];
-            concreteZ = [-0.76,-0.76;-0.76,-0.76];
+            concreteX = [-1,    -1;     1.5,   1.5];
+            concreteY = [-1.25,  1.25; -1.25,  1.25];
+            concreteZ = [-0.76, -0.76; -0.76, -0.76];
             
             % Plotting the concrete floor
             surf(concreteX, concreteY, concreteZ, ...
@@ -247,18 +155,6 @@ classdef LabAssessment2 < handle
 
             % Logging creation of safety environment
             logFile.mlog = {logFile.DEBUG,'CreateEnvironment','Safety environment created'};
-        end
-
-        %% Function to Create Listeners to Event Based GUI Code
-        function CreateListeners(guiWindow)
-            % Creating listeners for events that are undergone in the GUI
-            addlistener(guiWindow,'StartButtonPressed', @(src,event) LabAssessment2.StartButtonPressed(src,event));
-            addlistener(guiWindow,'EmergencyButtonPressed', @(src,event) LabAssessment2.EmergencyButtonPressed(src,event));
-            addlistener(guiWindow,'DemonstrationModeChanged', @(src,event) LabAssessment2.DemonstrationModeChanged(src,event));
-            addlistener(guiWindow,'BlackjackButtonRequest', @(src,event) LabAssessment2.BlackjackButtonRequest(src,event));
-            addlistener(guiWindow,'CartesianCoordSent', @(src,event) LabAssessment2.CartesianCoordSent(src,event));
-            addlistener(guiWindow,'CartesianCoordCancelled', @(src,event) LabAssessment2.CartesianCoordCancelled(src,event));
-            addlistener(guiWindow,'JointMovementSent', @(src,event) LabAssessment2.JointMovementSent(src,event));
         end
 
         %% Checking if there is Something within the Light Curtain
@@ -286,6 +182,6 @@ classdef LabAssessment2 < handle
                   + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
                   + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
-
+                
     end
 end
