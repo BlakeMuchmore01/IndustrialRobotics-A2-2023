@@ -165,11 +165,6 @@ classdef LabAssessment2 < handle
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
             points = points(1:3) + model.base.t(1:3)';
 
-            % [X,Y,Z] = ellipsoid(LabAssessment2.lightCurtainCenter(1), LabAssessment2.lightCurtainCenter(2), LabAssessment2.lightCurtainCenter(3), ...
-            %     LabAssessment2.lightCurtainRadii(1), LabAssessment2.lightCurtainRadii(2), LabAssessment2.lightCurtainRadii(3));
-            % surf(X,Y,Z);
-            % alpha(0.5);
-
             % Checking the algerbraic distance of these points
             algerbraicDist = LabAssessment2.GetAlgebraicDist(points, LabAssessment2.lightCurtainCenter, LabAssessment2.lightCurtainRadii);
                 
@@ -187,6 +182,6 @@ classdef LabAssessment2 < handle
                   + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
                   + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
-
+                
     end
 end
