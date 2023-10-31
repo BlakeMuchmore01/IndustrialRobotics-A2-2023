@@ -34,6 +34,8 @@ classdef LabAssessment2 < handle
                 auboI5.model.animate(qMatrixAubo(i,:));
                 auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
 
+                LabAssessment2.LightCurtainCheck(guiWindow.h.handModels{1}, guiWindow);
+
                 % Updating the positions of the gripper fingers
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
@@ -146,7 +148,7 @@ classdef LabAssessment2 < handle
         end
 
         %% Checking if there is Something within the Light Curtain
-        function isClear = LightCurtainCheck(model)
+        function isClear = LightCurtainCheck(model, app)
             isClear = true; % Setting default case of function as false
             
             % Getting the points of the model that need to be checked
@@ -160,6 +162,7 @@ classdef LabAssessment2 < handle
             % is an algerbraic distance of < 1 with any of the above points
             if(find(algerbraicDist < 1) > 0)
                 isClear = false; % Object has been detected within the light curtain
+                app.eStopPause;
                 return; % Returning on first detection of object within the light curtain
             end
         end
