@@ -16,121 +16,111 @@ classdef LabAssessment2 < handle
     %% Methods of the Class
     methods (Static)
         %% Hit Functionality
-        function HitSelected(auboI5, dobotMagician, ~, cards, cardNum, player, logFile)
-            % Grabbing the last card within the card model array
-            for i = size(cards.cardModels,2):-1:1
-                % Checking if its empty
-                if isempty(cards.cardModels{i})
-                    continue; % Check next index for card
-                else
-                    endCard = i; % Getting the index number of the card
-                    break;
-                end
-            end
-            
-            % Getting the qMatrix to move the dobot magician to the top card position
-            qMatrixDobot = dobotMagician.GetCartesianMovement(cards.cardInitialTransforms{1,endCard} * transl(0,0,0.045));
-            
-            % Looping through the qMatrix to move the dobot to pick up the top card in the deck
-            for i = 1:size(qMatrixDobot,1)
-                % Animating the dobot's movement to pick up the card
-                dobotMagician.model.animate(qMatrixDobot(i,:));
-                drawnow; % Updating the plot
-            end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Dobot has picked up a card'};
-
-            % Getting the qMatrix to move the dobot to its upright position
-            % to hand the card to the aubo i5
-            initialPosition = dobotMagician.model.fkine(dobotMagician.defaultRealQ).T;
-            qMatrixDobot = dobotMagician.GetCartesianMovement(initialPosition);
-
-            % Looping through the qMatrix to move the dobot to its upright position while holding the card
-            for i = 1:size(qMatrixDobot,1)
-                % Animating the dobot's movement to pick up the card
-                dobotMagician.model.animate(qMatrixDobot(i,:));
-                dobotMagician.UpdateToolTr()
-
-                % Moving the card alongside the end-effector of the dobot
-                cards.cardModels{endCard}.base = dobotMagician.toolTr * transl(0, 0, -0.045);
-                cards.cardModels{endCard}.animate(0);
-                drawnow; % Updating the plot
-            end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
+        function HitSelected(auboI5, dobotMagician, guiWindow, cards, cardNum, player, logFile)
+            % Getting the end card index within the cardModels array (i.e. one
+            % that hasn't been delt prior)
+            endCardIndex = guiWindow.GetEndCardIndex();
+            nextCardIndex = endCardIndex-1; % Getting the index number for the next card
 
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(self.handOffTransform);
-
-            % Creating a gripper opening matrix if the gripper is currently closed
-            gripperRequiresOpenning = false;
-            if auboI5.tool{1}.isClosed
-                qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
-                gripperRequiresOpenning = true;
-            end
+            qMatrixAubo = auboI5.GetCartesianMovementRMRC(LabAssessment2.handOffTransform);
 
             % Looping through the qMatrix to move the aubo to pick up the card and close the gripper 
             for i = 1:size(qMatrixAubo,1)
+                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+                
                 % Animating the Aubo i5's movement and updating the gripper position
                 auboI5.model.animate(qMatrixAubo(i,:));
                 auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
+
+                LabAssessment2.LightCurtainCheck(guiWindow.h.handModels{1}, guiWindow);
 
                 % Updating the positions of the gripper fingers
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
                 end
-
-                % If the robot is currently closed, open it
-                if gripperRequiresOpenning == true
-                    % Looping through the qMatrix for both grippers
-                    for gripperNum = 1:2
-                        auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
-                    end
-                end
-                drawnow; % Updating the plot
+                drawnow;
             end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 collected the playing card'};
             
             % Closing the gripper of the aubo
             qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
             for i = 1:size(qMatrixGripper,1)
+                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+
                 % Looping through the qMatrix for both grippers
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
                 end
                 drawnow; % Updating the plot
             end
+            logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 collected the playing card'};
 
-            % Getting the qMatrix to move the Aubo i5 to distrubute the card to the player
-            % Getting the final position of the card being distributed
-            finalCardTransforms = cards.GetFinalCardTransforms();
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(finalCardTransforms(:,:,cardNum,player));
+            % Getting the qMatrix to animate the Aubo i5 distributing the card to the player
+            % Simultaneously move the dobot to start picking the next cards
+            finalCardTransforms = cards.GetFinalCardTransforms(); % Getting the final poses of the cards
+            qMatrixAubo = auboI5.GetCartesianMovement(finalCardTransforms(:,:,cardNum,player));
+            qMatrixDobot = dobotMagician.GetCartesianMovement(cards.cardInitialTransforms{1,nextCardIndex} * transl(0,0,0.045));
 
-            % Looping through the qMatrix to move the aubo to distribute the card to the player
-            for i = 1:size(qMatrixAubo,1)
-                % Animating the Aubo i5's movement and updating the gripper position
-                auboI5.model.animate(qMatrixAubo(i,:));
-                auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
+            % Looping through the qMatrix's to distrubite the current card and pick up the next card
+            for i = 1:size(qMatrixAubo, 1)
+                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+                auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
+                auboI5.UpdateToolTr(); % Updating the end-effector transform property
 
-                % Updating the positions of the gripper fingers
+                % Updating the positions fo the gripper fingers
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
                 end
 
                 % Updating the position of the card alongside the gripper
-                cards.cardModels{endCard}.base = auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
-                cards.cardModels{endCard}.animate(0);
+                cards.cardModels{endCardIndex}.base = auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                cards.cardModels{endCardIndex}.animate(0);
+
+                dobotMagician.model.animate(qMatrixDobot(i,:)) % Animating the dobot
+                dobotMagician.UpdateToolTr(); % Updating the end-effector transform property
                 drawnow; % Updating the plot
             end
             logFile.mlog = {logFile.DEBUG,'HitSelected','Aubo i5 distributed the playing card'};
+                
+            guiWindow.NotifyCardDelt(); % Notifying that a card has been delt
 
-            % Removing the card that was previously moved from the intial transform array
-            cards.cardModels{endCard} = [];
+            % Moving the aubo i5 to its original position and raise the dobot with the next card
+            qMatrixAubo = auboI5.GetCartesianMovement(auboI5.model.fkine(auboI5.initialJointAngles).T);
+            qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix(); % Getting qMatrix to open gripper
+            qMatrixDobot = dobotMagician.GetCartesianMovement(dobotMagician.model.fkine(dobotMagician.defaultRealQ).T);
+
+            % Looping through the qMatrix's
+            for i = 1:size(qMatrixAubo)
+                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+                auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
+                auboI5.UpdateToolTr(); % Updating the end-effector transform property
+
+                % Updating the positions fo the gripper fingers
+                for gripperNum = 1:2
+                    auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
+                    
+                    % Opening the gripper within the first 100 steps
+                    if i <= 100
+                        auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
+                    end
+                end
+
+                dobotMagician.model.animate(qMatrixDobot(i,:)); % Animating the model to the next pose in the qMatrix
+                dobotMagician.UpdateToolTr; % Updating the end-effector transform property
+                
+                % Updating the position of the card alongside the dobot
+                cards.cardModels{nextCardIndex}.base = dobotMagician.toolTr * transl(0, 0, -0.045);
+                cards.cardModels{nextCardIndex}.animate(0);
+                drawnow; % Updating the plot
+            end
         end
 
         %% Stand Functionality
-        function playerNum = StandSelected(playerNumValue, logFile)
+        function [playerNum, cardNum] = StandSelected(playerNumValue, logFile)
             % Increasing playerNum so next player can undergo the blackjack functionality
             playerNum = playerNumValue + 1;
+            cardNum = 3; % Card number defaults to 3 because next player is yet to recieve 3rd card
             logFile.mlog = {logFile.DEBUG,'StandSelected','User has chosen to stand'};
         end
         
@@ -158,7 +148,7 @@ classdef LabAssessment2 < handle
         end
 
         %% Checking if there is Something within the Light Curtain
-        function isClear = LightCurtainCheck(model)
+        function isClear = LightCurtainCheck(model, app)
             isClear = true; % Setting default case of function as false
             
             % Getting the points of the model that need to be checked
@@ -172,6 +162,7 @@ classdef LabAssessment2 < handle
             % is an algerbraic distance of < 1 with any of the above points
             if(find(algerbraicDist < 1) > 0)
                 isClear = false; % Object has been detected within the light curtain
+                app.eStopPause;
                 return; % Returning on first detection of object within the light curtain
             end
         end
