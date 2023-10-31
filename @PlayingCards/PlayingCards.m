@@ -6,7 +6,7 @@ classdef PlayingCards < RobotBaseClass
 
     % Constant Properties
     properties (Access = public, Constant)
-        cardCount = 15; % Default number of playing cards to create/plot
+        cardCount = 16; % Default number of playing cards to create/plot
         WORKSPACE_DIMENSIONS = [-3 3 -3 3 -0.01 -0.01]; % Dimension of workspace
 
         % Array of final card positions (where the aubo is to place them)

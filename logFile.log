@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 2023-10-31 12:11:03,618 DEBUG CreateEnvironment - Safety environment created
 2023-10-31 12:11:26,399 DEBUG AuboI5 - Aubo i5 object created within the workspace
 2023-10-31 12:11:30,187 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
@@ -34,3 +35,43 @@
 2023-10-31 12:12:25,890 DEBUG HitSelected - Card is ready to be collected by Aubo i5
 2023-10-31 12:12:31,739 DEBUG HitSelected - Aubo i5 collected the playing card
 2023-10-31 12:12:39,843 DEBUG HitSelected - Aubo i5 distributed the playing card
+=======
+2023-10-31 12:46:46,601 DEBUG CreateEnvironment - Safety environment created
+2023-10-31 12:47:07,917 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-31 12:47:12,200 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-31 12:47:16,406 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-31 12:47:16,415 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-31 12:47:20,621 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-10-31 12:47:20,741 DEBUG PlayingCards - Card 1 created within the workspace
+2023-10-31 12:47:20,836 DEBUG PlayingCards - Card 2 created within the workspace
+2023-10-31 12:47:20,933 DEBUG PlayingCards - Card 3 created within the workspace
+2023-10-31 12:47:21,031 DEBUG PlayingCards - Card 4 created within the workspace
+2023-10-31 12:47:21,132 DEBUG PlayingCards - Card 5 created within the workspace
+2023-10-31 12:47:21,236 DEBUG PlayingCards - Card 6 created within the workspace
+2023-10-31 12:47:21,340 DEBUG PlayingCards - Card 7 created within the workspace
+2023-10-31 12:47:21,446 DEBUG PlayingCards - Card 8 created within the workspace
+2023-10-31 12:47:21,553 DEBUG PlayingCards - Card 9 created within the workspace
+2023-10-31 12:47:21,664 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-31 12:47:21,763 DEBUG PlayingCards - Card 11 created within the workspace
+2023-10-31 12:47:21,871 DEBUG PlayingCards - Card 12 created within the workspace
+2023-10-31 12:47:21,976 DEBUG PlayingCards - Card 13 created within the workspace
+2023-10-31 12:47:22,076 DEBUG PlayingCards - Card 14 created within the workspace
+2023-10-31 12:47:22,179 DEBUG PlayingCards - Card 15 created within the workspace
+2023-10-31 12:47:22,283 DEBUG PlayingCards - Card 16 created within the workspace
+2023-10-31 12:47:22,303 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-31 12:47:32,300 DEBUG DemonstrationModePressed - Blackjack requested
+2023-10-31 12:47:34,428 DEBUG HitSelected - Dobot has picked up a card
+2023-10-31 12:47:38,986 DEBUG HitSelected - Card is ready to be collected by Aubo i5
+2023-10-31 12:47:45,944 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:47:52,878 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:48:08,548 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:48:15,420 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:48:31,239 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:48:37,947 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:48:52,771 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:48:59,603 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:49:14,916 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:49:22,233 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:49:38,027 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:49:44,926 DEBUG HitSelected - Aubo i5 distributed the playing card
+>>>>>>> Stashed changes

@@ -141,7 +141,7 @@ classdef AuboI5 < RobotBaseClass
         end
 
         %% Moving the Aubo i5 to a Desired Transform
-        function qMatrix = GetCartesianMovementRMRC(self, coordinateTransform)
+        function qMatrix = GetCartesianMovement(self, coordinateTransform)
             deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step
 
             % Allocating memory to data arrays
