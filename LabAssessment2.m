@@ -24,7 +24,7 @@ classdef LabAssessment2 < handle
 
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(LabAssessment2.handOffTransform);
+            qMatrixAubo = auboI5.GetCartesianMovement(LabAssessment2.handOffTransform);
 
             % Looping through the qMatrix to move the aubo to pick up the card and close the gripper 
             for i = 1:size(qMatrixAubo,1)
@@ -34,7 +34,7 @@ classdef LabAssessment2 < handle
                 auboI5.model.animate(qMatrixAubo(i,:));
                 auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
 
-                LabAssessment2.LightCurtainCheck(guiWindow.h.handModels{1}, guiWindow);
+                LabAssessment2.LightCurtainCheck(guiWindow.hand.handModels{1}, guiWindow);
 
                 % Updating the positions of the gripper fingers
                 for gripperNum = 1:2
@@ -47,7 +47,7 @@ classdef LabAssessment2 < handle
             qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
             for i = 1:size(qMatrixGripper,1)
                 %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
-
+                LabAssessment2.LightCurtainCheck(guiWindow.hand.handModels{1}, guiWindow);
                 % Looping through the qMatrix for both grippers
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
@@ -67,6 +67,9 @@ classdef LabAssessment2 < handle
                 %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
                 auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
                 auboI5.UpdateToolTr(); % Updating the end-effector transform property
+
+
+                LabAssessment2.LightCurtainCheck(guiWindow.hand.handModels{1}, guiWindow);
 
                 % Updating the positions fo the gripper fingers
                 for gripperNum = 1:2
@@ -95,6 +98,9 @@ classdef LabAssessment2 < handle
                 %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
                 auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
                 auboI5.UpdateToolTr(); % Updating the end-effector transform property
+                
+                LabAssessment2.LightCurtainCheck(guiWindow.hand.handModels{1}, guiWindow);
+
 
                 % Updating the positions fo the gripper fingers
                 for gripperNum = 1:2
