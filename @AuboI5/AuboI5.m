@@ -322,6 +322,33 @@ classdef AuboI5 < RobotBaseClass
             end
         end
 
+        function points = objectCollision(self, ellipsisModel)
+            % For each ellipsis (link) get if points algebraic distance is <1
+
+            points = [];
+            
+            % Stores every 50 points in points array
+            for l = 1:width(ellipsisModel.points())
+                ellipsisPoints = ellipsisModel.points{l};
+                for p = 1:height(ellipsisModel.points{l})
+                    point = ellipsisPoints(p,:);
+                    points = [points; point];
+                end
+            end
+
+            for l = 1:self.model.n
+
+                    %dis = GetAlgebraicDist(points, self.linkCentres(l,:), self.linkRadii(l,:));
+
+            end
+
+
+            
+        end
+    end
+
+    %% Static Methods
+    methods (Static)
         %% Getter for the Algerbraic Distance between Objects and Light Curtain
         function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
             algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
