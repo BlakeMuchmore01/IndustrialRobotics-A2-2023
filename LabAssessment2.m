@@ -19,7 +19,7 @@ classdef LabAssessment2 < handle
         function HitSelected(auboI5, dobotMagician, guiWindow, cards, cardNum, player, logFile)
             % Getting the end card index within the cardModels array (i.e. one
             % that hasn't been delt prior)
-            endCardIndex = guiWindow.GetEndCard();
+            endCardIndex = guiWindow.GetEndCardIndex();
             nextCardIndex = endCardIndex-1; % Getting the index number for the next card
 
             % Getting the qMatrix to move the Aubo i5 to pick up the card
