@@ -1,48 +1,36 @@
-2023-10-31 10:58:24,797 DEBUG CreateEnvironment - Safety environment created
-2023-10-31 10:58:46,535 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-10-31 10:58:50,786 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-10-31 10:58:54,799 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-10-31 10:58:54,801 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
-2023-10-31 10:58:58,798 DEBUG DMagician - Dobot Magician object created within the workspace
-2023-10-31 10:58:58,952 DEBUG PlayingCards - Card 1 created within the workspace
-2023-10-31 10:58:59,099 DEBUG PlayingCards - Card 2 created within the workspace
-2023-10-31 10:58:59,244 DEBUG PlayingCards - Card 3 created within the workspace
-2023-10-31 10:58:59,394 DEBUG PlayingCards - Card 4 created within the workspace
-2023-10-31 10:58:59,538 DEBUG PlayingCards - Card 5 created within the workspace
-2023-10-31 10:58:59,685 DEBUG PlayingCards - Card 6 created within the workspace
-2023-10-31 10:58:59,844 DEBUG PlayingCards - Card 7 created within the workspace
-2023-10-31 10:58:59,998 DEBUG PlayingCards - Card 8 created within the workspace
-2023-10-31 10:59:00,149 DEBUG PlayingCards - Card 9 created within the workspace
-2023-10-31 10:59:00,298 DEBUG PlayingCards - Card 10 created within the workspace
-2023-10-31 10:59:00,442 DEBUG PlayingCards - Card 11 created within the workspace
-2023-10-31 10:59:00,590 DEBUG PlayingCards - Card 12 created within the workspace
-2023-10-31 10:59:00,743 DEBUG PlayingCards - Card 13 created within the workspace
-2023-10-31 10:59:00,897 DEBUG PlayingCards - Card 14 created within the workspace
-2023-10-31 10:59:01,046 DEBUG PlayingCards - Card 15 created within the workspace
-2023-10-31 10:59:01,057 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
-2023-10-31 10:59:03,832 DEBUG DemonstrationModePressed - Blackjack requested
-2023-10-31 10:59:05,305 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
-2023-10-31 10:59:06,196 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 10:59:09,799 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 10:59:17,038 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 10:59:27,943 DEBUG HitSelected - Aubo i5 distributed the playing card
-2023-10-31 10:59:29,842 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 10:59:33,792 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 10:59:42,403 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 10:59:52,725 DEBUG HitSelected - Aubo i5 distributed the playing card
-2023-10-31 10:59:54,514 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 10:59:57,938 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 11:00:06,199 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 11:00:16,272 DEBUG HitSelected - Aubo i5 distributed the playing card
-2023-10-31 11:00:18,082 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 11:00:21,533 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 11:00:29,963 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 11:00:40,467 DEBUG HitSelected - Aubo i5 distributed the playing card
-2023-10-31 11:00:42,518 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 11:00:46,146 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 11:00:55,109 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 11:01:06,285 DEBUG HitSelected - Aubo i5 distributed the playing card
-2023-10-31 11:01:08,311 DEBUG HitSelected - Dobot has picked up a card
-2023-10-31 11:01:11,853 DEBUG HitSelected - Card is ready to be collected by Aubo i5
-2023-10-31 11:01:21,616 DEBUG HitSelected - Aubo i5 collected the playing card
-2023-10-31 11:01:32,146 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:11:03,618 DEBUG CreateEnvironment - Safety environment created
+2023-10-31 12:11:26,399 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-10-31 12:11:30,187 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-10-31 12:11:34,033 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-10-31 12:11:34,037 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-10-31 12:11:39,180 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-10-31 12:11:39,310 DEBUG PlayingCards - Card 1 created within the workspace
+2023-10-31 12:11:39,429 DEBUG PlayingCards - Card 2 created within the workspace
+2023-10-31 12:11:39,551 DEBUG PlayingCards - Card 3 created within the workspace
+2023-10-31 12:11:39,668 DEBUG PlayingCards - Card 4 created within the workspace
+2023-10-31 12:11:39,786 DEBUG PlayingCards - Card 5 created within the workspace
+2023-10-31 12:11:39,905 DEBUG PlayingCards - Card 6 created within the workspace
+2023-10-31 12:11:40,032 DEBUG PlayingCards - Card 7 created within the workspace
+2023-10-31 12:11:40,174 DEBUG PlayingCards - Card 8 created within the workspace
+2023-10-31 12:11:40,305 DEBUG PlayingCards - Card 9 created within the workspace
+2023-10-31 12:11:40,435 DEBUG PlayingCards - Card 10 created within the workspace
+2023-10-31 12:11:40,560 DEBUG PlayingCards - Card 11 created within the workspace
+2023-10-31 12:11:40,681 DEBUG PlayingCards - Card 12 created within the workspace
+2023-10-31 12:11:40,802 DEBUG PlayingCards - Card 13 created within the workspace
+2023-10-31 12:11:40,937 DEBUG PlayingCards - Card 14 created within the workspace
+2023-10-31 12:11:41,061 DEBUG PlayingCards - Card 15 created within the workspace
+2023-10-31 12:11:41,070 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-10-31 12:11:48,485 DEBUG DemonstrationModePressed - Blackjack requested
+2023-10-31 12:11:49,955 DEBUG HitSelected - Dobot has picked up a card
+2023-10-31 12:11:50,193 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-10-31 12:11:52,376 DEBUG HitSelected - Card is ready to be collected by Aubo i5
+2023-10-31 12:11:57,437 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:12:04,716 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:12:06,336 DEBUG HitSelected - Dobot has picked up a card
+2023-10-31 12:12:08,452 DEBUG HitSelected - Card is ready to be collected by Aubo i5
+2023-10-31 12:12:14,346 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:12:21,990 DEBUG HitSelected - Aubo i5 distributed the playing card
+2023-10-31 12:12:23,565 DEBUG HitSelected - Dobot has picked up a card
+2023-10-31 12:12:25,890 DEBUG HitSelected - Card is ready to be collected by Aubo i5
+2023-10-31 12:12:31,739 DEBUG HitSelected - Aubo i5 collected the playing card
+2023-10-31 12:12:39,843 DEBUG HitSelected - Aubo i5 distributed the playing card
