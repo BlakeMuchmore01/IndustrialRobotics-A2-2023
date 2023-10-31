@@ -22,44 +22,19 @@ classdef LabAssessment2 < handle
             endCardIndex = guiWindow.GetEndCard();
             nextCardIndex = endCardIndex-1; % Getting the index number for the next card
 
-            % Moving the Aubo i5 to pick up the card from the dobot magician
-            qMatrixAubo = auboI5.GetCartesianMovement(LabAssessment2.handOffTransform);
-
-            % Looping through the qMatrixAubo to animate the aubo i5 grabbing the card from the dobot
-            for i = 1:size(qMatrixAubo, 1)
-                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
-                auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
-                auboI5.UpdateToolTr(); % Updating the end-effector transform property
-
-<<<<<<< Updated upstream
-                % Moving the card alongside the end-effector of the dobot
-                cards.cardModels{endCard}.base = dobotMagician.toolTr * transl(0, 0, -0.045);
-                cards.cardModels{endCard}.animate(0);
-                drawnow; % Updating the plot
-            end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
-
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
             qMatrixAubo = auboI5.GetCartesianMovementRMRC(LabAssessment2.handOffTransform);
 
-            % Creating a gripper opening matrix if the gripper is currently closed
-            gripperRequiresOpenning = false;
-            if auboI5.tool{1}.isClosed
-                qMatrixGripper = auboI5.tool{1}.GetOpenCloseQMatrix();
-                gripperRequiresOpenning = true;
-            end
-
             % Looping through the qMatrix to move the aubo to pick up the card and close the gripper 
             for i = 1:size(qMatrixAubo,1)
+                %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+                
                 % Animating the Aubo i5's movement and updating the gripper position
                 auboI5.model.animate(qMatrixAubo(i,:));
                 auboI5.UpdateToolTr(); % Updating the end-effector transform of the 
 
                 % Updating the positions of the gripper fingers
-=======
-                % Updating the positions fo the gripper fingers
->>>>>>> Stashed changes
                 for gripperNum = 1:2
                     auboI5.tool{gripperNum}.UpdateGripperPosition(auboI5.toolTr, gripperNum);
                 end
