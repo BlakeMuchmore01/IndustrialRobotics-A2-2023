@@ -59,7 +59,7 @@ classdef LabAssessment2 < handle
 
             % Getting the qMatrix to move the Aubo i5 to pick up the card
             % and getting the qMatrix to close the gripper
-            qMatrixAubo = auboI5.GetCartesianMovementRMRC(self.handOffTransform);
+            qMatrixAubo = auboI5.GetCartesianMovementRMRC(LabAssessment2.handOffTransform);
 
             % Creating a gripper opening matrix if the gripper is currently closed
             gripperRequiresOpenning = false;
