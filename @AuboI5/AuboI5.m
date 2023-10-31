@@ -278,8 +278,6 @@ classdef AuboI5 < RobotBaseClass
             self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
 
             self.ellipsis.plot3d(q);
-            self.linkCentres
-            self.linkRadii
         end
 
         %% Checking if a Collision is Occurring with a Model
@@ -340,11 +338,63 @@ classdef AuboI5 < RobotBaseClass
 
                     %dis = GetAlgebraicDist(points, self.linkCentres(l,:), self.linkRadii(l,:));
 
+            end 
+        end
+
+
+        function prisms(self, q)
+
+            linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
+            linkTransforms(:,:,1) = self.ellipsis.base;
+
+            links = self.ellipsis.links;
+
+            for i = 1:length(links)
+                L = links(1,i);
+                
+                current_transform = linkTransforms(:,:, i);
+                
+                current_transform = current_transform * trotz(q(1,i) + L.offset) * transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
+                linkTransforms(:,:,i + 1) = current_transform;
+
+                centreTr = (current_transform-linkTransforms(:,:,i))/2;
+
+                self.linkCentres(i,1) = self.centreOffset(i,1) + centreTr(3,1);
+                self.linkCentres(i,2) = self.centreOffset(i,2) + centreTr(3,2);
+                self.linkCentres(i,3) = self.centreOffset(i,3) + centreTr(3,3);
+            end
+
+            for i = 1:length(links)
+
+                d1 = 0;
+                d2 = 0;
+                d3 = 0;
+                x1 = linkTransforms(1,4,i);
+                x2 = linkTransforms(1,4,i);
+                y1 = linkTransforms(2,4,i);
+                y2 = linkTransforms(2,4,i);
+                z1 = linkTransforms(3,4,i);
+                z2 = linkTransforms(3,4,i);
+                for k = x1:0.05:x2
+                    d1 = k;
+                    for j = y1:0.05:y2
+                        d2 = j;
+                        for i = z1:0.05:z2
+                            d3 = i;
+                            self.ellipsis.points{i}
+                        end
+                    end
+                end 
+
+                % self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
+                % self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
+
             end
 
 
-            
         end
+
+
     end
 
     %% Static Methods
