@@ -1,0 +1,56 @@
+2023-11-01 23:29:58,854 DEBUG CreateEnvironment - Safety environment created
+2023-11-01 23:30:34,736 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-11-01 23:30:40,218 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-01 23:30:40,259 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-11-01 23:30:51,648 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-01 23:30:51,697 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-11-01 23:30:51,711 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-11-01 23:31:04,528 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:04,667 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-11-01 23:31:04,864 DEBUG Hand - Hand 1 created within the workspace
+2023-11-01 23:31:05,028 DEBUG Hand - Hand 2 created within the workspace
+2023-11-01 23:31:05,409 DEBUG PlayingCards - Card 1 created within the workspace
+2023-11-01 23:31:05,734 DEBUG PlayingCards - Card 2 created within the workspace
+2023-11-01 23:31:06,070 DEBUG PlayingCards - Card 3 created within the workspace
+2023-11-01 23:31:06,399 DEBUG PlayingCards - Card 4 created within the workspace
+2023-11-01 23:31:06,732 DEBUG PlayingCards - Card 5 created within the workspace
+2023-11-01 23:31:07,042 DEBUG PlayingCards - Card 6 created within the workspace
+2023-11-01 23:31:07,381 DEBUG PlayingCards - Card 7 created within the workspace
+2023-11-01 23:31:07,731 DEBUG PlayingCards - Card 8 created within the workspace
+2023-11-01 23:31:08,036 DEBUG PlayingCards - Card 9 created within the workspace
+2023-11-01 23:31:08,392 DEBUG PlayingCards - Card 10 created within the workspace
+2023-11-01 23:31:08,773 DEBUG PlayingCards - Card 11 created within the workspace
+2023-11-01 23:31:09,082 DEBUG PlayingCards - Card 12 created within the workspace
+2023-11-01 23:31:09,431 DEBUG PlayingCards - Card 13 created within the workspace
+2023-11-01 23:31:09,829 DEBUG PlayingCards - Card 14 created within the workspace
+2023-11-01 23:31:10,181 DEBUG PlayingCards - Card 15 created within the workspace
+2023-11-01 23:31:10,518 DEBUG PlayingCards - Card 16 created within the workspace
+2023-11-01 23:31:10,858 DEBUG PlayingCards - Card 17 created within the workspace
+2023-11-01 23:31:11,198 DEBUG PlayingCards - Card 18 created within the workspace
+2023-11-01 23:31:11,565 DEBUG PlayingCards - Card 19 created within the workspace
+2023-11-01 23:31:11,982 DEBUG PlayingCards - Card 20 created within the workspace
+2023-11-01 23:31:12,328 DEBUG PlayingCards - Card 21 created within the workspace
+2023-11-01 23:31:12,372 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-11-01 23:31:12,646 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:19,135 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:29,594 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-01 23:31:31,497 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-01 23:31:32,560 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-01 23:31:33,042 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:33,822 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:34,140 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:34,887 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-01 23:31:35,540 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:36,279 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:36,787 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:37,458 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-01 23:31:38,034 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-01 23:31:41,519 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-01 23:31:43,000 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:43,230 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:43,399 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:43,550 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:43,912 DEBUG StartContinueButtonPushed - Cannot start/continue robot operation if e-stop has been pressed
+2023-11-01 23:31:44,388 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-01 23:31:45,074 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-01 23:31:46,643 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused

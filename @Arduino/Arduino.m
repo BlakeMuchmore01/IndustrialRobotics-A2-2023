@@ -2,65 +2,53 @@
 classdef Arduino < handle
     % Constant Properties
     properties (Constant)
-        port = "COM4";
-        board = "Uno";
-        pin = "D13";   
+        port = "COM4"; % Port that the arduino is connected to on laptop
+        board = "Uno"; % Arduino board type
+        pin = "D13"; % Pin that arduino is reading from
     end
 
     % Non-constant Properties
     properties
-        ardObj;
-        pinState = 0;
+        ardObj; % Property to store the serial port connection
+        pinState = 0; % State of the e-stop
     end
 
     %% Methods
     methods (Static)
         %% Constructor for Ardunino Object
         function self = Arduino()
-                % self.ardObj = arduino(Arduino.port, Arduino.board);
-                % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
-                self.ardObj = serialport('COM4', 9600);
-                % configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
+            % Creating the serial port connection to the arduino
+            self.ardObj = serialport(self.port, 9600);
         end
         
         %% Checking if the E-stop has been Pressed
         function eStopState = CheckButtonPressed(self)
+            % Writing data to arduino uno to ask for pinState data
+            write(self.ardObj,1,"uint8");
 
-                % currentState = readDigitalPin(self.ardObj, self.pin);
-                % 
-                % if self.pinState ~= currentState
-                % 
-                %     self.pinState = currentState;
-                %     stateChanged = true;
-                %     disp("State Changed");
-                % else
-                %     stateChanged = false;
-                %     disp("State Changed");
-                % end
-                
-                % Writing data to arduino uno to then
-                % receive e-stop state
-                write(self.ardObj,1,"uint8");
-
-                % Reading the e-stop state
-                data = readline(self.ardObj);
-                eStopState = str2double(data); % Outputting arduino data
+            % Reading the e-stop state that was provided
+            data = readline(self.ardObj);
+            eStopState = str2double(data); % Outputting arduino data
         end
 
+        %% Forcing the pinState of E-stop to On
         function eStopState = EstopOn(self)
+            % Writing to arduino to change the pinState to on
+            write(self.ardObj,2,"uint8");
 
-               write(self.ardObj,2,"uint8");
-               data = readline(self.ardObj);
-               eStopState = str2double(data);
-
+            % Reading the e-stop state that was provided
+            data = readline(self.ardObj);
+            eStopState = str2double(data); % Outputting arduino data
         end
 
+        %% Forcing the pinState of the E-stop to Off
         function eStopState = EstopOff(self)
+            % Writing to arduino to change the pinState to off
+            write(self.ardObj,3,"uint8");
 
-           write(self.ardObj,3,"uint8");
-           data = readline(self.ardObj);
-           eStopState = str2double(data);
-
+            % Reading the e-stop state that was provided
+            data = readline(self.ardObj);
+            eStopState = str2double(data); % Outputting arduino data
         end
 
         %% Testing Function for Writing
