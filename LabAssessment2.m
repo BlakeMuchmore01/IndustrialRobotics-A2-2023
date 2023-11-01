@@ -96,6 +96,8 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix's
             for i = 1:size(qMatrixAubo)
                 %%%%%%%%%%%%%%%% CHECK COLLISION, LIGHT CURTAIN, ESTOP %%%%%%%%%%%%%%%
+                arduinoEstop = Arduino.CheckButtonPressed(app.arduino);
+
                 auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
                 auboI5.UpdateToolTr(); % Updating the end-effector transform property
                 
