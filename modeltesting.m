@@ -1,18 +1,25 @@
 clf; clear; clc;
-model = 3;
-figure(1);
+model = -2;
+%figure(1);
 
 if model == -2
 
-    L = log4matlab('logFile.log');
-    L.SetCommandWindowLevel(L.DEBUG);
+    a = Arduino();
+    engagedCount = 0;
 
-    figure(1);
-    hold on;
-    r = AuboI5();
-    h = Hand(r.toolTr, L);
-    r.UpdateEllipsis(r.model.getpos());
-    r.CheckCollisions(r.model.getpos(),h.handModels{1})
+    if(engagedCount < 5)
+        pause(2);
+        engaged = a.CheckButtonPressed;
+        if(engaged == 1)
+            engagedCount = engagedCount + 1;
+        end
+        if(engaged == 0)
+            disp("Not pressed")
+        end
+
+    else 
+        disp("EStop has been engaged 5 times")
+    end
 
 end
 

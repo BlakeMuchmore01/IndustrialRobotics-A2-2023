@@ -44,8 +44,7 @@ classdef Arduino < handle
 
                 % Reading the e-stop state
                 data = readline(self.ardObj);
-                eStopPressed = data; % Outputting arduino data
-                disp(data);
+                eStopPressed = str2num(data); % Outputting arduino data
         end
 
         %% Testing Function for Writing

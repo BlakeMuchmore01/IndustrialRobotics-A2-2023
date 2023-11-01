@@ -29,8 +29,6 @@ void loop() {
 
   }
 
-
-  
   prevButtonState = buttonState;
   delay(50);
 
