@@ -4,21 +4,20 @@ model = -2;
 
 if model == -2
 
-    a = Arduino();
-    engagedCount = 0;
+    % Checks if E-Stop is engaged every 2 seconds
 
-    if(engagedCount < 5)
-        pause(2);
-        engaged = a.CheckButtonPressed;
+    a = Arduino()
+    exit = 0;
+
+    while(exit == 0)
+        pause(1);
+        engaged = Arduino.CheckButtonPressed(a);
         if(engaged == 1)
-            engagedCount = engagedCount + 1;
+            disp("E-Stop Engaged")
         end
         if(engaged == 0)
-            disp("Not pressed")
+            disp("E-Stop Disengaged")
         end
-
-    else 
-        disp("EStop has been engaged 5 times")
     end
 
 end
@@ -579,4 +578,4 @@ if model == 8
 
 end 
 
-pause;
+% pause;

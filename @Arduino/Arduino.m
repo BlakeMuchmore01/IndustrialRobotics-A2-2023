@@ -14,13 +14,13 @@ classdef Arduino < handle
     end
 
     %% Methods
-    methods
+    methods (Static)
         %% Constructor for Ardunino Object
         function self = Arduino()
                 % self.ardObj = arduino(Arduino.port, Arduino.board);
                 % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
                 self.ardObj = serialport('COM3', 9600);
-                configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
+                % configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
         end
         
         %% Checking if the E-stop has been Pressed
