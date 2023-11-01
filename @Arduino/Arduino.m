@@ -2,7 +2,7 @@
 classdef Arduino < handle
     % Constant Properties
     properties (Constant)
-        port = "COM3";
+        port = "COM4";
         board = "Uno";
         pin = "D13";   
     end
@@ -19,7 +19,7 @@ classdef Arduino < handle
         function self = Arduino()
                 % self.ardObj = arduino(Arduino.port, Arduino.board);
                 % self.pinState = readDigitalPin(self.ardObj, Arduino.pin);
-                self.ardObj = serialport('COM3', 9600);
+                self.ardObj = serialport('COM4', 9600);
                 % configureCallback(self.ardObj,"terminator",@CheckButtonPressed);
         end
         
@@ -44,14 +44,14 @@ classdef Arduino < handle
 
                 % Reading the e-stop state
                 data = readline(self.ardObj);
-                eStopState = str2num(data); % Outputting arduino data
+                eStopState = str2double(data); % Outputting arduino data
         end
 
         function eStopState = EstopOn(self)
 
                write(self.ardObj,2,"uint8");
                data = readline(self.ardObj);
-               eStopState = str2num(data);
+               eStopState = str2double(data);
 
         end
 
@@ -59,7 +59,7 @@ classdef Arduino < handle
 
            write(self.ardObj,3,"uint8");
            data = readline(self.ardObj);
-           eStopState = str2num(data);
+           eStopState = str2double(data);
 
         end
 

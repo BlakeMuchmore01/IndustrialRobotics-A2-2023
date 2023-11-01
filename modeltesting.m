@@ -11,7 +11,7 @@ if model == -2
 
     while(exit == 0)
         pause(1);
-        engaged = Arduino.CheckButtonPressed(a);
+        engaged = a.CheckButtonPressed(a);
         if(engaged == 1)
             disp("E-Stop Engaged")
         end
