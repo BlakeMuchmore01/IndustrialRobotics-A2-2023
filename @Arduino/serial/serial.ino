@@ -22,8 +22,23 @@ void loop() {
 
     int byte = Serial.read();
 
-    if(byte == 8) {
+    // Prints Serial Line of the statis isOn
+    if(byte == 1) {
       delay(10);
+      Serial.println(isOn);
+    }
+
+    // When int 2 is received on serial, isOn is set to 1
+    if(byte == 2) {
+      delay(10);
+      isOn = 1;
+      Serial.println(isOn);
+    }
+
+    // When int 3 is received on serial, isOn is set to 0
+    if(byte == 3) {
+      delay(10);
+      isOn = 0;
       Serial.println(isOn);
     }
 
