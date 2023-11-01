@@ -36,9 +36,9 @@ classdef LabAssessment2 < handle
         function CreateEnvironment(logFile)
             table = PlaceObject('BlackjackTable.ply', [0 0 0]); %#ok<NASGU>
             cardstand = PlaceObject('CardStand.ply', [0.65 0.16 0.02]); %#ok<NASGU>
-            cardstand = PlaceObject('CardStand.ply', [0.5 0.63 0.02]); %#ok<NASGU>
-            cardstand = PlaceObject('CardStand.ply', [0.5 -0.3 0.02]); %#ok<NASGU>
-            cardstand = PlaceObject('CardStand.ply', [0.35 0.16 0.02]); %#ok<NASGU>
+            cardstand = PlaceObject('CardStand.ply', [0.5 0.53 0.02]); %#ok<NASGU>
+            cardstand = PlaceObject('CardStand.ply', [0.5 -0.2 0.02]); %#ok<NASGU>
+            cardstand = PlaceObject('CardStand.ply', [0.4 0.16 0.02]); %#ok<NASGU>
             eStop = PlaceObject('EStop.ply', [-0.17 -0.3 -0.2]); %#ok<NASGU>
             fireExtinguisher = PlaceObject('FireExtinguisher.ply', [-1.75 1.65 -1.3]); %#ok<NASGU>
 
