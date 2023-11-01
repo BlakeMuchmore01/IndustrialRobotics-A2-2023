@@ -113,8 +113,6 @@ classdef AuboI5 < RobotBaseClass
             qdot = zeros(self.movementSteps, self.model.n);     % Array of joint velocities
             theta = zeros(3, self.movementSteps);               % Array of end-effector angles
             trajectory = zeros(3, self.movementSteps);          % Array of x-y-z trajectory
-            % positionError = zeros(3,self.movementSteps);      % For plotting trajectory error
-            % angleError = zeros(3,self.movementSteps);         % For plotting trajectory error
 
             % Getting the initial and final x-y-z coordinates
             initialTr = self.model.fkine(self.model.getpos()).T; % Getting the transform for the robot's current pose
@@ -149,7 +147,6 @@ classdef AuboI5 < RobotBaseClass
                 linearVelocity = (1/deltaT) * deltaX; % Calculating the linear velocities in x-y-z
                 angularVelocity = [S(3,2);S(1,3);S(2,1)]; % Calcualting roll-pitch-yaw angular velocity
                 xdot = self.movementWeight*[linearVelocity; angularVelocity]; % Calculate end-effector matrix to reach next waypoint
-                % deltaTheta = tr2rpy(Rd*Ra'); % For plotting
 
                 J = self.model.jacob0(qMatrix(i,:)); % Calculating the jacobian of the current joint state
 
@@ -165,30 +162,7 @@ classdef AuboI5 < RobotBaseClass
                 invJ = inv(J'*J + lambda * eye(self.model.n))*J'; %#ok<MINV> % DLS inverse
                 qdot(i,:) = (invJ * xdot)'; % Solving the RMRC equation
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT * qdot(i,:); % Updating next joint state based on joint velocities
-
-                % positionError(:,i) = deltaX;             % For plotting
-                % angleError(:,i) = deltaTheta;            % For plotting
             end
-
-            % figure(2)
-            % subplot(2,1,1)
-            % plot(positionError'*1000,'LineWidth',1)
-            % refline(0,0)
-            % xlabel('Step')
-            % ylabel('Position Error (mm)')
-            % legend('X-Axis','Y-Axis','Z-Axis')
-            % 
-            % subplot(2,1,2)
-            % plot(angleError','LineWidth',1)
-            % refline(0,0)
-            % xlabel('Step')
-            % ylabel('Angle Error (rad)')
-            % legend('Roll','Pitch','Yaw')
-            % 
-            % figure(3)
-            % plot(manipulability,'k','LineWidth',1)
-            % refline(0,self.epsilon)
-            % title('Manipulability')
         end     
         
         %% Creating the Ellipsis Around each Robot Link

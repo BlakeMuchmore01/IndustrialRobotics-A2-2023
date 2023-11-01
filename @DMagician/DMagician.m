@@ -105,6 +105,14 @@ classdef DMagician < RobotBaseClass
 
         %% Function to Get Dobot to Pick Up First Card
         function GetFirstCard(self, card, cardTransform, logFile)
+            % Moving to the dobot to the position of the first card
+            self.MoveToCartesian(cardTransform(1:3,4)');
+            
+            
+            
+            
+            
+            
             % Getting the qMatrix to move the dobot to pick up the first card
             qMatrix = self.GetCartesianMovement(cardTransform);
 
@@ -234,6 +242,13 @@ classdef DMagician < RobotBaseClass
         % Convert the model Q2 & Q3 into the real Q3
         function realQ3 = ComputeRealQ3GivenModelQ2and3( modelQ2, modelQ3 )
             realQ3 = modelQ3 - pi/2 + modelQ2;
+        end
+
+        %% Getter for the Algerbraic Distance between Objects and Light Curtain
+        function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
+            algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
+                  + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
+                  + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
     end
 end
