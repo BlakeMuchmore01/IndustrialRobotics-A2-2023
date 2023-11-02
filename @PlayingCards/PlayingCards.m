@@ -76,11 +76,32 @@ classdef PlayingCards < RobotBaseClass
                 % Looping through cards position allocations to distribute
                 for cardNum = 1:size(finalCardTransforms,3)
                     % Populating the final card transforms array
-                    finalCardTransforms(:,:,cardNum,player) = [cardFinalRotationMatrix self.cardFinalPositions(counter,:)'; zeros(1,3) 1];
+                    finalCardTransforms(:,:,cardNum,player) = [cardFinalRotationMatrix self.dealerCardFinalPositions(counter,:)'; zeros(1,3) 1];
                     counter = counter + 1; % Increasing the counter
                 end
             end
         end
+
+        %% Function to Get the Final Card Transforms for the Dealer
+        function finalCardTransforms = GetFinalCardTransformsDealer(self)
+            % Pre-initialising the finalCardTransforms Array
+            % 3 Players with maximum 5 cards given
+            finalCardTransforms = zeros(4,4,5);
+
+            % Getting the rotation matrix of the final card orientation
+            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles);
+
+            % Creating a counter to go through the card positions property array
+            counter = 1;
+            
+            % Looping through cards position allocations to distribute
+            for cardNum = 1:size(finalCardTransforms,3)
+                % Populating the final card transforms array
+                finalCardTransforms(:,:,cardNum) = [cardFinalRotationMatrix self.cardFinalPositions(counter,:)'; zeros(1,3) 1];
+                counter = counter + 1; % Increasing the counter
+            end
+        end
+        
     end
 
     methods (Static)
