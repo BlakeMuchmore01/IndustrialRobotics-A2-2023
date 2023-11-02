@@ -103,6 +103,49 @@ classdef AuboI5 < RobotBaseClass
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
+        %% Moving the Aubo i5 Joint to Specified Angles
+        function MoveJoint(self, jointIndex, JointValue)
+            % Getting the current joint angles of the Aubo i5 and updating
+            % the joint value of the specified index
+            self.currentJointAngles = self.model.getpos();
+            self.currentJointAngles(str2double(jointIndex)) = deg2rad(JointValue);
+
+            % Animating the robot and updating its toolTr to move the grippers
+            self.model.animate(self.currentJointAngles);
+            self.UpdateToolTr();
+            
+            % Updating the position of the grippers
+            for gripperNum = 1:2
+                self.tool{gripperNum}.UpdateGripperPosition(self.toolTr,gripperNum);
+            end
+            drawnow; % Updating the plot
+        end
+
+        %% Moving the Aubo i5 End-Effector to Specified Cartesian 
+        function MoveToCartesian(self, coordinate, orientation)
+            % Creating the transform for the dobot magician to move to
+            self.UpdateToolTr(); % Getting the end-effector transform
+            rotm = rpy2tr(orientation); % Getting the rotation matrix of the end-effector
+            rotm = rotm(1:3,1:3); % Getting only the rotation component of the transform
+            transform = [rotm coordinate'; zeros(1,3) 1];
+            
+            % Getting the qMatrix to move the dobot magician to the cartesian coordiante
+            qMatrix = self.GetCartesianMovement(transform);
+
+            % Looping through the qMatrix to move the dobot magician
+            for i = 1:size(qMatrix, 1)
+                % Animating the dobot magician's movement and updating the gripper position
+                self.model.animate(qMatrix(i,:));
+                self.UpdateToolTr(); % Updating the end-effector transform of the 
+
+                % Updating the position of the grippers
+                for gripperNum = 1:2
+                    self.tool{gripperNum}.UpdateGripperPosition(self.toolTr,gripperNum);
+                end
+                drawnow; % Updating the plot
+            end
+        end
+
         %% Getting the qMatrix to Return Aubo i5 to Original Joint States
         function qMatrix = ReturnAuboToInitialPose(self)
             % Getting the current joint states of the robot

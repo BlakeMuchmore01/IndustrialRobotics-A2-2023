@@ -10,7 +10,7 @@ classdef LabAssessment2 < handle
         lightCurtainRadii = [1.05, 1.15, 1.1]; % Default radius' for the light curtain ellipse
         
         % Hand off transform (tranform aubo achieves to grab card off dobot
-        handOffTransform = [eul2rotm([0 1.5708 -1.5708]) [0.2222, 0.32, 0.26]'; zeros(1,3) 1];
+        handOffTransform = [eul2rotm([0 1.5708 -1.5708]) [0.2222, 0.32, 0.25]'; zeros(1,3) 1];
     end
     
     %% Methods of the Class
@@ -28,19 +28,27 @@ classdef LabAssessment2 < handle
             qMatrixDobot = app.dobotMagician.GetCartesianMovement(cardTransform);
 
             % Looping through the qMatrix and animating the dobot
-            for i = 1:size(qMatrixDobot,1)
+            counter = 1; % Creating counter to loop the while loop
+            while counter <= size(qMatrixDobot,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Logging that robots cannot resume operation
+                    app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Robots cannot continue operation'};
+                    pause(0.2);
+                
+                else
+                    % Robots are safe to move
+                    app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
+                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-
-                app.dobotMagician.model.animate(qMatrixDobot(i,:)); % Animating the dobot movement
-                app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
-                drawnow; % Updating the plot
             end
             app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Dobot has picked up a card'};
 

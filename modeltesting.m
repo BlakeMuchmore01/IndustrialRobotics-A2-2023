@@ -1,5 +1,5 @@
 clf; clear; clc;
-model = -2;
+model = 0;
 %figure(1);
 
 if model == -2
@@ -50,14 +50,14 @@ if model == 0
     L.SetCommandWindowLevel(L.DEBUG);
 
     figure(1); % Creating figure to simulate robots
-    hold on; axis(LabAssessment2.axisLimits); camlight;
+    hold on; axis([-1 1.5 -1.25 1.25 -0.76 1.5]); camlight;
 
     LabAssessment2.CreateEnvironment(L);
 
     % dobotMagician = DMagician(LabAssessment2.auboOrigin*transl(0,0.5,0)); % Spawning the Dobot Magician and associated suction gripper
     % dobotMagician.model.teach(dobotMagician.model.getpos());
 
-    auboI5 = AuboI5(LabAssessment2.auboOrigin,L); % Spawning the Aubo i5 and associated 2F-85 gripper
+    auboI5 = AuboI5(eye(4),L); % Spawning the Aubo i5 and associated 2F-85 gripper
     auboI5.model.teach(auboI5.model.getpos());
 end
 

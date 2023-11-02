@@ -13,7 +13,7 @@ classdef PlayingCards < RobotBaseClass
         cardFinalPositions = [0.3827 0.25 0.21; 0.3827 0.31 0.21; 0.3827 0.37 0.21; 0.3827 0.43 0.21; 0.3827 0.49, 0.21; ...
                               0.5327 -0.12 0.21; 0.5327 -0.06 0.21; 0.5327 0 0.21; 0.5327 0.06 0.21; 0.5327 0.12, 0.21; ...
                               0.3827 -0.48 0.21; 0.3827 -0.42 0.21; 0.3827 -0.36 0.21; 0.3827 -0.30 0.21; 0.3827 -0.24, 0.21];
-        dealerCardFinalPositions = [0.4327 -0.12 0.21; 0.4327 -0.06 0.21; 0.4327 0 0.21; 0.4327 0.06 0.21; 0.4327 0.12, 0.21];
+        dealerCardFinalPositions = [0.2827 -0.12 0.21; 0.2827 -0.06 0.21; 0.2827 0 0.21; 0.2827 0.06 0.21; 0.2827 0.12, 0.21];
         cardFinalAngles = deg2rad([-180, 40, -180]); % Card angles when placed on stands
     end
 
@@ -76,7 +76,7 @@ classdef PlayingCards < RobotBaseClass
                 % Looping through cards position allocations to distribute
                 for cardNum = 1:size(finalCardTransforms,3)
                     % Populating the final card transforms array
-                    finalCardTransforms(:,:,cardNum,player) = [cardFinalRotationMatrix self.dealerCardFinalPositions(counter,:)'; zeros(1,3) 1];
+                    finalCardTransforms(:,:,cardNum,player) = [cardFinalRotationMatrix self.cardFinalPositions(counter,:)'; zeros(1,3) 1];
                     counter = counter + 1; % Increasing the counter
                 end
             end
@@ -97,7 +97,7 @@ classdef PlayingCards < RobotBaseClass
             % Looping through cards position allocations to distribute
             for cardNum = 1:size(finalCardTransforms,3)
                 % Populating the final card transforms array
-                finalCardTransforms(:,:,cardNum) = [cardFinalRotationMatrix self.cardFinalPositions(counter,:)'; zeros(1,3) 1];
+                finalCardTransforms(:,:,cardNum) = [cardFinalRotationMatrix self.dealerCardFinalPositions(counter,:)'; zeros(1,3) 1];
                 counter = counter + 1; % Increasing the counter
             end
         end
