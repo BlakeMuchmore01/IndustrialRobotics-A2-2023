@@ -38,9 +38,13 @@ classdef LabAssessment2 < handle
                 if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app) || ...
                         ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Keeping the robot in the same position
+                    app.dobotMagician.model.animate(qMatrixDobot(counter-1,:)); % Animating the dobot movement
+                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+                    drawnow; % Updating the plot
+
                     % Logging that robots cannot resume operation
                     app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Robots cannot continue operation'};
-                    pause(0.2);
                 
                 else
                     % Robots are safe to move
