@@ -125,7 +125,7 @@ classdef AuboI5 < RobotBaseClass
         function MoveToCartesian(self, coordinate, orientation)
             % Creating the transform for the dobot magician to move to
             self.UpdateToolTr(); % Getting the end-effector transform
-            rotm = rpy2tr(orientation); % Getting the rotation matrix of the end-effector
+            rotm = rpy2r(orientation); % Getting the rotation matrix of the end-effector
             rotm = rotm(1:3,1:3); % Getting only the rotation component of the transform
             transform = [rotm coordinate'; zeros(1,3) 1];
             
