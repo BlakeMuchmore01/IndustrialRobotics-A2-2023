@@ -103,33 +103,6 @@ classdef DMagician < RobotBaseClass
             end
         end
 
-        %% Function to Get Dobot to Pick Up First Card
-        function GetCard(self, card, logFile)
-            % Getting the transform of the card
-            cardTransform = card.base.T * transl(0,0,0.045);
-
-            % Moving to the dobot to the position of the first card
-            self.MoveToCartesian(cardTransform(1:3,4)');
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Dobot has picked up a card'};
-
-            % Moving the dobot back to its upright position with the card
-            initialPose = self.model.fkine(self.defaultRealQ).T;
-            qMatrix = self.GetCartesianMovement(initialPose);
-
-            % Looping through the qMatrix to move the dobot to its upright
-            for i = 1:size(qMatrix, 1)
-                % Animating the dobot's movemnet to pick up the card
-                self.model.animate(qMatrix(i,:));
-                self.UpdateToolTr; % Updating the end-effector transform property
-
-                % Moving the card alongside the dobot's end-effector
-                card.base = self.toolTr * transl(0, 0, -0.045);
-                card.animate(0); % Animating the card's movement
-                drawnow; % Updating the plot
-            end
-            logFile.mlog = {logFile.DEBUG,'HitSelected','Card is ready to be collected by Aubo i5'};
-        end
-
         %% Updater for End Effector Transform (Tool Transform)
         function UpdateToolTr(self)
             % Updating the toolTr property of the robot

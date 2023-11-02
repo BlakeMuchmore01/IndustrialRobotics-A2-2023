@@ -16,12 +16,16 @@ classdef LabAssessment2 < handle
     %% Methods of the Class
     methods (Static)
         %% Hit Functionality
-        function HitSelected(guiWindow)
+        function HitSelected(app)
 
+
+            
         end
 
         %% Function to deal cards to the dealer
-        function DealToDealer(guiWindow)
+        function DealToDealer(app)
+
+
         end
 
         %% Stand Functionality

@@ -1,30 +1,5 @@
-2023-11-02 10:07:53,837 DEBUG CreateEnvironment - Safety environment created
-2023-11-02 10:08:24,065 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-11-02 10:08:32,926 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-11-02 10:08:44,957 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-11-02 10:08:44,973 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
-2023-11-02 10:08:57,452 DEBUG DMagician - Dobot Magician object created within the workspace
-2023-11-02 10:08:57,607 DEBUG Hand - Hand 1 created within the workspace
-2023-11-02 10:08:57,769 DEBUG Hand - Hand 2 created within the workspace
-2023-11-02 10:08:58,178 DEBUG PlayingCards - Card 1 created within the workspace
-2023-11-02 10:08:58,522 DEBUG PlayingCards - Card 2 created within the workspace
-2023-11-02 10:08:58,829 DEBUG PlayingCards - Card 3 created within the workspace
-2023-11-02 10:08:59,157 DEBUG PlayingCards - Card 4 created within the workspace
-2023-11-02 10:08:59,489 DEBUG PlayingCards - Card 5 created within the workspace
-2023-11-02 10:08:59,812 DEBUG PlayingCards - Card 6 created within the workspace
-2023-11-02 10:09:00,175 DEBUG PlayingCards - Card 7 created within the workspace
-2023-11-02 10:09:00,494 DEBUG PlayingCards - Card 8 created within the workspace
-2023-11-02 10:09:00,845 DEBUG PlayingCards - Card 9 created within the workspace
-2023-11-02 10:09:01,201 DEBUG PlayingCards - Card 10 created within the workspace
-2023-11-02 10:09:01,567 DEBUG PlayingCards - Card 11 created within the workspace
-2023-11-02 10:09:01,904 DEBUG PlayingCards - Card 12 created within the workspace
-2023-11-02 10:09:02,288 DEBUG PlayingCards - Card 13 created within the workspace
-2023-11-02 10:09:02,636 DEBUG PlayingCards - Card 14 created within the workspace
-2023-11-02 10:09:02,982 DEBUG PlayingCards - Card 15 created within the workspace
-2023-11-02 10:09:03,379 DEBUG PlayingCards - Card 16 created within the workspace
-2023-11-02 10:09:03,746 DEBUG PlayingCards - Card 17 created within the workspace
-2023-11-02 10:09:04,117 DEBUG PlayingCards - Card 18 created within the workspace
-2023-11-02 10:09:04,690 DEBUG PlayingCards - Card 19 created within the workspace
-2023-11-02 10:09:05,028 DEBUG PlayingCards - Card 20 created within the workspace
-2023-11-02 10:09:05,376 DEBUG PlayingCards - Card 21 created within the workspace
-2023-11-02 10:09:05,429 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-11-02 20:24:23,326 DEBUG CreateEnvironment - Safety environment created
+2023-11-02 20:24:52,044 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-11-02 20:24:56,819 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-11-02 20:25:01,725 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-11-02 20:25:01,737 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace

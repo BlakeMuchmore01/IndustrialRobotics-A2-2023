@@ -103,6 +103,15 @@ classdef AuboI5 < RobotBaseClass
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
+        %% Getting the qMatrix to Return Aubo i5 to Original Joint States
+        function qMatrix = ReturnAuboToInitialPose(self)
+            % Getting the current joint states of the robot
+            currentJointStates = self.model.getpos();
+            
+            % Creating qMatrix using jtraj
+            qMatrix = jtraj(currentJointStates, self.initialJointAngles, self.movementSteps);
+        end
+
         %% Moving the Aubo i5 to a Desired Transform
         function qMatrix = GetCartesianMovement(self, coordinateTransform)
             deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step

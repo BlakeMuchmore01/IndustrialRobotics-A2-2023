@@ -14,7 +14,7 @@ classdef Arduino < handle
     end
 
     %% Methods
-    methods (Static)
+    methods
         %% Constructor for Ardunino Object
         function self = Arduino()
             % Creating the serial port connection to the arduino
