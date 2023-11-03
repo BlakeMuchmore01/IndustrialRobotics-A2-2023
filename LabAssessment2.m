@@ -31,7 +31,9 @@ classdef LabAssessment2 < handle
             counter = 1; % Creating counter to loop the while loop
             while counter <= size(qMatrixDobot,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
                 
                 % Animating the robot to qMatrix pose
                 app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
@@ -56,7 +58,9 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the dobot
             while counter <= size(qMatrixDobot,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
                 
                 % Moving the dobot magician
                 app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
@@ -84,7 +88,9 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixAubo,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
 
                 % Moving the aubo i5
                 app.auboI5.model.animate(qMatrixAubo(counter,:)); % Animating the aubo movement
@@ -113,7 +119,9 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
                 
                 % Animating the gripper's closing
                 for gripperNum = 1:2
@@ -218,7 +226,9 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
                 
                 % Animating the aubo movement
                 app.auboI5.model.animate(qMatrixAubo(counter,:)); % animating the model to the next pose in the qMatrix
@@ -260,9 +270,10 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
-                
-                % Animating the aubo movement
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
+
                 app.auboI5.model.animate(qMatrixAubo(counter,:)); % animating the model to the next pose in the qMatrix
                 app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
 
@@ -294,7 +305,7 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
-                app.RealEstopReading(app.arduino.CheckButtonPressed());
+                try app.RealEstopReading(app.arduino.CheckButtonPressed()); end
 
                 % Moving the aubo i5
                 app.auboI5.model.animate(qMatrixAubo(counter,:)); % Animating the aubo movement
