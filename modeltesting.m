@@ -5,7 +5,7 @@ model = -3;
 if model == -3
 
     r = AuboI5();
-
+    hold on
     q = r.model.getpos();
     
     linkTransforms = zeros(4,4,(r.ellipsis.n)+1);                
@@ -27,20 +27,20 @@ if model == -3
 
     end
 
-    centre = linkTransforms(:,:,3) - linkTransforms(:,:,2)
+    centre = linkTransforms(:,:,3) + linkTransforms(:,:,2)
     centre = centre/2
-    cx = -0.1442
-    cy = 0;
-    cz = 0.1442
-    [x, y, z] = ellipsoid(cx, cy, cz, 0.075, 0.075, 0.25);
-    e1 = surf(x, y, z)
-    rot = linkTransforms(:,:,3)
-    rot  = rot(1:3,1:3)
+    cx = centre(1,4);
+    cy = centre(2,4);
+    cz = centre(3,4)
+    [x, y, z] = ellipsoid(0, 0, 0, 0.075, 0.075, 0.25);
+    % e1 = surf(x, y, z);
+    rot = linkTransforms(1:3,1:3,2) *  (linkTransforms(1:3,1:3,3))';
+    rot  = rot(1:3,1:3);
     original_coords = [x(:)'; y(:)'; z(:)'];
     rotated_coords = rot * original_coords;
-    new_x = reshape(rotated_coords(1, :), size(x));
-    new_y = reshape(rotated_coords(2, :), size(y));
-    new_z = reshape(rotated_coords(3, :), size(z));
+    new_x = reshape(rotated_coords(1, :), size(x)) + cx;
+    new_y = reshape(rotated_coords(2, :), size(y)) + cy;
+    new_z = reshape(rotated_coords(3, :), size(z)) + cz;
     e2 = surf(new_x, new_y, new_z);
 
 end
