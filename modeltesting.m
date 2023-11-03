@@ -4,15 +4,15 @@ model = -3;
 
 if model == -3
 
-    r = AuboI5();
+    r = DMagician();
     hold on
     q = r.model.getpos();
     
-    linkTransforms = zeros(4,4,(r.ellipsis.n)+1);                
-    linkTransforms(:,:,1) = r.ellipsis.base; % Setting first transform as the base transform
+    linkTransforms = zeros(4,4,(r.model.n)+1);                
+    linkTransforms(:,:,1) = r.model.base; % Setting first transform as the base transform
     
     % Getting the link data of the robot links
-    links = r.ellipsis.links;
+    links = r.model.links;
     
     for i = 1:length(links)
         L = links(1,i);
@@ -27,6 +27,12 @@ if model == -3
 
     end
 
+    radii = [0.075, 0.125, 0.1; ...
+             0.1,   0.075, 0.065; ...
+             0.075, 0.075, 0.075; ...
+             0.075, 0.075, 0.075; ...
+             0.075, 0.075, 0.06];
+
     for i = 1:length(links)
 
         centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i)
@@ -34,7 +40,7 @@ if model == -3
         cx = centre(1,4);
         cy = centre(2,4);
         cz = centre(3,4)
-        [x, y, z] = ellipsoid(0, 0, 0, 0.075, 0.075, 0.25);
+        [x, y, z] = ellipsoid(0, 0, 0, radii(i,1), radii(i,2), radii(i,3));
         % e1 = surf(x, y, z);
         rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
         rot  = rot(1:3,1:3);

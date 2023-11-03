@@ -111,6 +111,77 @@ classdef DMagician < RobotBaseClass
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
+        function isCollision = CheckCollision(self, model)
+
+            isCollision = false;
+            
+            linkTransforms = zeros(4,4,(self.model.n)+1);                
+            linkTransforms(:,:,1) = self.model.base; % Setting first transform as the base transform
+            
+            % Getting the link data of the robot links
+            links = self.model.links;
+            q = self.model.getpos();
+            
+            for i = 1:length(links)
+                L = links(1,i);
+                
+                current_transform = linkTransforms(:,:, i);
+                
+                current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
+                transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
+                linkTransforms(:,:,i + 1) = current_transform;
+            
+                centreTr = (current_transform-linkTransforms(:,:,i))/2;
+        
+            end
+        
+            radii = [0.075, 0.125, 0.1; ...
+                     0.1,   0.075, 0.065; ...
+                     0.075, 0.075, 0.075; ...
+                     0.075, 0.075, 0.075; ...
+                     0.075, 0.075, 0.06];
+
+
+            points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
+            points = points(1:3) + model.base.t(1:3)';
+        
+            for i = 1:length(links)
+        
+                centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i)
+                centre = centre/2
+                cx = centre(1,4);
+                cy = centre(2,4);
+                cz = centre(3,4)
+                [x, y, z] = ellipsoid(0, 0, 0, radii(i,1), radii(i,2), radii(i,3));
+                % e1 = surf(x, y, z);
+                rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
+                rot  = rot(1:3,1:3);
+                original_coords = [x(:)'; y(:)'; z(:)'];
+                rotated_coords = rot * original_coords;
+                new_x = reshape(rotated_coords(1, :), size(x)) + cx;
+                new_y = reshape(rotated_coords(2, :), size(y)) + cy;
+                new_z = reshape(rotated_coords(3, :), size(z)) + cz;
+                % e2 = surf(new_x, new_y, new_z);
+
+            
+                % Updating the points of the model relative to the links on the robot
+                modelPointsAndOnes = (inv(linkTransforms(:,:,i)) * [points, ones(size(points,1),1)]')'; %#ok<MINV>
+                updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
+    
+                % Checking the algerbraic distance of these points
+                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, centre, radii(i,:));
+                    
+                % Checking if the model is within the light curtain (i.e. there
+                % is an algerbraic distance of < 1 with any of the above points
+                if(find(algerbraicDist < 1) > 0)
+                    isCollision = true; % Object has been detected within the light curtain
+                    return; % Returning on first detection of object within the light curtain
+                end
+            end
+
+
+        end
+
         %% Moving the DMagician to a Desired Transform
         function qMatrix = GetCartesianMovement(self, coordinateTransform)
             deltaT = self.movementTime/self.movementSteps; % Calculating discrete time step
