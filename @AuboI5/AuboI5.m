@@ -9,7 +9,7 @@ classdef AuboI5 < RobotBaseClass
         movementSteps = 100; % Number of steps allocated for movement trajectories
         movementTime = 10; % Time for movements undergone by the Aubo i5
         epsilon = 0.01; % Maximum measure of manipulability to then require Damped Least Squares
-        movementWeight = diag([1 1 1 1 1 1]); % Weighting matrix for movement velocity vector
+        movementWeight = diag([1 1 1 0.5 0.5 0.5]); % Weighting matrix for movement velocity vector
         maxLambda = 5E-2; % Value used for Damped Least Squares
         delta = 2*pi/1000; % Small angle change for trajectory
     end
