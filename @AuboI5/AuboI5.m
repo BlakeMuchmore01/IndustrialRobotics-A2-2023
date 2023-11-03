@@ -22,14 +22,7 @@ classdef AuboI5 < RobotBaseClass
         ellipsis; % Stores the elipsoid robot object to check for collisions
         ellipsoids = zeros(1,7); % Structures that hold collision ellipsoid data
         linkCentres = zeros(7,3); % Structure of link centres to use for ellipsoid updating
-        linkRadii = [   0.1 0.1 0.1;
-                        0.1 0.1 0.25;
-                        0.1 0.1 0.25;
-                        0.075 0.075 0.075;
-                        0.075 0.075 0.075;
-                        0.075 0.075 0.075;
-                        0.075 0.075 0.075;
-                    ]; % Structure of link elliposid radii
+ % Structure of link elliposid radii
         centreOffset =  [0 0 -0.25;
                         -0.3 0 -0.15;
                          -0.3 0 -0.05;
@@ -235,6 +228,15 @@ classdef AuboI5 < RobotBaseClass
 
             hold on
             q = self.model.getpos();
+
+            radii = [   0.1 0.1 0.1;
+                0.1 0.1 0.25;
+                0.1 0.1 0.25;
+                0.075 0.075 0.075;
+                0.075 0.075 0.075;
+                0.075 0.075 0.075;
+                0.075 0.075 0.075;
+            ];
             
             % Getting the link data of the robot links
             links = self.ellipsis.links;
@@ -262,7 +264,7 @@ classdef AuboI5 < RobotBaseClass
                 self.linkCentres(i,1) = centre(1,4);
                 self.linkCentres(i,2) = centre(2,4);
                 self.linkCentres(i,3) = centre(3,4);
-                [x, y, z] = ellipsoid(0, 0, 0, self.linkRadii(i,1), self.linkRadii(i,2), self.linkRadii(i,3));
+                [x, y, z] = ellipsoid(0, 0, 0, radii(i,1), radii(i,2), radii(i,3));
                 rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
                 rot  = rot(1:3,1:3);
                 original_coords = [x(:)'; y(:)'; z(:)'];
@@ -270,7 +272,7 @@ classdef AuboI5 < RobotBaseClass
                 new_x = reshape(rotated_coords(1, :), size(x)) + self.linkCentres(i,1);
                 new_y = reshape(rotated_coords(2, :), size(y)) + self.linkCentres(i,2);
                 new_z = reshape(rotated_coords(3, :), size(z)) + self.linkCentres(i,3);
-                e = surf(new_x, new_y, new_z);
+                % e = surf(new_x, new_y, new_z);
 
                  % Updating the points of the model relative to the links on the robot
                 modelPointsAndOnes = (inv(linkTransforms(:,:,i)) * [points, ones(size(points,1),1)]')'; %#ok<MINV>
@@ -282,8 +284,8 @@ classdef AuboI5 < RobotBaseClass
                 % Checking if the model is within the light curtain (i.e. there
                 % is an algerbraic distance of < 1 with any of the above points
                 if(find(algerbraicDist < 1) > 0)
-                    isCollision = true; % Object has been detected within the light curtain
-                    return; % Returning on first detection of object within the light curtain
+                    isCollision = true; % collision has been detected
+                    return; % Returning on first detection of collision with object
                 end
             end
             
