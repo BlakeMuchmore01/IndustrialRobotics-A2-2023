@@ -17,6 +17,10 @@ classdef DMagician < RobotBaseClass
         epsilon = 0.1; % Maximum measure of manipulability to then require Damped Least Squares
         movementWeight = diag([1 1 1 0.1 0.1 0.1]); % Weighting matrix for movement velocity vector
         maxLambda = 0.05;
+
+        % Set radii for each ellipsoid for the dobot 
+        ellipsoidRadii = [0.075, 0.125, 0.1; 0.1,   0.075, 0.065; 0.075, 0.075, 0.075; 0.075, ... 
+            0.075, 0.075; 0.075, 0.075, 0.06];
     end
 
     %% ...structors
@@ -111,65 +115,66 @@ classdef DMagician < RobotBaseClass
             self.toolTr = self.model.fkine(self.currentJointAngles).T; % Updating toolTr property
         end
 
+        %% Function to Update Ellipsoids and Check for Collisions
         function isCollision = CheckCollision(self, model)
-
-            isCollision = false;
+            isCollision = false; % Setting default output as false (assumed no collisions)
             
+            % Creating array of transforms relating to each link
             linkTransforms = zeros(4,4,(self.model.n)+1);                
             linkTransforms(:,:,1) = self.model.base; % Setting first transform as the base transform
             
-            % Getting the link data of the robot links
-            links = self.model.links;
-            q = self.model.getpos();
+            links = self.model.links; % Getting the link data of the robot links
+            jointAngles = self.model.getpos(); % Getting the current joint angles of the dobot
             
+            % Looping through all the links to populate the link Transforms
             for i = 1:length(links)
-                L = links(1,i);
+                L = links(1,i); % Getting the current link data
                 
-                current_transform = linkTransforms(:,:, i);
-                
-                current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
+                % Getting the transform of the current link
+                currentTransform = currentTransform * trotz(jointAngles(1,i) + L.offset) * ...
                 transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
-                linkTransforms(:,:,i + 1) = current_transform;
-            
-                centreTr = (current_transform-linkTransforms(:,:,i))/2;
-        
+
+                % Populating the link transforms array with the calculated transform
+                linkTransforms(:,:,i + 1) = currentTransform;
             end
         
-            radii = [0.075, 0.125, 0.1; ...
-                     0.1,   0.075, 0.065; ...
-                     0.075, 0.075, 0.075; ...
-                     0.075, 0.075, 0.075; ...
-                     0.075, 0.075, 0.06];
-
-
+            % Getting the model points to check collision against and
+            % moving points to the global frame of reference
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
             points = points(1:3) + model.base.t(1:3)';
         
+            % Creating the ellipsoids for each link
             for i = 1:length(links)
-        
-                centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i)
-                centre = centre/2
+                % Calculating the centre point between the links
+                centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i);
+                centre = centre/2;
                 cx = centre(1,4);
                 cy = centre(2,4);
-                cz = centre(3,4)
-                [x, y, z] = ellipsoid(0, 0, 0, radii(i,1), radii(i,2), radii(i,3));
-                % e1 = surf(x, y, z);
-                rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
-                rot  = rot(1:3,1:3);
+                cz = centre(3,4);
+
+                % Creating the initial ellipsoid that requires rotation
+                [x, y, z] = ellipsoid(0, 0, 0, self.ellipsoidRadii(i,1), self.ellipsoidRadii(i,2), self.ellipsoidRadii(i,3));
+
+                % Creating the rotation matrix that is applied to the priorly made ellipsoid
+                rotm = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
+                rotm  = rotm(1:3,1:3);
+
+                % Getting the original ellipsoid coordiantes and applying
+                % the rotation matrix
                 original_coords = [x(:)'; y(:)'; z(:)'];
-                rotated_coords = rot * original_coords;
+                rotated_coords = rotm * original_coords;
+
+                % Getting the rotated ellipsoid's x,y,z coordiantes
                 new_x = reshape(rotated_coords(1, :), size(x)) + cx;
                 new_y = reshape(rotated_coords(2, :), size(y)) + cy;
                 new_z = reshape(rotated_coords(3, :), size(z)) + cz;
-                % e2 = surf(new_x, new_y, new_z);
-
             
                 % Updating the points of the model relative to the links on the robot
                 modelPointsAndOnes = (inv(linkTransforms(:,:,i)) * [points, ones(size(points,1),1)]')'; %#ok<MINV>
                 updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
     
                 % Checking the algerbraic distance of these points
-                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, centre, radii(i,:));
+                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, centre, self.ellipsoidRadii(i,:));
                     
                 % Checking if the model is within the light curtain (i.e. there
                 % is an algerbraic distance of < 1 with any of the above points
@@ -178,8 +183,6 @@ classdef DMagician < RobotBaseClass
                     return; % Returning on first detection of object within the light curtain
                 end
             end
-
-
         end
 
         %% Moving the DMagician to a Desired Transform
