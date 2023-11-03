@@ -35,11 +35,11 @@ classdef LabAssessment2 < handle
 
                 % Ensuring that the environment is safe (Continue button is
                 % on, light curtain safe, no collisions)
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app) || ...
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
                         ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
                     % Keeping the robot in the same position
-                    app.dobotMagician.model.animate(qMatrixDobot(counter-1,:)); % Animating the dobot movement
+                    app.dobotMagician.model.animate(app.dobotMagician.model.getpos()); % Animating the dobot movement
                     app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
                     drawnow; % Updating the plot
 
@@ -60,136 +60,253 @@ classdef LabAssessment2 < handle
             initialPose = app.dobotMagician.model.fkine(app.dobotMagician.defaultRealQ).T;
             qMatrixDobot = app.dobotMagician.GetCartesianMovement(initialPose);
 
+            counter = 1; % Resetting the counter for the next movement
             % Looping through the qMatrix and animating the dobot
-            for i = 1:size(qMatrixDobot,1)
+            while counter <= size(qMatrixDobot,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Keeping the robot in the same position
+                    app.dobotMagician.model.animate(app.dobotMagician.model.getpos()); % Animating the dobot movement
+                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+
+                    % Keeping the card in the same position
+                    app.playingCards.cardModels{endCardIndex}.base = app.dobotMagician.toolTr * transl(0,0,-0.045);
+                    app.playingCards.cardModels{endCardIndex}.animate(0); % Animating change in position
+                    drawnow; % Updating the plot
+
+                    % Logging that robots cannot resume operation
+                    app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Robots cannot continue operation'};
+
+                else
+                    % Moving the dobot magician
+                    app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
+                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+                    
+                    % Moving the card with the dobot
+                    app.playingCards.cardModels{endCardIndex}.base = app.dobotMagician.toolTr * transl(0,0,-0.045);
+                    app.playingCards.cardModels{endCardIndex}.animate(0); % Animating change in position
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-
-                % Moving the dobot magician
-                app.dobotMagician.model.animate(qMatrixDobot(i,:)); % Animating the dobot movement
-                app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
-                
-                % Moving the card with the dobot
-                app.playingCards.cardModels{endCardIndex}.base = app.dobotMagician.toolTr * transl(0,0,-0.045);
-                app.playingCards.cardModels{endCardIndex}.animate(0); % Animating change in position
-                drawnow; % Updating the plot
             end
             app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Card is ready to be transitioned to Aubo i5'};
 
             % Getting the qMatrix to move the aubo i5 to take the card from the dobot
             qMatrixAubo = app.auboI5.GetCartesianMovement(LabAssessment2.handOffTransform);
 
+            counter = 1; % Resetting the counter for the next movement
             % Looping through the qMatrix and animating the aubo
-            for i = 1:size(qMatrixAubo,1)
+            while counter <= size(qMatrixAubo,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Keeping the aubo in the same position
+                    app.auboI5.model.animate(app.auboI5.model.getpos()); % Animating the aubo movement
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
+    
+                    % Keeping the grippers in the same position
+                    for gripperNum = 1:2
+                        % Updating the position of the grippers
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
+                    end
+                    drawnow; % Updating the plot
+                else
+                    % Moving the aubo i5
+                    app.auboI5.model.animate(qMatrixAubo(counter,:)); % Animating the aubo movement
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
+    
+                    % Moving the gripper alongside the aubo
+                    for gripperNum = 1:2
+                        % Updating the position of the grippers
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
+                    end
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-
-                % Moving the aubo i5
-                app.auboI5.model.animate(qMatrixAubo(i,:)); % Animating the aubo movement
-                app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
-
-                % Moving the gripper alongside the aubo
-                for gripperNum = 1:2
-                    % Updating the position of the grippers
-                    app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
-                end
-                drawnow; % Updating the plot
             end
 
             % Closing the gripper on the aubo
             qMatrixGripper = app.auboI5.tool{1}.GetOpenCloseQMatrix();
 
-            % Looping through the qMatrix and animating the gripper to close
-            for i = 1:size(qMatrixGripper,1)
+            counter = 1; % Resetting the counter for the next movement
+            % Looping through the qMatrix and animating the aubo
+            while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Keeping the grippers in the same position
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.model.animate(app.auboI5.tool{gripperNum}.getpos());
+                    end
+                    drawnow;
+                else
+                    % Animating the gripper's closing
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.model.animate(qMatrixGripper(counter,:));
+                    end
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-                
-                % Animating the gripper's closing
-                for gripperNum = 1:2
-                    app.auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
-                end
-                drawnow; % Updating the plot
             end
             app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Aubo i5 collected the playing card'};
 
             % Determining if the card should be delt to the player or the dealer
             if toDealer
                 finalCardTransforms = app.playingCards.GetFinalCardTransformsDealer(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum));
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum) * transl(0,0,0.1));
             else 
                 finalCardTransforms = app.playingCards.GetFinalCardTransforms(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum,app.player));
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum,app.player) * transl(0,0,0.1));
             end
 
-            % Looping through the qMatrix and animating the movement
-            for i = 1:size(qMatrixAubo,1)
+            counter = 1; % Resetting the counter for the next movement
+            % Looping through the qMatrix and animating the aubo
+            while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
-
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
+                    
+                    % Keeping the aubo in its current position
+                    app.auboI5.model.animate(app.auboI5.model.getpos()); % animating the model to the next pose in the qMatrix
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
+    
+                    % Updating the positions fo the gripper fingers
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr, gripperNum);
+                    end
+    
+                    % Updating the position of the card alongside the gripper
+                    app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                    app.playingCards.cardModels{endCardIndex}.animate(0);
+                    drawnow; % Updating the plot
+                else
+                    app.auboI5.model.animate(qMatrixAubo(counter,:)); % animating the model to the next pose in the qMatrix
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
+    
+                    % Updating the positions fo the gripper fingers
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr, gripperNum);
+                    end
+    
+                    % Updating the position of the card alongside the gripper
+                    app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                    app.playingCards.cardModels{endCardIndex}.animate(0);
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-
-                app.auboI5.model.animate(qMatrixAubo(i,:)); % animating the model to the next pose in the qMatrix
-                app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
-
-                % Updating the positions fo the gripper fingers
-                for gripperNum = 1:2
-                    app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr, gripperNum);
-                end
-
-                % Updating the position of the card alongside the gripper
-                app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
-                app.playingCards.cardModels{endCardIndex}.animate(0);
-                drawnow; % Updating the plot
             end
-            app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Aubo i5 distributed the playing card'};
+            app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Aubo i5 above the distribution position'};
+
+            % Determining if the card should be delt to the player or the dealer
+            if toDealer
+                finalCardTransforms = app.playingCards.GetFinalCardTransformsDealer(); % Getting final positions of cards
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum) * transl(0,0,0.1));
+            else 
+                finalCardTransforms = app.playingCards.GetFinalCardTransforms(); % Getting final positions of cards
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum,app.player) * transl(0,0,0.1));
+            end
+
+            counter = 1; % Resetting the counter for the next movement
+            % Looping through the qMatrix and animating the aubo
+            while counter <= size(qMatrixGripper,1)
+                % Checking if the arduino estop has been hit
+                app.RealEstopReading(app.arduino.CheckButtonPressed());
+
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
+                    
+                    % Keeping the aubo in its current position
+                    app.auboI5.model.animate(app.auboI5.model.getpos()); % animating the model to the next pose in the qMatrix
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
+    
+                    % Updating the positions fo the gripper fingers
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr, gripperNum);
+                    end
+    
+                    % Updating the position of the card alongside the gripper
+                    app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                    app.playingCards.cardModels{endCardIndex}.animate(0);
+                    drawnow; % Updating the plot
+                else
+                    app.auboI5.model.animate(qMatrixAubo(counter,:)); % animating the model to the next pose in the qMatrix
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector transform property
+    
+                    % Updating the positions fo the gripper fingers
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr, gripperNum);
+                    end
+    
+                    % Updating the position of the card alongside the gripper
+                    app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
+                    app.playingCards.cardModels{endCardIndex}.animate(0);
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
+                end
+            end
+            app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Aubo i5 has distributed the card'};
 
             % Getting the qMatrix to move the aubo back to its initial pose
             qMatrixAubo = app.auboI5.ReturnAuboToInitialPose();
             qMatrixGripper = app.auboI5.tool{1}.GetOpenCloseQMatrix();
 
-            % Looping through the qMatrix and animating the movement
-            for i = 1:size(qMatrixAubo,1)
+            counter = 1; % Resetting the counter for the next movement
+            % Looping through the qMatrix and animating the aubo
+            while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
 
-                % Checking if the light curtain is clear or if collision is detected
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1},app)
-                    % Doing something
+                % Ensuring that the environment is safe (Continue button is
+                % on, light curtain safe, no collisions)
+                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
 
+                    % Keeping the aubo in the same position
+                    app.auboI5.model.animate(app.auboI5.model.getpos()); % Animating the aubo movement
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
+    
+                    % Animating the gripper's openning
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
+                        app.auboI5.tool{gripperNum}.model.animate(app.auboI5.tool{gripperNum}.getpos());
+                    end
+                    drawnow; % Updating the plot
+
+                else
+                    % Moving the aubo i5
+                    app.auboI5.model.animate(qMatrixAubo(counter,:)); % Animating the aubo movement
+                    app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
+    
+                    % Animating the gripper's openning
+                    for gripperNum = 1:2
+                        app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
+                        app.auboI5.tool{gripperNum}.model.animate(qMatrixGripper(counter,:));
+                    end
+                    drawnow; % Updating the plot
+                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
                 end
-
-                % Moving the aubo i5
-                app.auboI5.model.animate(qMatrixAubo(i,:)); % Animating the aubo movement
-                app.auboI5.UpdateToolTr(); % Updating the end-effector property of the aubo
-
-                % Animating the gripper's openning
-                for gripperNum = 1:2
-                    app.auboI5.tool{gripperNum}.UpdateGripperPosition(app.auboI5.toolTr,gripperNum);
-                    app.auboI5.tool{gripperNum}.model.animate(qMatrixGripper(i,:));
-                end
-                drawnow; % Updating the plot
             end
             app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Next card ready to be delt'};
 
@@ -230,7 +347,7 @@ classdef LabAssessment2 < handle
         end
 
         %% Checking if there is Something within the Light Curtain
-        function isClear = LightCurtainCheck(model, app)
+        function isClear = LightCurtainCheck(model)
             isClear = true; % Setting default case of function as false
             
             % Getting the points of the model that need to be checked
@@ -244,7 +361,6 @@ classdef LabAssessment2 < handle
             % is an algerbraic distance of < 1 with any of the above points
             if(find(algerbraicDist < 1) > 0)
                 isClear = false; % Object has been detected within the light curtain
-                app.eStopPause;
                 return; % Returning on first detection of object within the light curtain
             end
         end
