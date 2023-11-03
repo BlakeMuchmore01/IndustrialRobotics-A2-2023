@@ -14,7 +14,7 @@ classdef PlayingCards < RobotBaseClass
                               0.5327 -0.12 0.21; 0.5327 -0.06 0.21; 0.5327 0 0.21; 0.5327 0.06 0.21; 0.5327 0.12, 0.21; ...
                               0.3827 -0.48 0.21; 0.3827 -0.42 0.21; 0.3827 -0.36 0.21; 0.3827 -0.30 0.21; 0.3827 -0.24, 0.21];
         dealerCardFinalPositions = [0.2827 -0.12 0.21; 0.2827 -0.06 0.21; 0.2827 0 0.21; 0.2827 0.06 0.21; 0.2827 0.12, 0.21];
-        cardFinalAngles = deg2rad([-180, 40, -180]); % Card angles when placed on stands
+        cardFinalRotm = eul2rotm([-90 0 220]*pi/180)*eul2rotm([90 0 0]*pi/180); % Card angles when placed on stands
     end
 
     % Non-constant properties
@@ -66,7 +66,7 @@ classdef PlayingCards < RobotBaseClass
             finalCardTransforms = zeros(4,4,5,3);
 
             % Getting the rotation matrix of the final card orientation
-            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles);
+            cardFinalRotationMatrix = self.cardFinalRotm;
 
             % Creating a counter to go through the card positions property array
             counter = 1;
@@ -89,7 +89,7 @@ classdef PlayingCards < RobotBaseClass
             finalCardTransforms = zeros(4,4,5);
 
             % Getting the rotation matrix of the final card orientation
-            cardFinalRotationMatrix = eul2rotm(self.cardFinalAngles);
+            cardFinalRotationMatrix = self.cardFinalRotm;
 
             % Creating a counter to go through the card positions property array
             counter = 1;

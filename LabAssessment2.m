@@ -10,7 +10,7 @@ classdef LabAssessment2 < handle
         lightCurtainRadii = [1.05, 1.15, 1.1]; % Default radius' for the light curtain ellipse
         
         % Hand off transform (tranform aubo achieves to grab card off dobot
-        handOffTransform = [eul2rotm([0 1.5708 -1.5708]) [0.2222, 0.32, 0.25]'; zeros(1,3) 1];
+        handOffTransform = [eul2rotm([0 0 -pi/2])*eul2rotm([90 0 0]*pi/180) [0.2222, 0.32, 0.25]'; zeros(1,3) 1];
     end
     
     %% Methods of the Class
@@ -142,10 +142,18 @@ classdef LabAssessment2 < handle
             % Determining if the card should be delt to the player or the dealer
             if toDealer
                 finalCardTransforms = app.playingCards.GetFinalCardTransformsDealer(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum) * transl(0,0,0.1));
+                finalTransform = finalCardTransforms(:,:,app.cardNum);
+                finalTransform(3,4) = finalTransform(3,4) + 0.1;
+                
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalTransform);
             else 
                 finalCardTransforms = app.playingCards.GetFinalCardTransforms(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum,app.player) * transl(0,0,0.1));
+
+                % Getting the final transform for the current card and increasing its z component by 0.1 (To avoid collision)
+                finalTransform = finalCardTransforms(:,:,app.cardNum,app.player);
+                finalTransform(3,4) = finalTransform(3,4) + 0.1;
+
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalTransform);
             end
 
             counter = 1; % Resetting the counter for the next movement
@@ -178,15 +186,18 @@ classdef LabAssessment2 < handle
                     counter = counter + 1;
                 end
             end
-            app.logFile.mlog = {app.logFile.DEBUG,'HitSelected','Aubo i5 above the distribution position'};
 
-            % Determining if the card should be delt to the player or the dealer
+             % Determining if the card should be delt to the player or the dealer
             if toDealer
                 finalCardTransforms = app.playingCards.GetFinalCardTransformsDealer(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum) * transl(0,0,0.1));
+                finalTransform = finalCardTransforms(:,:,app.cardNum);
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalTransform);
             else 
                 finalCardTransforms = app.playingCards.GetFinalCardTransforms(); % Getting final positions of cards
-                qMatrixAubo = app.auboI5.GetCartesianMovement(finalCardTransforms(:,:,app.cardNum,app.player) * transl(0,0,0.1));
+
+                % Getting the final transform for the current card and increasing its z component by 0.1 (To avoid collision)
+                finalTransform = finalCardTransforms(:,:,app.cardNum,app.player);
+                qMatrixAubo = app.auboI5.GetCartesianMovement(finalTransform);
             end
 
             counter = 1; % Resetting the counter for the next movement
@@ -208,7 +219,7 @@ classdef LabAssessment2 < handle
                 % Updating the position of the card alongside the gripper
                 app.playingCards.cardModels{endCardIndex}.base = app.auboI5.toolTr * trotz(pi/2) * trotx(pi/2) * transl(0,0.2,-0.01);
                 app.playingCards.cardModels{endCardIndex}.animate(0);
-
+                
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
