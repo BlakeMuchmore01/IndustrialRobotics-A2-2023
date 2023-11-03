@@ -42,7 +42,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2}) % && ~app.auboI5.isCollision() && 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2}) % && ~app.auboI5.isCollision() 
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
@@ -73,7 +73,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2}) % && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2}) % && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1; % Increasing 
@@ -105,7 +105,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
@@ -131,7 +131,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
@@ -180,7 +180,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
@@ -223,7 +223,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
@@ -239,7 +239,9 @@ classdef LabAssessment2 < handle
             % Looping through the qMatrix and animating the aubo
             while counter <= size(qMatrixGripper,1)
                 % Checking if the arduino estop has been hit
-                try app.RealEstopReading(app.arduino.CheckButtonPressed()); end
+                if app.arduino ~= 0
+                    app.RealEstopReading(app.arduino.CheckButtonPressed());
+                end
 
                 % Moving the aubo i5
                 app.auboI5.model.animate(qMatrixAubo(counter,:)); % Animating the aubo movement
@@ -254,7 +256,7 @@ classdef LabAssessment2 < handle
                 % Ensuring that the environment is safe before increasing counter variable (Continue button is
                 % on, light curtain safe, no collisions)
                 if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
-                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+                        app.continuePressed && ~app.dobotMagician.CheckCollision(app.hand.handModels{2})% && ~app.auboI5.isCollision()
 
                     drawnow; % Updating the plot
                     counter = counter + 1;
