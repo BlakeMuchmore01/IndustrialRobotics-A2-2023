@@ -1,293 +1,59 @@
-2023-11-03 11:10:58,505 DEBUG CreateEnvironment - Safety environment created
-2023-11-03 11:11:21,126 DEBUG AuboI5 - Aubo i5 object created within the workspace
-2023-11-03 11:11:24,984 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
-2023-11-03 11:11:30,128 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
-2023-11-03 11:11:30,137 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
-2023-11-03 11:11:36,191 DEBUG DMagician - Dobot Magician object created within the workspace
-2023-11-03 11:11:36,263 DEBUG Hand - Hand 1 created within the workspace
-2023-11-03 11:11:36,327 DEBUG Hand - Hand 2 created within the workspace
-2023-11-03 11:11:36,478 DEBUG PlayingCards - Card 1 created within the workspace
-2023-11-03 11:11:36,644 DEBUG PlayingCards - Card 2 created within the workspace
-2023-11-03 11:11:36,806 DEBUG PlayingCards - Card 3 created within the workspace
-2023-11-03 11:11:36,939 DEBUG PlayingCards - Card 4 created within the workspace
-2023-11-03 11:11:37,065 DEBUG PlayingCards - Card 5 created within the workspace
-2023-11-03 11:11:37,246 DEBUG PlayingCards - Card 6 created within the workspace
-2023-11-03 11:11:37,396 DEBUG PlayingCards - Card 7 created within the workspace
-2023-11-03 11:11:37,519 DEBUG PlayingCards - Card 8 created within the workspace
-2023-11-03 11:11:37,685 DEBUG PlayingCards - Card 9 created within the workspace
-2023-11-03 11:11:37,866 DEBUG PlayingCards - Card 10 created within the workspace
-2023-11-03 11:11:37,999 DEBUG PlayingCards - Card 11 created within the workspace
-2023-11-03 11:11:38,163 DEBUG PlayingCards - Card 12 created within the workspace
-2023-11-03 11:11:38,315 DEBUG PlayingCards - Card 13 created within the workspace
-2023-11-03 11:11:38,496 DEBUG PlayingCards - Card 14 created within the workspace
-2023-11-03 11:11:38,647 DEBUG PlayingCards - Card 15 created within the workspace
-2023-11-03 11:11:38,785 DEBUG PlayingCards - Card 16 created within the workspace
-2023-11-03 11:11:38,945 DEBUG PlayingCards - Card 17 created within the workspace
-2023-11-03 11:11:39,115 DEBUG PlayingCards - Card 18 created within the workspace
-2023-11-03 11:11:39,305 DEBUG PlayingCards - Card 19 created within the workspace
-2023-11-03 11:11:39,453 DEBUG PlayingCards - Card 20 created within the workspace
-2023-11-03 11:11:39,595 DEBUG PlayingCards - Card 21 created within the workspace
-2023-11-03 11:11:39,619 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
-2023-11-03 11:11:48,878 DEBUG DemonstrationModePressed - Blackjack requested
-2023-11-03 11:11:51,348 DEBUG ForceLCButtonPushed - Hand moved to trip light curtain
-2023-11-03 11:11:51,377 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,464 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,523 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,587 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,651 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,699 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,761 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,826 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,883 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:51,944 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,011 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,058 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,118 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,181 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,261 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,352 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,411 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,475 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,534 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,596 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,658 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,720 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,771 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,831 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,894 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:52,958 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,027 DEBUG RemoveLCButtonPushed - Hand moved outside of light curtain
-2023-11-03 11:11:53,037 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,123 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,186 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,247 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,310 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,370 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,434 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,480 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,541 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,604 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,669 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,729 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,791 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,854 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,916 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:53,988 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,090 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,211 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,307 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,367 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,441 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,547 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,651 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,710 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,769 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,838 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:54,945 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,047 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,110 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,185 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,292 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,393 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,501 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,547 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,607 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,771 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,864 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:55,951 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,110 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,163 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,228 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,314 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,398 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,459 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,522 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,580 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,647 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,740 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,804 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:56,867 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,113 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,274 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,341 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,405 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,467 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,529 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,593 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,656 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,702 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,763 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,829 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,888 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:57,949 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,011 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,075 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,123 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,185 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,246 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,338 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,421 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,482 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,541 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,605 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,664 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,728 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,774 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,835 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,900 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:58,958 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,023 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,084 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,145 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,205 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,268 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,351 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,528 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,600 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,653 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,721 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,779 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,825 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,887 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:11:59,953 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,012 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,073 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,135 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,198 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,246 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,310 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,374 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,450 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,544 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,605 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,671 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,734 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,841 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,900 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:00,949 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,012 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,070 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,133 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,196 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,256 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,330 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,426 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,499 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,608 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:01,739 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,043 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,130 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,187 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,336 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,442 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,520 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,584 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,648 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,759 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,866 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,927 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:02,988 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,050 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,099 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,160 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,224 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,275 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,335 DEBUG RemoveLCButtonPushed - Hand moved outside of light curtain
-2023-11-03 11:12:03,365 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,454 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,516 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,582 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,632 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,696 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,756 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,813 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,882 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:03,939 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,002 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,065 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,181 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,298 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,401 DEBUG RemoveCDButtonPushed - Hand moved to stop being potential collision
-2023-11-03 11:12:04,415 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,500 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,561 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,609 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,672 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,737 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,801 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,864 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,922 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:04,974 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,035 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,097 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,159 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,226 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,291 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,351 DEBUG ForceCDButtonPushed - Hand moved to be potential collision
-2023-11-03 11:12:05,386 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,450 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,515 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,655 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,758 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,834 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:05,908 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,020 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,125 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,189 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,234 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,321 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,419 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,523 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,581 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,644 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,708 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,771 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,818 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,878 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:06,940 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,006 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,068 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,188 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,318 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,404 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,518 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,623 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,736 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,847 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:07,946 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,023 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,123 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,230 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,341 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,405 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,508 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,569 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,631 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,684 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,746 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,803 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,868 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,932 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:08,990 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,053 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,097 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,172 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,223 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,295 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,357 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,461 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,529 DEBUG ForceLCButtonPushed - Hand moved to trip light curtain
-2023-11-03 11:12:09,542 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,640 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,741 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,810 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:09,922 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,021 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,091 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,195 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,262 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,367 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,421 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,475 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,533 DEBUG HitSelected - Robots cannot continue operation
-2023-11-03 11:12:10,610 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:20:01,192 DEBUG CreateEnvironment - Safety environment created
+2023-11-03 11:20:22,251 DEBUG AuboI5 - Aubo i5 object created within the workspace
+2023-11-03 11:20:25,979 DEBUG TwoFingeredGripper - Gripper Finger 1 created within the workspace
+2023-11-03 11:20:31,326 DEBUG TwoFingeredGripper - Gripper Finger 2 created within the workspace
+2023-11-03 11:20:31,334 DEBUG TwoFingeredGripper - 2F-85 gripper object created within the workspace
+2023-11-03 11:20:37,509 DEBUG DMagician - Dobot Magician object created within the workspace
+2023-11-03 11:20:37,606 DEBUG Hand - Hand 1 created within the workspace
+2023-11-03 11:20:37,704 DEBUG Hand - Hand 2 created within the workspace
+2023-11-03 11:20:37,910 DEBUG PlayingCards - Card 1 created within the workspace
+2023-11-03 11:20:38,071 DEBUG PlayingCards - Card 2 created within the workspace
+2023-11-03 11:20:38,268 DEBUG PlayingCards - Card 3 created within the workspace
+2023-11-03 11:20:38,459 DEBUG PlayingCards - Card 4 created within the workspace
+2023-11-03 11:20:38,662 DEBUG PlayingCards - Card 5 created within the workspace
+2023-11-03 11:20:38,872 DEBUG PlayingCards - Card 6 created within the workspace
+2023-11-03 11:20:39,046 DEBUG PlayingCards - Card 7 created within the workspace
+2023-11-03 11:20:39,222 DEBUG PlayingCards - Card 8 created within the workspace
+2023-11-03 11:20:39,403 DEBUG PlayingCards - Card 9 created within the workspace
+2023-11-03 11:20:39,565 DEBUG PlayingCards - Card 10 created within the workspace
+2023-11-03 11:20:39,779 DEBUG PlayingCards - Card 11 created within the workspace
+2023-11-03 11:20:39,992 DEBUG PlayingCards - Card 12 created within the workspace
+2023-11-03 11:20:40,204 DEBUG PlayingCards - Card 13 created within the workspace
+2023-11-03 11:20:40,394 DEBUG PlayingCards - Card 14 created within the workspace
+2023-11-03 11:20:40,579 DEBUG PlayingCards - Card 15 created within the workspace
+2023-11-03 11:20:40,750 DEBUG PlayingCards - Card 16 created within the workspace
+2023-11-03 11:20:40,922 DEBUG PlayingCards - Card 17 created within the workspace
+2023-11-03 11:20:41,140 DEBUG PlayingCards - Card 18 created within the workspace
+2023-11-03 11:20:41,304 DEBUG PlayingCards - Card 19 created within the workspace
+2023-11-03 11:20:41,489 DEBUG PlayingCards - Card 20 created within the workspace
+2023-11-03 11:20:41,674 DEBUG PlayingCards - Card 21 created within the workspace
+2023-11-03 11:20:41,708 DEBUG RobotDropDownValueChanged - Changed to Aubo i5 control
+2023-11-03 11:20:54,288 DEBUG DemonstrationModePressed - Blackjack requested
+2023-11-03 11:20:57,477 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-03 11:21:10,165 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-03 11:21:11,991 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-03 11:21:14,026 DEBUG EmergencyStopButtonPushed - Emergency stop pressed, robot function paused
+2023-11-03 11:21:15,020 DEBUG EmergencyStopButtonPushed - Emergency stop turned off, press continue button when ready
+2023-11-03 11:21:16,005 DEBUG StartContinueButtonPushed - Robot function started/continued
+2023-11-03 11:21:17,976 DEBUG HitSelected - Dobot has picked up a card
+2023-11-03 11:21:22,902 DEBUG ForceLCButtonPushed - Hand moved to trip light curtain
+2023-11-03 11:21:23,005 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,116 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,226 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,338 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,436 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,503 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,619 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,752 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,834 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:23,945 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,043 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,110 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,232 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,336 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,436 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,555 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,656 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,738 DEBUG HitSelected - Robots cannot continue operation
+2023-11-03 11:21:24,799 DEBUG RemoveLCButtonPushed - Hand moved outside of light curtain
+2023-11-03 11:21:28,493 DEBUG HitSelected - Card is ready to be transitioned to Aubo i5

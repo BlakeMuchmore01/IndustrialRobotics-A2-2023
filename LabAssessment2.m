@@ -32,28 +32,48 @@ classdef LabAssessment2 < handle
             while counter <= size(qMatrixDobot,1)
                 % Checking if the arduino estop has been hit
                 app.RealEstopReading(app.arduino.CheckButtonPressed());
-
-                % Ensuring that the environment is safe (Continue button is
-                % on, light curtain safe, no collisions)
-                if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
-                        ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
-
-                    % Keeping the robot in the same position
-                    app.dobotMagician.model.animate(app.dobotMagician.model.getpos()); % Animating the dobot movement
-                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
-                    drawnow; % Updating the plot
-
-                    % Logging that robots cannot resume operation
-                    app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Robots cannot continue operation'};
                 
-                else
-                    % Robots are safe to move
-                    app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
-                    app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+                % Animating the robot to qMatrix pose
+                app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
+                app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+                drawnow;
+
+                % Ensuring that the environment is safe before increasing counter variable (Continue button is
+                % on, light curtain safe, no collisions)
+                if LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) && ...
+                        app.continuePressed % && ~app.auboI5.isCollision() && ~app.dobotMagician.isCollision() 
+
                     drawnow; % Updating the plot
-                    counter = counter + 1; % Increasing the counter to loop next qMatrix set
+                    counter = counter + 1;
                 end
             end
+
+
+
+
+
+            % 
+            %     % Ensuring that the environment is safe (Continue button is
+            %     % on, light curtain safe, no collisions)
+            %     if ~LabAssessment2.LightCurtainCheck(app.hand.handModels{1}) || ...
+            %             ~app.continuePressed % || app.auboI5.isCollision() || app.dobotMagician.isCollision()
+            % 
+            %         % Keeping the robot in the same position
+            %         app.dobotMagician.model.animate(app.dobotMagician.model.getpos()); % Animating the dobot movement
+            %         app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+            %         drawnow; % Updating the plot
+            % 
+            %         % Logging that robots cannot resume operation
+            %         app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Robots cannot continue operation'};
+            % 
+            %     else
+            %         % Robots are safe to move
+            %         app.dobotMagician.model.animate(qMatrixDobot(counter,:)); % Animating the dobot movement
+            %         app.dobotMagician.UpdateToolTr(); % Updating the end-effector property of the dobot
+            %         drawnow; % Updating the plot
+            %         counter = counter + 1; % Increasing the counter to loop next qMatrix set
+            %     end
+            % end
             app.logFile.mlog = {app.logFile.DEBUG, 'HitSelected','Dobot has picked up a card'};
 
             % Getting the qMatrix to move the dobot back to its original position with the card
