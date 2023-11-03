@@ -1,6 +1,49 @@
 clf; clear; clc;
-model = 0;
+model = -3;
 %figure(1);
+
+if model == -3
+
+    r = AuboI5();
+
+    q = r.model.getpos();
+    
+    linkTransforms = zeros(4,4,(r.ellipsis.n)+1);                
+    linkTransforms(:,:,1) = r.ellipsis.base; % Setting first transform as the base transform
+    
+    % Getting the link data of the robot links
+    links = r.ellipsis.links;
+    
+    for i = 1:length(links)
+        L = links(1,i);
+        
+        current_transform = linkTransforms(:,:, i);
+        
+        current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
+        transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
+        linkTransforms(:,:,i + 1) = current_transform;
+    
+        centreTr = (current_transform-linkTransforms(:,:,i))/2;
+
+    end
+
+    centre = linkTransforms(:,:,3) - linkTransforms(:,:,2)
+    centre = centre/2
+    cx = -0.1442
+    cy = 0;
+    cz = 0.1442
+    [x, y, z] = ellipsoid(cx, cy, cz, 0.075, 0.075, 0.25);
+    e1 = surf(x, y, z)
+    rot = linkTransforms(:,:,3)
+    rot  = rot(1:3,1:3)
+    original_coords = [x(:)'; y(:)'; z(:)'];
+    rotated_coords = rot * original_coords;
+    new_x = reshape(rotated_coords(1, :), size(x));
+    new_y = reshape(rotated_coords(2, :), size(y));
+    new_z = reshape(rotated_coords(3, :), size(z));
+    e2 = surf(new_x, new_y, new_z);
+
+end
 
 if model == -2
 
