@@ -27,21 +27,25 @@ if model == -3
 
     end
 
-    centre = linkTransforms(:,:,3) + linkTransforms(:,:,2)
-    centre = centre/2
-    cx = centre(1,4);
-    cy = centre(2,4);
-    cz = centre(3,4)
-    [x, y, z] = ellipsoid(0, 0, 0, 0.075, 0.075, 0.25);
-    % e1 = surf(x, y, z);
-    rot = linkTransforms(1:3,1:3,2) *  (linkTransforms(1:3,1:3,3))';
-    rot  = rot(1:3,1:3);
-    original_coords = [x(:)'; y(:)'; z(:)'];
-    rotated_coords = rot * original_coords;
-    new_x = reshape(rotated_coords(1, :), size(x)) + cx;
-    new_y = reshape(rotated_coords(2, :), size(y)) + cy;
-    new_z = reshape(rotated_coords(3, :), size(z)) + cz;
-    e2 = surf(new_x, new_y, new_z);
+    for i = 1:length(links)
+
+        centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i)
+        centre = centre/2
+        cx = centre(1,4);
+        cy = centre(2,4);
+        cz = centre(3,4)
+        [x, y, z] = ellipsoid(0, 0, 0, 0.075, 0.075, 0.25);
+        % e1 = surf(x, y, z);
+        rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
+        rot  = rot(1:3,1:3);
+        original_coords = [x(:)'; y(:)'; z(:)'];
+        rotated_coords = rot * original_coords;
+        new_x = reshape(rotated_coords(1, :), size(x)) + cx;
+        new_y = reshape(rotated_coords(2, :), size(y)) + cy;
+        new_z = reshape(rotated_coords(3, :), size(z)) + cz;
+        e2 = surf(new_x, new_y, new_z);
+
+    end
 
 end
 
