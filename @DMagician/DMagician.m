@@ -19,8 +19,7 @@ classdef DMagician < RobotBaseClass
         maxLambda = 0.05;
 
         % Set radii for each ellipsoid for the dobot 
-        ellipsoidRadii = [0.075, 0.125, 0.1; 0.1,   0.075, 0.065; 0.075, 0.075, 0.075; 0.075, ... 
-            0.075, 0.075; 0.075, 0.075, 0.06];
+        ellipsoidRadii = [0.075, 0.125, 0.1; 0.1, 0.075, 0.065; 0.075, 0.075, 0.075; 0.075, 0.075, 0.075; 0.075, 0.075, 0.06];
     end
 
     %% ...structors
@@ -283,15 +282,10 @@ classdef DMagician < RobotBaseClass
         end
 
         %% Getter for the Algerbraic Distance between Objects and Light Curtain
-        % function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
-        %     algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
-        %           + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
-        %           + ((points(:,3)-centerPoint(3))/radii(3)).^2;
-        % end
-            
-        function algebraicDist = GetAlgebraicDist(elipsisCoordinates, modelPoints)
-            
-
+        function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
+            algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
+                  + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
+                  + ((points(:,3)-centerPoint(3))/radii(3)).^2;
         end
 
     end
