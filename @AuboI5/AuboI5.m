@@ -87,7 +87,7 @@ classdef AuboI5 < RobotBaseClass
             link(2).qlim = [5     175]*pi/180;
             link(3).qlim = [-175  175]*pi/180;
             link(4).qlim = [-360  360]*pi/180;
-            link(5).qlim = [-175  175]*pi/180;
+            link(5).qlim = [-360  360]*pi/180;
             link(6).qlim = [-360  360]*pi/180;
 
             % Creating the serial link object
