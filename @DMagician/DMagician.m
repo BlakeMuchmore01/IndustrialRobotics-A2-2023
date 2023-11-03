@@ -130,6 +130,9 @@ classdef DMagician < RobotBaseClass
             for i = 1:length(links)
                 L = links(1,i); % Getting the current link data
                 
+                % Initialising current transform variable
+                currentTransform = linkTransforms(:,:,i + 1);
+
                 % Getting the transform of the current link
                 currentTransform = currentTransform * trotz(jointAngles(1,i) + L.offset) * ...
                 transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
@@ -280,10 +283,16 @@ classdef DMagician < RobotBaseClass
         end
 
         %% Getter for the Algerbraic Distance between Objects and Light Curtain
-        function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
-            algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
-                  + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
-                  + ((points(:,3)-centerPoint(3))/radii(3)).^2;
+        % function algebraicDist = GetAlgebraicDist(points, centerPoint, radii)
+        %     algebraicDist = ((points(:,1)-centerPoint(1))/radii(1)).^2 ...
+        %           + ((points(:,2)-centerPoint(2))/radii(2)).^2 ...
+        %           + ((points(:,3)-centerPoint(3))/radii(3)).^2;
+        % end
+            
+        function algebraicDist = GetAlgebraicDist(elipsisCoordinates, modelPoints)
+            
+
         end
+
     end
 end
