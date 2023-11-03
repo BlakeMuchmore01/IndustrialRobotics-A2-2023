@@ -20,9 +20,16 @@ classdef AuboI5 < RobotBaseClass
         tool = cell(1,2); % Variable to store the tool (2F-85 Gripper) that is used by the Aubo i5
         plyFileNameStem = 'AuboI5'; % Name stem used to find associated ply files
         ellipsis; % Stores the elipsoid robot object to check for collisions
-        ellipsoids = cell(1,7); % Structures that hold collision ellipsoid data
-        linkCentres = zeros(6,3); % Structure of link centres to use for ellipsoid updating
-        linkRadii = zeros(6,3); % Structure of link elliposid radii
+        ellipsoids = zeros(1,7); % Structures that hold collision ellipsoid data
+        linkCentres = zeros(7,3); % Structure of link centres to use for ellipsoid updating
+        linkRadii = [   0.1 0.1 0.1;
+                        0.1 0.1 0.25;
+                        0.1 0.1 0.25;
+                        0.075 0.075 0.075;
+                        0.075 0.075 0.075;
+                        0.075 0.075 0.075;
+                        0.075 0.075 0.075;
+                    ]; % Structure of link elliposid radii
         centreOffset =  [0 0 -0.25;
                         -0.3 0 -0.15;
                          -0.3 0 -0.05;
@@ -218,19 +225,16 @@ classdef AuboI5 < RobotBaseClass
         end     
         
         %% Creating the Ellipsis Around each Robot Link
-        function UpdateEllipsis(self, q)
+        function isCollision = CheckCollision(self, model)
+
+            isCollision = false;
+
             % Creating an array of 4x4 transforms relating to robot links
             linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
             linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
 
-            piFlag = 0;
-            
-            mult =    [0.5 0.5 0.5;
-                      0.66 0.66 0.66;
-                      0.66 0.66 0.66;
-                      0.4 0.6 0.4;
-                      0.4 0.4 0.4;
-                      0.5 0.25 0.8];
+            hold on
+            q = self.model.getpos();
             
             % Getting the link data of the robot links
             links = self.ellipsis.links;
@@ -246,96 +250,34 @@ classdef AuboI5 < RobotBaseClass
 
                 centreTr = (current_transform-linkTransforms(:,:,i))/2;
 
-                self.linkCentres(i,1) = self.centreOffset(i,1) + centreTr(3,1);
-                self.linkCentres(i,2) = self.centreOffset(i,2) + centreTr(3,2);
-                self.linkCentres(i,3) = self.centreOffset(i,3) + centreTr(3,3);
             end
 
-            self.UpdateToolTr;
-            self.linkCentres(6,1) = self.toolTr(1,4);
-            self.linkCentres(6,2) = self.toolTr(2,4);
-            self.linkCentres(6,3) = self.toolTr(3,4);
-
-            for i = 1:length(links)
-
-                A = 0.001;
-                D = 0.001;
-
-                if(i >= 2)
-
-                    if(links(i-1).alpha == pi/2)
-                        piFlag = ~piFlag;
-                    end
-
-                    if(piFlag)
-                        A = A + links(i).d;
-                        D = D + links(i).a;
-                    else
-                        A = A + links(i).a;
-                        D = D + links(i).d;
-                    end
-                else
-                     A = A + links(i).a;
-                     D = D + links(i).d;
-                end
-
-                if (D > 0.001)
-                    radii = [D, 0.2, 0.2];
-                else
-                     radii = [A, 0.2, 0.2];
-                end
-
-                self.linkRadii(i,1) = radii(1);
-                self.linkRadii(i,2) = radii(2);
-                self.linkRadii(i,3) = radii(3);
-
-                [X, Y, Z] = ellipsoid(self.centreOffset(i,1), self.centreOffset(i,2), self.centreOffset(i,3), radii(1), radii(2), radii(3));
-
-                self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
-                self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
-
-            end
-
-            radii = [0.1,0.1,0.1];
-
-            [X, Y, Z] = ellipsoid(0, 0, 0, radii(1), radii(2), radii(3));
-
-            self.ellipsis.points{1} = [X(:),Y(:),Z(:)];
-            self.ellipsis.faces{1} = delaunay(self.ellipsis.points{1}); 
-
-            self.ellipsis.plot3d(q);
-        end
-
-        %% Checking if a Collision is Occurring with a Model
-        function isCollision = CheckCollisions(self, jointAngles, model)
-            isCollision = false; % Setting default return condition to state no present collisions
-            
-            % Creating an array of 4x4 transforms relating to robot links
-            linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
-            linkTransforms(:,:,1) = self.ellipsis.base; % Setting first transform as the base transform
-
-            % Getting the link data of the robot links
-            linkData = self.ellipsis.links;
-
-            % Getting the points of the model that need to be checked
             points = [model.points{1,2}(:,1), model.points{1,2}(:,2), model.points{1,2}(:,3)];
             points = points(1:3) + model.base.t(1:3)';
 
-            % For loop to get the remaining link transforms
-            for i = 1:self.ellipsis.n
-                % Calculating link transforms via link data
-                linkTransforms(:,:,i+1) = linkTransforms(:,:,i) * trotz(jointAngles(i)) * transl(0,0,linkData(i).d) ...
-                * transl(linkData(i).a,0,0) * trotx(linkData(i).alpha);
-            end
+            for i = 1:length(links)
+        
+                centre = linkTransforms(:,:,i+1) + linkTransforms(:,:,i);
+                centre = centre/2;
+                self.linkCentres(i,1) = centre(1,4);
+                self.linkCentres(i,2) = centre(2,4);
+                self.linkCentres(i,3) = centre(3,4);
+                [x, y, z] = ellipsoid(0, 0, 0, self.linkRadii(i,1), self.linkRadii(i,2), self.linkRadii(i,3));
+                rot = linkTransforms(1:3,1:3,i) *  (linkTransforms(1:3,1:3,i+1))';
+                rot  = rot(1:3,1:3);
+                original_coords = [x(:)'; y(:)'; z(:)'];
+                rotated_coords = rot * original_coords;
+                new_x = reshape(rotated_coords(1, :), size(x)) + self.linkCentres(i,1);
+                new_y = reshape(rotated_coords(2, :), size(y)) + self.linkCentres(i,2);
+                new_z = reshape(rotated_coords(3, :), size(z)) + self.linkCentres(i,3);
+                e = surf(new_x, new_y, new_z);
 
-            % Looping through each ellipsoid to check for collisions
-            for i = 1:size(linkTransforms, 3)
-                % Updating the points of the model relative to the links on the robot
+                 % Updating the points of the model relative to the links on the robot
                 modelPointsAndOnes = (inv(linkTransforms(:,:,i)) * [points, ones(size(points,1),1)]')'; %#ok<MINV>
                 updatedModelPoints = modelPointsAndOnes(:,1:3); % Getting the relative x-y-z points
     
                 % Checking the algerbraic distance of these points
-                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, self.linkCentres(i,:), self.linkRadii);
+                algerbraicDist = self.GetAlgebraicDist(updatedModelPoints, centre, radii(i,:));
                     
                 % Checking if the model is within the light curtain (i.e. there
                 % is an algerbraic distance of < 1 with any of the above points
@@ -344,82 +286,8 @@ classdef AuboI5 < RobotBaseClass
                     return; % Returning on first detection of object within the light curtain
                 end
             end
-        end
-
-        function points = objectCollision(self, ellipsisModel)
-            % For each ellipsis (link) get if points algebraic distance is <1
-
-            points = [];
             
-            % Stores every 50 points in points array
-            for l = 1:width(ellipsisModel.points())
-                ellipsisPoints = ellipsisModel.points{l};
-                for p = 1:height(ellipsisModel.points{l})
-                    point = ellipsisPoints(p,:);
-                    points = [points; point];
-                end
-            end
-
-            for l = 1:self.model.n
-
-                    %dis = GetAlgebraicDist(points, self.linkCentres(l,:), self.linkRadii(l,:));
-
-            end 
         end
-
-
-        function prisms(self, q)
-
-            linkTransforms = zeros(4,4,(self.ellipsis.n)+1);                
-            linkTransforms(:,:,1) = self.ellipsis.base;
-
-            links = self.ellipsis.links;
-
-            for i = 1:length(links)
-                L = links(1,i);
-                
-                current_transform = linkTransforms(:,:, i);
-                
-                current_transform = current_transform * trotz(q(1,i) + L.offset) * transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
-                linkTransforms(:,:,i + 1) = current_transform;
-
-                centreTr = (current_transform-linkTransforms(:,:,i))/2;
-
-                self.linkCentres(i,1) = self.centreOffset(i,1) + centreTr(3,1);
-                self.linkCentres(i,2) = self.centreOffset(i,2) + centreTr(3,2);
-                self.linkCentres(i,3) = self.centreOffset(i,3) + centreTr(3,3);
-            end
-
-            for i = 1:length(links)
-
-                d1 = 0;
-                d2 = 0;
-                d3 = 0;
-                x1 = linkTransforms(1,4,i);
-                x2 = linkTransforms(1,4,i);
-                y1 = linkTransforms(2,4,i);
-                y2 = linkTransforms(2,4,i);
-                z1 = linkTransforms(3,4,i);
-                z2 = linkTransforms(3,4,i);
-                for k = x1:0.05:x2
-                    d1 = k;
-                    for j = y1:0.05:y2
-                        d2 = j;
-                        for i = z1:0.05:z2
-                            d3 = i;
-                            self.ellipsis.points{i}
-                        end
-                    end
-                end 
-
-                % self.ellipsis.points{i+1} = [X(:)*mult(i,1),Y(:)*mult(i,2),Z(:)*mult(i,3)];
-                % self.ellipsis.faces{i+1} = delaunay(self.ellipsis.points{i+1}); 
-
-            end
-
-
-        end
-
 
     end
 
